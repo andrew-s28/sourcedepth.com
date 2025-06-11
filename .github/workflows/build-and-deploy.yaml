@@ -25,6 +25,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to VPS
+    needs: build
     steps:
       - name: Download build artifacts
         uses: actions/download-artifact@v4
