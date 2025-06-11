@@ -1,0 +1,7 @@
+**/build
+**/public
+**/node_modules
+**/.vinxi
+**/.output
+pnpm-lock.yaml
+routeTree.gen.ts

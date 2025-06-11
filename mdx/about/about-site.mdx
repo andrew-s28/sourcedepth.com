@@ -1,0 +1,62 @@
+---
+slug: "about-site"
+title: "About this Website"
+date: ""
+tags: [""]
+description: ""
+---
+import { WebsiteStackLogos } from "~/components/ui/Logos"
+
+## Motivations
+
+The first website I wrote was written in mostly raw HTML, CSS, and some vanilla JS, with a bit of Django template tags used where necessary to load content from a PostgreSQL database. I used a basic WYSIWYG editor to write posts, which felt *very* limiting for the interactive content I wanted to include. I decided to make the jump to React and found it to be a much better experience in terms of state management and interactivity, so I decided it was time to rewrite the site using React.
+
+Even though I was planning to rewrite the site using React, the core functionality would still be writing posts. I *definitely* didn't want to move to writing posts in JSX, so I still needed a solution that was more powerful than a WYSIWYG editor but not too clunky. I would have been fine writing in Markdown, but this limited my ability to design custom site components within posts themselves.
+
+I found the best of both worlds when searching for inspiration for this site when I came across [Josh W. Comeau's site](https://www.joshwcomeau.com/). Fortunately for me, Josh was kind enough to write an [excellent blog post](https://www.joshwcomeau.com/blog/how-i-built-my-blog-v2/) about the building of his website, which led me to [MDX](https://mdxjs.com/), a Markdown format which lets you include arbitrary JSX components within your Markdown.
+
+I've also taken inspiration from several other beautiful websites and, of course, my amazing partner - who is a **much** better creative and designer than I am - and was critical in several design decisions that made this site much more beuatiful than I could have done alone.
+
+## Development
+
+After deciding that I wanted MDX support to be at the core of my site, I next had to make several implementation decisions. I wanted to use server-side rendering, ostensibly for "SEO", but in reality mostly because I wanted some experience writing full-stack software and I thought it would be a fun challenge (and I already had a Digital Ocean droplet I was using for other things, so why not?).
+
+Being extremely passionate about an open-source internet, I'm always searching for tech that aligns with my values. While I'm mostly outside of web dev circles, I had heard a lot of excellent things about [TanStack Start](https://tanstack.com/start/latest) (and TanStack in general) and I was really convinced when I read the [TanStack ethos](https://tanstack.com/ethos). I cloned the [basic example](https://tanstack.com/start/latest/docs/framework/react/examples/start-basic) and got to building!
+
+### Decisions, Decisions
+
+After deciding on my core stack, there were many more decisions to be made. My next goal was to make the publishing of new MDX posts as easy as possible, so I definitely wanted to avoid building and deploying the site every time I added a new post. This led me to [MDX bundler](https://github.com/kentcdodds/mdx-bundler), which is a runtime MDX bundler and compiler that allows me to dynamically load MDX posts from *anywhere*. When I write a new post, I simply copy it to a directory on my server and the site is automatically updated with the new post. Amazing!
+
+Some other small decisions along the way led me to the current tech stack for this site. I never liked coming up with class names for my CSS, so [Tailwind](https://tailwindcss.com/) was a no brainer. I also already had a backend data API built on Django and PostgreSQL, so I was going to have to interface with that on the server side, mostly for accessing datasets I want to share on this site.
+
+### Tech Stack
+
+<WebsiteStackLogos />
+
+### The Homepage
+
+I've always really liked sites that have a "personality" rather than just a generic project list, so I spent *a lot* of time on the homepage. The waves are built entirely from Bezier curves, inspired by [Beauty Waves: an artistic representation of ocean waves using Bezier curves](https://oaktrust.library.tamu.edu/items/1b8f9f50-f47c-49ee-b324-0f2d52baa0ba), a 2007 thesis by Jay Allen Faulkner. Being from 2007, I couldn't find the source code used in the thesis, so I reverse engineered what I could to make the waves. I think they look darn good!
+
+The night sky and twinkling stars were inspired by some [code written by Jones Joseph](https://codepen.io/jo_Geek/pen/EOKvLE). However, the solution there created thousands of divs that just ground the page to a halt. The more elegant solution these days is to use a single canvas element and draw the stars on that, but this came with its own set of challenges. The paths within the canvas couldn't be animated with simple CSS animations, so they required a bit more work to get them animated. I'll write up a description of my solution sometime soon!
+
+### Plots
+
+As I've said, posts on this site are built on MDX. However, I still needed to design custom components. One major component I needed to include was support for time series plots to showcase data (I am a scientist, after all), which ended up being quite the rabbit hole. I built my plots using [Recharts](https://recharts.org/), which is a React library built on D3.js.
+
+I needed support for a variable time series axis with user defined calendar dates, which I had to implement. I built a custom date range picker based on [React DayPicker](https://daypicker.dev/) with theming inspired by [tremor](https://tremor.so/docs/inputs/date-range-picker). I couldn't use tremor's solution out of the box since it didn't support React DayPicker 9, so I built my solution but used their theming.
+
+I also wanted my plots to support dark mode through Tailwind classes, since state does not seem to update when using MDX bundler. This required using custom legend entries, tooltips, and line colors since Recharts usually uses the style from the parent element, which I wasn't providing (using Tailwind classes instead).
+
+## Deployment
+
+I deploy this site on a Digital Ocean droplet using Docker. I build the site through Github Actions and push the built image to Docker Hub. I then pull the image from Docker Hub and run it on my droplet. I also use [nginx](https://www.nginx.com/) as a reverse proxy to serve the site. I have a [docker-compose](https://docs.docker.com/compose/) file that builds the site and runs the container, which makes it easy to deploy updates. I'm also running a Django server on the same droplet, which serves as the backend API for this site (specifically datasets I want to share).
+
+## Experience
+
+The DX experience was mostly positive, but there were definitely some growing pains with TanStack Start. Some things felt a bit hidden in the documentation and it feels like *so much* of SSR is based on Next.js, so finding support was tricky too. However, actually writing and running the site was a breeze and it felt intuitive when I was writing server code vs. client code. The TypeScript support was also excellent, which I really appreciated. As someone who learned to code in Python, I found TypeScript in general to be a joy to write and especially to troubleshoot (even finding myself more frustrated with Python typing since starting work on this site). Overall, I would definitely wait until a 1.0 release for important production code, but for this site I am glad I chose TanStack Start!
+
+## Future Plans
+
+Writing this site was a lot of effort, so I'm so happy to just have it up and running. One of my higher priorities is to take care of some theming and minor details to make the site feel more consistent and polished. I definitely ended up lazy with some of the theming as I was trying to get the site out (slightly inconsistent colors, etc.) and I want to clean that up.
+
+In the long term, I really envision this site as a place to share my science and stories. I would love to have a post (or a few!) for each of my publications and research projects, making available the datasets and showcasing the story in an approachable and engaging way. I think this will make a great complement to peer-reviewed publications and allow some more dynamic storytelling. For now, I have placeholders in the projects section for my research but this will be one of my longer term goals.
