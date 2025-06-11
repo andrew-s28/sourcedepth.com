@@ -21,7 +21,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: app-build
-          path: dist
+          path: .output/
+          include-hidden-files: true
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to VPS
@@ -31,20 +32,17 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: app-build
-      - run: ls dist
-      - name: Checkout
-        uses: actions/checkout@v4
-
+          path: ./.output
+      - name: Display build directory
+        run: ls -R
       - name: Deploy to VPS
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            echo "Deploying to VPS..."
-            rm -rf ~/sourcedepth.com/dist
-            cp -r dist ~/sourcedepth.com/
-            echo "Deployment complete!"
+          source: "./.output"
+          target: "~/sourcedepth.com/"
+          overwrite: true
