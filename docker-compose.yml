@@ -1,0 +1,32 @@
+services:
+  server:
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+     NODE_ENV: production
+    volumes:
+      - ./.output:/usr/src/app/.output
+      - ./mdx:/usr/src/app/mdx
+      - ./public:/usr/src/app/public
+  nginx:
+    depends_on:
+      - server
+    build:
+      ./nginx
+    volumes:
+      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./certbot/www/:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
+    ports:
+      - 80:80
+      - 443:443
+    restart: always
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ../web/certbot/conf/:/etc/letsencrypt/:rw
+    command: certonly --webroot -w /var/www/certbot/ --email andrew@sourcedepth.com -d sourcedepth.com --agree-tos --keep-until-expiring
+    restart: always
