@@ -33,8 +33,7 @@ jobs:
         with:
           name: app-build
           path: ./.output
-      - name: Display build directory
-        run: ls -R
+      - uses: actions/checkout@v4
       - name: Deploy to VPS
         uses: appleboy/scp-action@v1
         with:
@@ -43,6 +42,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./.output"
+          source: "./.output,./src,./public,./mdx,./*"
           target: "~/sourcedepth.com/"
           overwrite: true
