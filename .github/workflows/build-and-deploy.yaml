@@ -42,7 +42,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./.output,./src,./public,./mdx,./package.json,./package-lock.json,./nginx"
+          source: "./.output,./src,./public,./mdx,./package.json,./package-lock.json,./vite.config.ts,./tsconfig.json,./nginx"
           target: "~/sourcedepth.com/"
           overwrite: true
       - name: Build and restart Docker containers
