@@ -42,6 +42,20 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./.output,./src,./public,./mdx,./*"
+          source: "./.output,./src,./public,./mdx,./package.json,./package-lock.json,./nginx"
           target: "~/sourcedepth.com/"
           overwrite: true
+      - name: Build and restart Docker containers
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ~/sourcedepth.com
+            docker-compose down
+            docker-compose build --pull --no-cache
+            docker-compose up -d
+            docker system prune -f

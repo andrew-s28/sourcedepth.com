@@ -5,18 +5,19 @@ services:
     ports:
       - 3000:3000
     environment:
-     NODE_ENV: production
+      NODE_ENV: production
     volumes:
-      - ./.output:/usr/src/app/.output
       - ./mdx:/usr/src/app/mdx
       - ./public:/usr/src/app/public
+      - ./.output:/usr/src/app/.output
+      - ./package.json:/usr/src/app/package.json
+      - ./package-lock.json:/usr/src/app/package-lock.json
   nginx:
     depends_on:
       - server
-    build:
-      ./nginx
+    image: nginx:latest
     volumes:
-      - ./nginx/conf/:/etc/nginx/conf.d/:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
     ports:
@@ -27,6 +28,5 @@ services:
     image: certbot/certbot:latest
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
-      - ../web/certbot/conf/:/etc/letsencrypt/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
     command: certonly --webroot -w /var/www/certbot/ --email andrew@sourcedepth.com -d sourcedepth.com --agree-tos --keep-until-expiring
-    restart: always

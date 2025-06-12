@@ -46,3 +46,4 @@ sketch
 .tanstack
 _old*
 .vscode
+certbot/
