@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { fetchMDX } from "../utils/mdx-fetcher";
-import { PostErrorComponent } from "~/components/PostError";
 import { NotFound } from "~/components/NotFound";
 import { IFrontMatter } from "~/utils/mdx-fetcher";
 import { Content, Description, Intro, Wrapper } from "~/components/page";
 import { Route as BlogCategoryRoute } from "./blog_.$category";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 export const Route = createFileRoute("/blog/")({
   loader: () => fetchMDX({ data: { directory: "posts" } }),
-  errorComponent: PostErrorComponent,
+  errorComponent: DefaultCatchBoundary,
   component: RouteComponent,
   notFoundComponent: () => {
     return <NotFound />;

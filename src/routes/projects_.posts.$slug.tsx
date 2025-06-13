@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
-import { PostErrorComponent } from "~/components/PostError";
 import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { ParsedLocation } from "@tanstack/react-router";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 let prevLoc: ParsedLocation | null = null;
 
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/projects_/posts/$slug")({
     };
   },
 
-  errorComponent: PostErrorComponent,
+  errorComponent: DefaultCatchBoundary,
   component: PostComponent,
   shouldReload(match) {
     try {
