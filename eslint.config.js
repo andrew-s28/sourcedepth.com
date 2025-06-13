@@ -9,6 +9,9 @@ export default defineConfig([
   {
     files: ["src/**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
+    rules: {
+      "no-unused-vars": "off",  // Results in annoying errors with typing functions
+    }
   },
   { settings: { react: { version: "detect" } } },
   tseslint.configs.recommended,

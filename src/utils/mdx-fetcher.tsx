@@ -1,6 +1,4 @@
-// make frontmatters return before code is bundles so that the page can be rendered
-
-import { notFound, defer } from "@tanstack/react-router";
+import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import fs from "node:fs/promises";
 import matter from "gray-matter";
