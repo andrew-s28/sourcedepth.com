@@ -1,7 +1,7 @@
+import React, { useEffect, useRef, ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useWindowSize } from "~/hooks/useWindowSize";
 import { motion } from "motion/react";
-import { useEffect, useRef, ReactNode } from "react";
 import { useIsSSR } from "~/hooks/useIsSSR";
 import hexToRgba from "hex-to-rgba";
 import { usePrefersReducedMotion } from "~/hooks/usePrefersReducedMotion";
@@ -374,13 +374,15 @@ function Waves({
       xmlns="http://www.w3.org/2000/svg"
       overflow="visible"
       preserveAspectRatio="xMinYMin meet"
-      viewBox="10 -20 100 20"
+      viewBox="0 0 100 20"
       aria-hidden="true"
+      height="auto"
+      width={`${Math.max(width, 600).toFixed(0)}px`}
     >
       <rect
         x="0"
         y="-0.1"
-        width={Math.max(width / 4, 200).toFixed(0)}
+        width={`${Math.max((waveRepeat * waveWidth) / 6, (10 * waveWidth) / 6).toFixed(0)}px`}
         height="10"
         className={color}
       />
@@ -566,7 +568,7 @@ function Background() {
       <div className="h-100 bg-night-sky-950 bg-linear-(--night-sky) relative contain-layout will-change-transform">
         <NightSky />
       </div>
-      <div className="absolute top-60 left-0">
+      <div className="absolute top-90 left-0">
         <div className="flex h-30 justify-start w-full absolute animate-waves-top motion-reduce:animate-none motion-reduce:-translate-20">
           <Waves backgroundColor="fill-ocean-500" />
         </div>
