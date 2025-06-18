@@ -33,12 +33,12 @@ jobs:
     name: Deploy to VPS
     needs: build
     steps:
+      - uses: actions/checkout@v4
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: app-build
           path: ./.output
-      - uses: actions/checkout@v4
       - name: Deploy to VPS
         uses: appleboy/scp-action@v1
         with:
@@ -47,9 +47,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./.output,./src,./public,./mdx,./package.json,./package-lock.json,./vite.config.ts,./tsconfig.json,./nginx"
+          source: "./.output,./src,./public,./mdx,./nginx,./package.json,./package-lock.json,./vite.config.ts,./tsconfig.json,./docker-compose.yml,./Dockerfile"
           target: "~/sourcedepth.com/"
           overwrite: true
+          rm: true
       - name: Build and restart Docker containers
         uses: appleboy/ssh-action@v1
         with:
