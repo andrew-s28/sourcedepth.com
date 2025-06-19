@@ -17,7 +17,6 @@ export const Route = createFileRoute("/projects_/$category")({
 function RouteComponent() {
   const { frontmatters, categories } = Route.useLoaderData();
   const activeCategory = Route.useParams().category;
-  console.log(categories);
   const introDescription =
     "Software, data, and just-for-fun tools that I've built.";
   return (

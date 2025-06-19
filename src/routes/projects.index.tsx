@@ -43,7 +43,6 @@ export function ProjectsIndex({
   categories: string[];
   activeCategory?: string;
 }) {
-  console.log(categories);
   return (
     <Wrapper>
       <Intro intro={intro}>
