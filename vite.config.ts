@@ -3,7 +3,6 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import mdx from "@mdx-js/rollup";
 import rehypePrettyCode from "rehype-pretty-code";
-import { ssr } from "vite-plugin-ssr/plugin";
 
 export default defineConfig({
     plugins: [
