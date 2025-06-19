@@ -31,6 +31,7 @@ export const Route = createRootRoute({
         description: `Personal website and blog for physical oceanographer and software developer Andrew Scherer.`,
       }),
     ],
+    scripts: [initialTheme()],
     links: [
       { rel: "stylesheet", href: appCss },
       {
@@ -63,7 +64,6 @@ export const Route = createRootRoute({
       },
     ],
   }),
-  scripts: () => [initialTheme()],
   errorComponent: (props) => {
     return (
       <RootDocument>
