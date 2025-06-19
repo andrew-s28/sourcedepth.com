@@ -23,6 +23,7 @@ export function NotFound() {
         <Link
           to="/"
           className="flex items-center gap-2 px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
+          resetScroll
         >
           <Home size={20} />
           <span>Back to Home</span>

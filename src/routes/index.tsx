@@ -238,6 +238,7 @@ function HomePageSections({
           <Link
             to={sectionLink}
             className=" text-dawn-pink-100 hover:text-dawn-pink-200 flex items-center space-x-2"
+            resetScroll
           >
             <span className="text-xl">See More</span>
             <svg
@@ -273,7 +274,7 @@ function HomePageCards({
   external?: boolean;
 }) {
   return (
-    <Link to={link} target={external ? "_blank" : undefined}>
+    <Link to={link} target={external ? "_blank" : undefined} resetScroll>
       <div className="flex flex-col p-4 bg-dawn-pink-100 dark:bg-night-sky-950 rounded-lg shadow-md group border border-night-sky-950 dark:border-dawn-pink-100">
         <h3 className="text-lg font-bold mb-2 group-hover:underline">
           {title}

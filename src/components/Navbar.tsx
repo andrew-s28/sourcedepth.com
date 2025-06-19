@@ -53,6 +53,7 @@ export default function Navbar() {
             inactiveProps={{ className: navStyles.inactive }}
             activeOptions={{ exact: true }}
             className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
+            resetScroll
           >
             <HomeIcon className="p-0" size={32} />
           </Link>
@@ -62,6 +63,7 @@ export default function Navbar() {
               activeProps={{ className: navStyles.active }}
               inactiveProps={{ className: navStyles.inactive }}
               className={navStyles.button}
+              resetScroll
             >
               Blog
             </Link>
@@ -70,6 +72,7 @@ export default function Navbar() {
               activeProps={{ className: navStyles.active }}
               inactiveProps={{ className: navStyles.inactive }}
               className={navStyles.button}
+              resetScroll
             >
               Projects
             </Link>
@@ -78,6 +81,7 @@ export default function Navbar() {
               activeProps={{ className: navStyles.active }}
               inactiveProps={{ className: navStyles.inactive }}
               className={navStyles.button}
+              resetScroll
             >
               About
             </Link>
@@ -100,6 +104,7 @@ export default function Navbar() {
               inactiveProps={{ className: navStyles.inactive }}
               activeOptions={{ exact: true }}
               className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
+              resetScroll
             >
               <HomeIcon className="p-0" size={32} />
             </Link>
@@ -125,6 +130,7 @@ export default function Navbar() {
                           className:
                             "font-bold bg-dawn-pink-300 dark:bg-night-sky-900",
                         }}
+                        resetScroll
                       >
                         Blog
                       </Link>
@@ -135,6 +141,7 @@ export default function Navbar() {
                           className:
                             "font-bold bg-dawn-pink-300 dark:bg-night-sky-900",
                         }}
+                        resetScroll
                       >
                         Projects
                       </Link>
@@ -145,6 +152,7 @@ export default function Navbar() {
                           className:
                             "font-bold bg-dawn-pink-300 dark:bg-night-sky-900",
                         }}
+                        resetScroll
                       >
                         About
                       </Link>
