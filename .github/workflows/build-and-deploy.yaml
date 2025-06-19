@@ -70,15 +70,17 @@ jobs:
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com:latest
           annotations: ${{ steps.meta.outputs.annotations }}
+  update-files:
+    name: Update Files on VPS
+    needs: build-latest
+    uses: ./.github/workflows/update-files.yaml
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to VPS
-    needs: build-latest
+    needs: update-files
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Update files on VPS
-        uses: ./.github/workflows/update-files.yaml
       - name: Build and restart Docker containers
         uses: appleboy/ssh-action@v1
         with:
