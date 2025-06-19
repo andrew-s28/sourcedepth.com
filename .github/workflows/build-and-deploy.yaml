@@ -78,16 +78,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Update files on VPS
-        uses: appleboy/scp-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./public,./mdx,./docker-compose.yml,./nginx"
-          target: "~/sourcedepth.com/"
-          overwrite: true
+        uses: ./.github/actions/update-public.yaml
       - name: Build and restart Docker containers
         uses: appleboy/ssh-action@v1
         with:
