@@ -99,6 +99,5 @@ jobs:
           script: |
             cd ~/sourcedepth.com
             docker compose down
-            docker compose build --pull --no-cache
-            docker compose up -d
+            docker compose up --pull always -d
             docker system prune -f

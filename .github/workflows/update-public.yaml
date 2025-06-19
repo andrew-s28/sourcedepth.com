@@ -12,6 +12,7 @@ on:
       - "public/**"
       - "mdx/**"
       - "nginx/nginx.conf"
+      - "static/**"
   release:
     types: [published]
 
