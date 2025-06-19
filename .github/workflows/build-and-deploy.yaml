@@ -1,56 +1,81 @@
-name: Build 🏗️ and Deploy 🚀 to VPS
+name: Build Image 🏗️ and Deploy to VPS 🚀
+
+# Builds the Docker image and deploys it to the VPS.
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
+    # Don't run full build on only public or mdx changes
+    paths:
+      - "!public/**"
+      - "!mdx/**"
+      - "!LICENSE"
+      - "!README.md"
+      - "!.gitignore"
+      - "!.dockerignore"
+      - "!.prettierignore"
   release:
     types: [published]
 
 jobs:
-  build:
+  build-versioned:
     runs-on: ubuntu-latest
-    name: Build
+    name: Built Versioned Image
+    if: github.event_name == 'release'
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
         with:
-          node-version: 22.x
-          cache: "npm"
-      - name: Install dependencies
-        run: npm ci
-      - name: Build distribution
-        run: npm run build --if-present
-      - uses: actions/upload-artifact@v4
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
         with:
-          name: app-build
-          path: .output/
-          include-hidden-files: true
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com:${{ github.event.release.tag_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com:latest
+          annotations: ${{ steps.meta.outputs.annotations }}
+  build-latest:
+    runs-on: ubuntu-latest
+    name: Build Latest Image
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/sourcedepth.com:latest
+          annotations: ${{ steps.meta.outputs.annotations }}
   deploy:
     runs-on: ubuntu-latest
     name: Deploy to VPS
-    needs: build
+    needs: build-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: app-build
-          path: ./.output
-      - name: Spin down Docker containers
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          script: |
-            cd ~/sourcedepth.com
-            docker compose down
-      - name: Deploy to VPS
+      - name: Update files on VPS
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -58,7 +83,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./.output,./src,./public,./mdx,./nginx,./package.json,./package-lock.json,./vite.config.ts,./tsconfig.json,./docker-compose.yml,./Dockerfile"
+          source: "./public,./mdx,./docker-compose.yml,./nginx"
           target: "~/sourcedepth.com/"
           overwrite: true
       - name: Build and restart Docker containers
@@ -71,6 +96,7 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ~/sourcedepth.com
+            docker compose down
             docker compose build --pull --no-cache
             docker compose up -d
             docker system prune -f

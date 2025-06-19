@@ -1,7 +1,6 @@
 services:
   server:
-    build:
-      context: .
+    image: ascherer82/sourcedepth.com:latest
     ports:
       - 3000:3000
     environment:
@@ -9,12 +8,6 @@ services:
     volumes:
       - ./mdx:/usr/src/app/mdx
       - ./public:/usr/src/app/public
-      - ./.output:/usr/src/app/.output
-      - ./src:/usr/src/app/src
-      - ./tsconfig.json:/usr/src/app/tsconfig.json
-      - ./vite.config.ts:/usr/src/app/vite.config.ts
-      - ./package.json:/usr/src/app/package.json
-      - ./package-lock.json:/usr/src/app/package-lock.json
   nginx:
     depends_on:
       - server
@@ -28,6 +21,8 @@ services:
       - 443:443
     restart: always
   certbot:
+    profiles:
+      - certbot
     image: certbot/certbot:latest
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
