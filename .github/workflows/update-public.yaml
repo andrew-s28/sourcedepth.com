@@ -1,0 +1,35 @@
+name: Update Files 📝
+
+# Updates files on the VPS without rebuilding or redeploying the Docker image.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    # Only run this workflow for changes in public or mdx directories
+    paths:
+      - "public/**"
+      - "mdx/**"
+      - "nginx/nginx.conf"
+  release:
+    types: [published]
+
+jobs:
+  update-public:
+    runs-on: ubuntu-latest
+    name: Update Public Files
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Copy public and mdx files
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          source: "./public,./mdx"
+          target: "~/sourcedepth.com/"
+          overwrite: true
