@@ -376,13 +376,13 @@ function Waves({
       preserveAspectRatio="xMinYMin meet"
       viewBox="0 0 100 20"
       aria-hidden="true"
-      height="auto"
+      height="120px"
       width={`${Math.max(width, 600).toFixed(0)}px`}
     >
       <rect
         x="0"
         y="-0.1"
-        width={`${Math.max((waveRepeat * waveWidth) / 6, (10 * waveWidth) / 6).toFixed(0)}px`}
+        width={`${Math.max((waveRepeat * waveWidth) / 5, (10 * waveWidth) / 5).toFixed(0)}px`}
         height="10"
         className={color}
       />
