@@ -18,6 +18,7 @@ services:
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
       - ./static:/usr/src/app/static
+      - ./public:/usr/src/app/public
     ports:
       - 80:80
       - 443:443
