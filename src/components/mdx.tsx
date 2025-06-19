@@ -181,16 +181,19 @@ function Image({ src, alt }: { src: string; alt: string }) {
   return (
     <div className="relative w-full h-full flex justify-center items-center">
       <img
-        src={src}
+        src={`/static${src}`}
         alt={alt}
         className="rounded-lg shadow-md my-5 mx-auto min-w-[200px] w-2/3 h-auto"
+        onError={() => {
+          setLoading(false);
+        }}
         onLoad={() => {
           setLoading(false);
         }}
         style={{
           display: "block",
-          opacity: loading ? 0 : 1,
-          transition: "opacity 0.3s ease-in-out",
+          opacity: loading ? 0.25 : 0.75,
+          transition: "opacity 1s ease-in-out",
         }}
       />
       <div

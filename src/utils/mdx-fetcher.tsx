@@ -34,8 +34,8 @@ const bundler = (file: string, directory: string): Promise<IMDX> => {
   return bundleMDX({
     file: path.join(BASE_DIRECTORY, directory, file),
     cwd: BASE_DIRECTORY,
-    bundleDirectory: path.join(BASE_DIRECTORY, "public/" + fileName),
-    bundlePath: "/" + fileName + "/",
+    bundleDirectory: path.join(BASE_DIRECTORY, directory),
+    bundlePath: directory,
     mdxOptions(options: Options) {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
@@ -115,7 +115,6 @@ function getCategories(frontmatters: IFrontMatter[]) {
 
 export const fetchMDXCode = createServerFn({ method: "GET" })
   .validator((data: { directory: string; slug: string }) => {
-    console.log(data);
     return {
       directory: data.directory.toLowerCase(),
       slug: data.slug.toLowerCase(),
