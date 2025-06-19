@@ -75,6 +75,8 @@ jobs:
     name: Deploy to VPS
     needs: build-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Update files on VPS
         uses: appleboy/scp-action@v1
         with:
