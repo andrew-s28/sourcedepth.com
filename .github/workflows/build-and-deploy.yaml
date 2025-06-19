@@ -78,7 +78,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - name: Update files on VPS
-        uses: ./.github/actions/update-public.yaml
+        uses: ./.github/workflows/update-files.yaml
       - name: Build and restart Docker containers
         uses: appleboy/ssh-action@v1
         with:
