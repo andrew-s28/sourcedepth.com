@@ -43,7 +43,7 @@ function AboutComponent() {
         frontmatter={frontmatter}
         leadImage={
           <img
-            src="static/self_portrait.jpg"
+            src="/static/self_portrait.jpg"
             alt="A picture of the author on a rainy day surrounded by cherry blossom trees"
             className="rounded-lg shadow-md my-5 mx-auto min-w-[200px] w-1/2"
           />

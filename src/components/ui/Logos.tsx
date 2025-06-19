@@ -382,7 +382,7 @@ export function PostgresLogo({ className }: { className: string }) {
 export function TanstackLogo({ className }: { className: string }) {
   return (
     <img
-      src="static/tanstack-logo.png"
+      src="/static/tanstack-logo.png"
       alt="Tanstack Logo"
       className={className}
     />
