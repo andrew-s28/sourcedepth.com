@@ -3,6 +3,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite"
 import mdx from "@mdx-js/rollup";
 import rehypePrettyCode from "rehype-pretty-code";
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
     plugins: [
@@ -10,6 +11,7 @@ export default defineConfig({
       tsConfigPaths({
         projects: ["./tsconfig.json"],
       }),
+      tailwindcss(),
       tanstackStart({
         prerender: {
           crawlLinks: true,
@@ -17,5 +19,4 @@ export default defineConfig({
         },
       })
     ],
-  // },
 });

@@ -1,5 +1,5 @@
 {
-  "include": ["**/*.ts", "**/*.tsx", "/eslint.config.js", "/postcss.config.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "/eslint.config.js"],
   "compilerOptions": {
     "strict": true,
     "esModuleInterop": true,
