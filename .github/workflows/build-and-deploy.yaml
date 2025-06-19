@@ -39,6 +39,17 @@ jobs:
         with:
           name: app-build
           path: ./.output
+      - name: Spin down Docker containers
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            cd ~/sourcedepth.com
+            docker compose down
       - name: Deploy to VPS
         uses: appleboy/scp-action@v1
         with:
@@ -50,7 +61,6 @@ jobs:
           source: "./.output,./src,./public,./mdx,./nginx,./package.json,./package-lock.json,./vite.config.ts,./tsconfig.json,./docker-compose.yml,./Dockerfile"
           target: "~/sourcedepth.com/"
           overwrite: true
-          rm: true
       - name: Build and restart Docker containers
         uses: appleboy/ssh-action@v1
         with:
@@ -61,7 +71,6 @@ jobs:
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             cd ~/sourcedepth.com
-            docker compose down
             docker compose build --pull --no-cache
             docker compose up -d
             docker system prune -f
