@@ -166,3 +166,9 @@ class GitHubWorkflowRun(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     github_created_at = models.DateTimeField(null=True, blank=True)
     github_updated_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        ordering = ["-github_updated_at"]
+
+    def __str__(self):
+        return self.display_title
