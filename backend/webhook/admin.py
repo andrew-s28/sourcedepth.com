@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from webhook.models import (
+from .models import (
     GitHubRepository,
     GitHubUser,
     GitHubWorkflow,
@@ -8,13 +8,13 @@ from webhook.models import (
 )
 
 
-# @admin.register(GitHubUser)
-# class GitHubUserAdmin(admin.ModelAdmin):
-#     list_display = ["username", "name", "public_repos", "followers", "following", "github_created_at", "updated_at"]
-#     list_filter = ["location", "company", "github_created_at", "updated_at"]
-#     search_fields = ["username", "name", "email", "bio", "location", "company"]
-#     readonly_fields = ["created_at", "updated_at", "github_id"]
-#     ordering = ["-updated_at"]
+@admin.register(GitHubUser)
+class GitHubUserAdmin(admin.ModelAdmin):
+    list_display = ["username", "name", "public_repos", "followers", "following", "github_created_at", "updated_at"]
+    list_filter = ["location", "company", "github_created_at", "updated_at"]
+    search_fields = ["username", "name", "email", "bio", "location", "company"]
+    readonly_fields = ["created_at", "updated_at", "github_id"]
+    ordering = ["-updated_at"]
 
 
 # @admin.register(GitHubRepository)

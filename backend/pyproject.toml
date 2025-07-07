@@ -13,3 +13,6 @@ dependencies = [
     "pygithub>=2.6.1",
     "python-dotenv>=1.1.0",
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["api", "webhook", "actions_dashboard"]
