@@ -109,10 +109,16 @@ export function Footer({ pathname }: { pathname: string }) {
           className={`mt-8 pt-6 border-t ${pathname === "/" ? "border-dawn-pink-100 text-gray-300" : "border-night-sky-950 dark:border-dawn-pink-100 text-gray-600"}`}
         >
           <div className="flex justify-center">
-            <p className="text-sm space-y-2">
-              &copy; 2024-{new Date().getFullYear()} Andrew Scherer. All rights
-              reserved.
-            </p>
+            <div className="flex flex-col items-center space-y-2">
+              <p className="text-sm space-y-2 grow">
+                Opinions expressed here are my own and do not necessarily
+                reflect the views of any past, present, or future employer.
+              </p>
+              <p className="text-sm space-y-2">
+                &copy; 2024-{new Date().getFullYear()} Andrew Scherer. All
+                rights reserved.
+              </p>
+            </div>
           </div>
         </div>
       </div>

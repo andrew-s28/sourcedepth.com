@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { fetchMDX } from "~/utils/mdx-fetcher";
 import { NotFound } from "~/components/NotFound";
-import { PostErrorCompoent } from "~/components/PostError";
 import { BlogIndex } from "./blog.index";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 

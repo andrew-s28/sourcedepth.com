@@ -30,7 +30,6 @@ export interface AwaitIMDX {
 const BASE_DIRECTORY = path.join(process.cwd(), "mdx");
 
 const bundler = (file: string, directory: string): Promise<IMDX> => {
-  const fileName = path.parse(file).name;
   return bundleMDX({
     file: path.join(BASE_DIRECTORY, directory, file),
     cwd: BASE_DIRECTORY,
