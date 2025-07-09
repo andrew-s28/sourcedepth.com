@@ -10,22 +10,32 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-5n8d0pnn(xt_dw6fy7e1%(^29cp@0q3_(&k^r(9g&h3og0!t)^"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+if os.getenv("DJANGO_DEBUG") == "True":
+    DEBUG = True
+    SECRET_KEY = "django-insecure-5n8d0pnn(xt_dw6fy7e1%(^29cp@0q3_(&k^r(9g&h3og0!t)^"
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+elif os.getenv("DJANGO_DEBUG") == "False":
+    DEBUG = False
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 60
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_HSTS_PRELOAD = True
+    ALLOWED_HOSTS = ["sourcedepth.com", "www.sourcedepth.com", "localhost", "127.0.0.1"]
+    SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+else:
+    raise ValueError("DJANGO_DEBUG must be set to 'True' or 'False' in the environment variables.")
 
 
 # Application definition
@@ -80,7 +90,7 @@ WSGI_APPLICATION = "api.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "data/db.sqlite3",
     }
 }
 
