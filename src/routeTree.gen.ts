@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as AboutSiteRouteImport } from './routes/about-site'
 import { Route as AboutRouteImport } from './routes/about'
@@ -21,11 +20,6 @@ import { Route as BlogCategoryRouteImport } from './routes/blog_.$category'
 import { Route as ProjectsPostsSlugRouteImport } from './routes/projects_.posts.$slug'
 import { Route as BlogPostsSlugRouteImport } from './routes/blog_.posts.$slug'
 
-const RedirectRoute = RedirectRouteImport.update({
-  id: '/redirect',
-  path: '/redirect',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -82,7 +76,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
   '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
   '/blog': typeof BlogIndexRoute
@@ -95,7 +88,6 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
   '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
   '/blog': typeof BlogIndexRoute
@@ -109,7 +101,6 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
   '/privacy': typeof PrivacyRoute
-  '/redirect': typeof RedirectRoute
   '/blog_/$category': typeof BlogCategoryRoute
   '/projects_/$category': typeof ProjectsCategoryRoute
   '/blog/': typeof BlogIndexRoute
@@ -124,7 +115,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/about-site'
     | '/privacy'
-    | '/redirect'
     | '/blog/$category'
     | '/projects/$category'
     | '/blog'
@@ -137,7 +127,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/about-site'
     | '/privacy'
-    | '/redirect'
     | '/blog/$category'
     | '/projects/$category'
     | '/blog'
@@ -150,7 +139,6 @@ export interface FileRouteTypes {
     | '/about'
     | '/about-site'
     | '/privacy'
-    | '/redirect'
     | '/blog_/$category'
     | '/projects_/$category'
     | '/blog/'
@@ -164,7 +152,6 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AboutSiteRoute: typeof AboutSiteRoute
   PrivacyRoute: typeof PrivacyRoute
-  RedirectRoute: typeof RedirectRoute
   BlogCategoryRoute: typeof BlogCategoryRoute
   ProjectsCategoryRoute: typeof ProjectsCategoryRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -175,13 +162,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/redirect': {
-      id: '/redirect'
-      path: '/redirect'
-      fullPath: '/redirect'
-      preLoaderRoute: typeof RedirectRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -260,7 +240,6 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AboutSiteRoute: AboutSiteRoute,
   PrivacyRoute: PrivacyRoute,
-  RedirectRoute: RedirectRoute,
   BlogCategoryRoute: BlogCategoryRoute,
   ProjectsCategoryRoute: ProjectsCategoryRoute,
   BlogIndexRoute: BlogIndexRoute,
