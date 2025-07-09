@@ -43,10 +43,12 @@ const EmailButton = ({ email }: { email: string }) => {
         <Mail
           className={`absolute transition-opacity duration-200 ${copied ? "opacity-0" : "opacity-100"}`}
           size={20}
+          aria-hidden="true"
         />
         <MailCheck
           className={`transition-opacity duration-200 ${copied ? "opacity-100 text-green-500" : "opacity-0"}`}
           size={20}
+          aria-hidden="true"
         />
       </span>
       <span

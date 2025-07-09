@@ -248,6 +248,7 @@ function HomePageSections({
               strokeWidth={2}
               stroke="currentColor"
               className="w-5 h-5"
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"

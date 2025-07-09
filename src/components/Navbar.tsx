@@ -54,8 +54,9 @@ export default function Navbar() {
             activeOptions={{ exact: true }}
             className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
             resetScroll
+            aria-label="Home page link"
           >
-            <HomeIcon className="p-0" size={32} />
+            <HomeIcon className="p-0" size={32} aria-label="Home icon" />
           </Link>
           <div className="align-middle grow-0 flex px-5">
             <Link
