@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Link } from "@tanstack/react-router";
 
 interface GitHubProps {
   githubLink: string;
@@ -6,11 +6,9 @@ interface GitHubProps {
 
 export default function GitHub({ githubLink }: GitHubProps) {
   return (
-    <Button
+    <Link
       className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
-      onClick={() => {
-        window.open(githubLink, "_blank");
-      }}
+      to={githubLink}
       aria-label="GitHub Link"
     >
       <div className="flex items-center justify-center relative m-auto">
@@ -26,6 +24,6 @@ export default function GitHub({ githubLink }: GitHubProps) {
           />
         </svg>
       </div>
-    </Button>
+    </Link>
   );
 }
