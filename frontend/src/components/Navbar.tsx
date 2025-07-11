@@ -7,7 +7,7 @@ import { MenuIcon, HomeIcon } from "lucide-react";
 import { Route as ProjectsRoute } from "~/routes/projects.index";
 import { Route as BlogRoute } from "~/routes/blog.index";
 import { Route as AboutRoute } from "~/routes/about";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/utils";
 
 export interface NavbarProps {
   height: string;

@@ -3,7 +3,7 @@ import { Time } from "@internationalized/date";
 import { enUS, Locale } from "date-fns/locale";
 import React from "react";
 import * as PopoverPrimitives from "@radix-ui/react-popover";
-import { cn } from "~/lib/utils";
+import { cn } from "~/utils/utils";
 import { Button } from "~/components/ui/button";
 import { Calendar as CalendarPrimitive } from "~/components/ui/Calendar";
 import {
