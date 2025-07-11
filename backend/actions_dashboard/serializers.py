@@ -62,8 +62,8 @@ class WorkflowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubWorkflow
-        fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository"]
-        read_only_fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository"]
+        fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository", "name", "state"]
+        read_only_fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository", "name", "state"]
 
 
 class WorkflowRunSerializer(serializers.ModelSerializer):
