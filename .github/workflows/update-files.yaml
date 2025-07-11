@@ -10,10 +10,10 @@ on:
       - main
     # Only run this workflow for changes in public or mdx directories
     paths:
-      - "public/**"
-      - "mdx/**"
+      - "frontend/public/**"
+      - "frontend/mdx/**"
       - "nginx/nginx.conf"
-      - "static/**"
+      - "frontend/static/**"
   release:
     types: [published]
 
@@ -32,6 +32,6 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           passphrase: ${{ secrets.SSH_PASSPHRASE }}
-          source: "./public,./mdx,./nginx,./static./docker-compose.yml"
+          source: "./frontend/public,./frontend/mdx,./nginx,./frontend/static,./docker-compose.yml"
           target: "~/sourcedepth.com/"
           overwrite: true

@@ -5,3 +5,6 @@ mdx
 .output
 .tanstack
 .vscode
+db.sqlite3
+.env
+.venv
