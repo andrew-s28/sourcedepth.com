@@ -12,5 +12,5 @@ router.register(r"runs", GitHubWorkflowRunViewSet, basename="runs")
 
 
 urlpatterns = [
-    path("api/github/", include(router.urls)),
+    path("github/", include(router.urls)),
 ]
