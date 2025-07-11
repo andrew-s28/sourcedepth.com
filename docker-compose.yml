@@ -1,4 +1,13 @@
 services:
+  api:
+    image: ascherer82/sourcedepth-api:latest
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend/data:/usr/src/app/data
+    restart: always
+    env_file:
+      - ./.env
   server:
     image: ascherer82/sourcedepth.com:latest
     ports:
@@ -6,9 +15,9 @@ services:
     environment:
       NODE_ENV: production
     volumes:
-      - ./mdx:/usr/src/app/mdx
-      - ./public:/usr/src/app/public
-      - ./static:/usr/src/app/static
+      - ./frontend/mdx:/usr/src/app/mdx
+      - ./frontend/public:/usr/src/app/public
+      - ./frontend/static:/usr/src/app/static
   nginx:
     depends_on:
       - server
@@ -17,8 +26,8 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/nginx.conf:ro
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/nginx/ssl/:ro
-      - ./static:/usr/src/app/static
-      - ./public:/usr/src/app/public
+      - ./frontend/static:/usr/src/app/static
+      - ./frontend/public:/usr/src/app/public
     ports:
       - 80:80
       - 443:443

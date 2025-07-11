@@ -1,0 +1,37 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Backend code for sourcedepth.com API."
+requires-python = ">=3.13"
+dependencies = [
+    "django>=5.2.3",
+    "django-cors-headers>=4.7.0",
+    "django-filter>=25.1",
+    "django-oauth-toolkit>=3.0.1",
+    "djangorestframework>=3.16.0",
+    "gunicorn>=23.0.0",
+    "pygithub>=2.6.1",
+    "python-dotenv>=1.1.0",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["api", "webhook", "actions_dashboard"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",    # Type annotations not always used in, e.g., class-based viewsets.
+    "ARG002", # Argument names not always used in, e.g., class-based viewsets.
+    "COM812", # Trailing comma, disables since formatter will add it.
+    "D100",   # Missing docstring in public module
+    "D102",   # Missing docstring in public method
+    "D105",   # Missing docstring in magic method
+    "D106",   # Docstrings not always needed, e.g., for Meta classes in models and serializers.
+    "D203",   # Incorrect blank line before class
+    "D213",   # Multi line summary second line
+    "SLF001", # Private method model._meta is needed
+]
+
+[tool.ruff]
+line-length = 120
+exclude = ["migrations"]
