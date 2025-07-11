@@ -16,7 +16,7 @@ import {
   PropsBase,
 } from "react-day-picker";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/utils";
 
 interface NavigationButtonProps
   extends React.HTMLAttributes<HTMLButtonElement> {
