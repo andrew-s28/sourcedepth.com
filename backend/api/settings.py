@@ -27,7 +27,7 @@ elif os.getenv("DJANGO_DEBUG") == "False":
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
     SECURE_HSTS_PRELOAD = True
-    ALLOWED_HOSTS = ["sourcedepth.com", "www.sourcedepth.com", "localhost", "127.0.0.1"]
+    ALLOWED_HOSTS = ["sourcedepth.com", "www.sourcedepth.com", "api.sourcedepth.com", "localhost", "127.0.0.1"]
     SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 else:
     msg = "DJANGO_DEBUG must be set to 'True' or 'False' in the environment variables."
