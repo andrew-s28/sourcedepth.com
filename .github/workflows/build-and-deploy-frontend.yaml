@@ -9,13 +9,8 @@ on:
       - main
     paths:
       - "frontend/**"
-      - "!frontend/public/**"
       - "!frontend/mdx/**"
-      - "!LICENSE"
-      - "!README.md"
-      - "!/.gitignore"
-      - "!/.dockerignore"
-      - "!.prettierignore"
+      - "!frontend/static/**"
         # Don't run full build on only public or mdx changes
         # paths-ignore:
         #   - "!public/**"
