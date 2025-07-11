@@ -22,6 +22,7 @@ select = ["ALL"]
 ignore = [
     "ANN",    # Type annotations not always used in, e.g., class-based viewsets.
     "ARG002", # Argument names not always used in, e.g., class-based viewsets.
+    "COM812", # Trailing comma, disables since formatter will add it.
     "D100",   # Missing docstring in public module
     "D102",   # Missing docstring in public method
     "D105",   # Missing docstring in magic method
