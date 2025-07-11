@@ -30,7 +30,16 @@ class RepositorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubRepository
-        fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "stargazers_count", "forks_count", "owner"]
+        fields: ClassVar[list[str]] = [
+            "github_id",
+            "node_id",
+            "html_url",
+            "stargazers_count",
+            "forks_count",
+            "owner",
+            "full_name",
+            "name",
+        ]
         read_only_fields: ClassVar[list[str]] = [
             "github_id",
             "node_id",
@@ -38,6 +47,8 @@ class RepositorySerializer(serializers.ModelSerializer):
             "stargazers_count",
             "forks_count",
             "owner",
+            "full_name",
+            "name",
         ]
 
 

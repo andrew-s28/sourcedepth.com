@@ -75,7 +75,7 @@ class GitHubUserSerializer(GitHubSerializer):
             # Ensure blog URL starts with http or https
             data["blog"] = f"https://{data['blog']}" if not data["blog"].startswith("http") else data["blog"]
         # Ensure hireable is a boolean
-        if data["hireable"] is None:
+        if data.get("hireable") is None:
             data["hireable"] = False
         return GitHubSerializer.to_internal_value(self, data, model=GitHubUser)
 

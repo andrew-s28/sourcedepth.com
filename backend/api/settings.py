@@ -12,14 +12,22 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-if os.getenv("DJANGO_DEBUG") == "True":
-    DEBUG = True
+DEBUG = os.getenv("DJANGO_DEBUG", "False") == "True"
+
+if os.getenv("DJANGO_DEBUG") is None:
+    msg = "DJANGO_DEBUG must be set in the environment variables."
+    raise ValueError(msg)
+
+if DEBUG:
     SECRET_KEY = os.getenv("DJANGO_DEV_SECRET_KEY")
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
-elif os.getenv("DJANGO_DEBUG") == "False":
-    DEBUG = False
+elif not DEBUG:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
@@ -29,9 +37,6 @@ elif os.getenv("DJANGO_DEBUG") == "False":
     SECURE_HSTS_PRELOAD = True
     ALLOWED_HOSTS = ["sourcedepth.com", "www.sourcedepth.com", "api.sourcedepth.com", "localhost", "127.0.0.1"]
     SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
-else:
-    msg = "DJANGO_DEBUG must be set to 'True' or 'False' in the environment variables."
-    raise ValueError(msg)
 
 
 # Application definition

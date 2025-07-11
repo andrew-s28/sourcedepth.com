@@ -93,11 +93,16 @@ class GitHubWebhookView(views.APIView):
         if not github_repository_data:
             return Response({"error": "Repository data missing in workflow run"}, status=status.HTTP_400_BAD_REQUEST)
 
-        github_user_data = payload.get("sender", {})
+        github_user_data = payload.get("repository", {}).get("owner", {})
         if not github_user_data:
             return Response({"error": "User data missing in workflow run"}, status=status.HTTP_400_BAD_REQUEST)
 
-        user_res = self.update_user_data(github_user_data.get("id"), github_user_data.get("node_id"))
+        user_res = self.update_user_data(
+            github_user_data.get("id"),
+            github_user_data.get("node_id"),
+            github_user_data.get("login"),
+            github_user_data.get("type"),
+        )
         repo_res = self.update_repository_data(github_repository_data.get("id"), github_repository_data.get("node_id"))
         workflow_res = self.update_workflow_data(workflow_data, github_repository_data.get("node_id"))
         workflow_run_res = self.update_workflow_run_data(workflow_run_data, workflow_data.get("node_id"))
@@ -127,22 +132,32 @@ class GitHubWebhookView(views.APIView):
             rest_framework.response.Response: HTTP response indicating the result of processing the ping event.
 
         """
-        user_data = payload.get("sender", {})
+        user_data = payload.get("repository", {}).get("owner", {})
         if not user_data:
             return Response({"error": "User data missing in ping event"}, status=status.HTTP_400_BAD_REQUEST)
-        user_data_res = self.update_user_data(user_data.get("id"), user_data.get("node_id"))
+        user_data_res = self.update_user_data(
+            user_data.get("id"), user_data.get("node_id"), user_data.get("login"), user_data.get("type")
+        )
 
         repository_data = payload.get("repository", {})
         if not repository_data:
             return Response({"error": "Repository data missing in ping event"}, status=status.HTTP_400_BAD_REQUEST)
-        repo__data_res = self.update_repository_data(repository_data.get("id"), repository_data.get("node_id"))
+        repo_data_res = self.update_repository_data(repository_data.get("id"), repository_data.get("node_id"))
 
-        if user_data_res.status_code != status.HTTP_200_OK or repo__data_res.status_code != status.HTTP_200_OK:
+        workflow_data_res = self.update_workflow_from_repo_data(
+            repository_data.get("id"), repository_data.get("node_id")
+        )
+
+        if (
+            user_data_res.status_code != status.HTTP_200_OK
+            or repo_data_res.status_code != status.HTTP_200_OK
+            or workflow_data_res.status_code != status.HTTP_200_OK
+        ):
             return Response(
                 {
                     "error": "Failed to process ping event",
                     "user_res": user_data_res.data,
-                    "repository_res": repo__data_res.data,
+                    "repository_res": repo_data_res.data,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
@@ -171,7 +186,7 @@ class GitHubWebhookView(views.APIView):
         # If the repository already exists and is up-to-date, return a success message
         return Response({"message": "Repository data is already up-to-date"}, status=status.HTTP_200_OK)
 
-    def update_user_data(self, user_id: int, user_node_id: str) -> Response:
+    def update_user_data(self, user_id: int, user_node_id: str, user_name: str, user_type: str) -> Response:
         """Handle user data from the webhook payload.
 
         Returns:
@@ -184,7 +199,10 @@ class GitHubWebhookView(views.APIView):
 
         if not user or user.updated_at < datetime.now(tz=user.updated_at.tzinfo) - timedelta(minutes=1):
             # If the user does not exist or is outdated, fetch the latest data from GitHub
-            github_user = g.get_user_by_id(user_id=user_id)
+            if user_type == "Organization":
+                github_user = g.get_organization(org=user_name)
+            else:
+                github_user = g.get_user_by_id(user_id=user_id)
             serializer = GitHubUserSerializer(data=github_user.raw_data, partial=True)
             if serializer.is_valid():
                 serializer.save()
@@ -210,6 +228,21 @@ class GitHubWebhookView(views.APIView):
             return Response({"message": "No workflows in repository"}, status=status.HTTP_200_OK)
         for workflow in workflows:
             res = self.update_workflow_data(workflow.raw_data, repository_node_id)
+            workflow_id = workflow.raw_data.get("github_id") or workflow.raw_data.get("id")
+            workflow_node_id = workflow.raw_data.get("node_id")
+            if not workflow_id or not workflow_node_id:
+                return Response(
+                    {"error": "Workflow ID is missing in the workflow data"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            run_res = (
+                g.get_repo(full_name_or_id=repository_id)
+                .get_workflow(id_or_file_name=workflow_id)
+                .get_runs()
+                .get_page(0)
+            )
+            if run_res:
+                self.update_workflow_run_data(run_res[0].raw_data, workflow_node_id)
             if res is not None and res.status_code != status.HTTP_200_OK:
                 return Response(
                     {"error": "Failed to update workflow data", "details": res.data},
