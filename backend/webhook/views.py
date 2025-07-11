@@ -1,13 +1,12 @@
 import hashlib
 import hmac
 import os
-import pprint
 from datetime import datetime, timedelta
 
-from django.db.models import Q
 from dotenv import load_dotenv
 from github import Auth, Github
 from rest_framework import status, views
+from rest_framework.request import Request
 from rest_framework.response import Response
 
 from .models import (
@@ -25,26 +24,40 @@ load_dotenv()
 GITHUB_API_TOKEN = os.getenv("GITHUB_API_TOKEN")
 WEBHOOK_TOKEN = os.getenv("WEBHOOK_TOKEN")
 if GITHUB_API_TOKEN is None:
-    raise ValueError("GITHUB_API_TOKEN environment variable is not set.")
+    msg = "GITHUB_API_TOKEN environment variable is not set."
+    raise ValueError(msg)
+if WEBHOOK_TOKEN is None:
+    msg = "WEBHOOK_TOKEN environment variable is not set."
+    raise ValueError(msg)
 auth = Auth.Token(GITHUB_API_TOKEN)
 g = Github(auth=auth)
 
 
 class GitHubWebhookView(views.APIView):
-    """
-    ViewSet for handling GitHub webhooks.
+    """ViewSet for handling GitHub webhooks.
 
     This viewset processes incoming webhook events from GitHub.
     """
 
-    def get(self, request):
-        """Handle GET requests to the webhook endpoint"""
+    def get(self, request: Request) -> Response:
+        """Handle GET requests to the webhook endpoint.
 
+        Returns:
+            rest_framework.response.Response: HTTP response indicating that the endpoint is active.
+
+        """
         return Response({"message": "GET request received. Use POST for webhook events."}, status=status.HTTP_200_OK)
 
-    def post(self, request):
-        """Handle incoming GitHub webhook events"""
+    def post(self, request: Request) -> Response:
+        """Handle incoming GitHub webhook events.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the webhook event.
+
+        """
         # Verify the request signature
+        if not WEBHOOK_TOKEN:
+            return Response({"error": "Webhook token not configured"}, status=status.HTTP_403_FORBIDDEN)
         if not self.verify_signature(request.body, WEBHOOK_TOKEN, request.headers.get("X-Hub-Signature-256")):
             return Response({"error": "Invalid signature"}, status=status.HTTP_403_FORBIDDEN)
         event_type = request.headers.get("X-GitHub-Event")
@@ -52,17 +65,23 @@ class GitHubWebhookView(views.APIView):
         # Process the event based on its type
         if event_type == "workflow_run":
             return self.handle_workflow_run_event(payload)
-        elif event_type == "ping":
-            return self.handle_ping_event(payload)
-        elif event_type is None:
+        if event_type == "ping" or event_type is None:
             return self.handle_ping_event(payload)
 
         return Response({"message": "Unhandled event type."}, status=status.HTTP_200_OK)
 
     def handle_workflow_run_event(self, payload) -> Response:
-        """Handle workflow run events"""
+        """Handle workflow run events.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the workflow run event.
+
+        """
         if payload.get("action") == "requested":
-            return Response({"message": "Workflow run requested event received, not yet updating"}, status=status.HTTP_200_OK)
+            return Response(
+                {"message": "Workflow run requested event received, not yet updating"},
+                status=status.HTTP_200_OK,
+            )
         # Extract relevant data from the payload
         workflow_data = payload.get("workflow", {})
         workflow_run_data = payload.get("workflow_run", {})
@@ -83,11 +102,6 @@ class GitHubWebhookView(views.APIView):
         workflow_res = self.update_workflow_data(workflow_data, github_repository_data.get("node_id"))
         workflow_run_res = self.update_workflow_run_data(workflow_run_data, workflow_data.get("node_id"))
 
-        print(user_res.data)
-        print(repo_res.data)
-        print(workflow_res.data)
-        print(workflow_run_res.data)
-
         if (
             user_res.status_code != status.HTTP_200_OK
             or repo_res.status_code != status.HTTP_200_OK
@@ -107,6 +121,12 @@ class GitHubWebhookView(views.APIView):
         return Response({"message": "Workflow run processed successfully"}, status=status.HTTP_200_OK)
 
     def handle_ping_event(self, payload) -> Response:
+        """Handle ping events from GitHub.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the ping event.
+
+        """
         user_data = payload.get("sender", {})
         if not user_data:
             return Response({"error": "User data missing in ping event"}, status=status.HTTP_400_BAD_REQUEST)
@@ -126,10 +146,15 @@ class GitHubWebhookView(views.APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        else:
-            return Response({"message": "Ping event processed successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "Ping event processed successfully"}, status=status.HTTP_200_OK)
 
     def update_repository_data(self, repository_id, repository_node_id) -> Response:
+        """Handle repository data from the webhook payload.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the repository data.
+
+        """
         repo = GitHubRepository.objects.filter(node_id=repository_node_id)
         # node_id is used as a unique identifier for GitHub repos so should return one or zero results
         repo = repo[0] if repo else None
@@ -143,14 +168,15 @@ class GitHubWebhookView(views.APIView):
                 self.update_workflow_from_repo_data(github_repo.id, github_repo.node_id)
                 return Response({"message": "Repository data updated successfully"}, status=status.HTTP_200_OK)
             return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            # If the repository already exists and is up-to-date, return a success message
-            return Response({"message": "Repository data is already up-to-date"}, status=status.HTTP_200_OK)
+        # If the repository already exists and is up-to-date, return a success message
+        return Response({"message": "Repository data is already up-to-date"}, status=status.HTTP_200_OK)
 
-    def update_user_data(self, user_id, user_node_id) -> Response:
-        """
-        Handle user data from the webhook payload.
-        This method can be extended to process user data as needed.
+    def update_user_data(self, user_id: int, user_node_id: str) -> Response:
+        """Handle user data from the webhook payload.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the user data.
+
         """
         user = GitHubUser.objects.filter(node_id=user_node_id)
         # node_id is used as a unique identifier for GitHub users so should return one or zero results
@@ -161,7 +187,6 @@ class GitHubWebhookView(views.APIView):
             github_user = g.get_user_by_id(user_id=user_id)
             serializer = GitHubUserSerializer(data=github_user.raw_data, partial=True)
             if serializer.is_valid():
-                pprint.pprint(serializer.validated_data)
                 serializer.save()
                 return Response({"message": "User data updated successfully"}, status=status.HTTP_200_OK)
         else:
@@ -169,7 +194,17 @@ class GitHubWebhookView(views.APIView):
             return Response({"message": "User data is already up-to-date"}, status=status.HTTP_200_OK)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def update_workflow_from_repo_data(self, repository_id, repository_node_id) -> Response:
+    def update_workflow_from_repo_data(self, repository_id: int, repository_node_id: str) -> Response:
+        """Update workflows associated with a repository.
+
+        Args:
+            repository_id (int): The ID of the repository to update workflows for.
+            repository_node_id (str): The node ID of the repository to update workflows for.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of updating workflows.
+
+        """
         workflows = g.get_repo(full_name_or_id=repository_id).get_workflows()
         if not workflows:
             return Response({"message": "No workflows in repository"}, status=status.HTTP_200_OK)
@@ -182,10 +217,16 @@ class GitHubWebhookView(views.APIView):
                 )
         return Response({"message": "Workflows updated successfully"}, status=status.HTTP_200_OK)
 
-    def update_workflow_data(self, workflow_data, repository_node_id) -> Response:
-        """
-        Handle workflow data from the webhook payload.
-        This method can be extended to process workflow data as needed.
+    def update_workflow_data(self, workflow_data: dict, repository_node_id: str) -> Response:
+        """Handle workflow data from the webhook payload.
+
+        Args:
+            workflow_data (dict): The workflow data from the webhook payload.
+            repository_node_id (str): The node ID of the repository associated with the workflow.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the workflow data.
+
         """
         workflow_data["repository_node_id"] = repository_node_id
         serializer = GitHubWorkflowSerializer(data=workflow_data, partial=True)
@@ -194,10 +235,16 @@ class GitHubWebhookView(views.APIView):
             return Response({"message": "Workflow data updated successfully"}, status=status.HTTP_200_OK)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def update_workflow_run_data(self, workflow_run_data, workflow_node_id) -> Response:
-        """
-        Handle workflow run data from the webhook payload.
-        This method can be extended to process workflow run data as needed.
+    def update_workflow_run_data(self, workflow_run_data: dict, workflow_node_id: str) -> Response:
+        """Handle workflow run data from the webhook payload.
+
+        Args:
+            workflow_run_data (dict): The workflow run data from the webhook payload.
+            workflow_node_id (str): The node ID of the workflow associated with the run.
+
+        Returns:
+            rest_framework.response.Response: HTTP response indicating the result of processing the workflow run data.
+
         """
         if not workflow_run_data:
             return Response({"error": "Invalid workflow run data"}, status=status.HTTP_400_BAD_REQUEST)
@@ -209,15 +256,17 @@ class GitHubWebhookView(views.APIView):
             return Response({"message": "Workflow run processed successfully"}, status=status.HTTP_200_OK)
         return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def verify_signature(self, payload_body, secret_token, signature_header):
+    def verify_signature(self, payload_body: bytes, secret_token: str, signature_header: str) -> bool:
         """Verify that the payload was sent from GitHub by validating SHA256.
-
-        Returns True if the signature is valid, False otherwise.
 
         Args:
             payload_body: original request body to verify (request.body())
             secret_token: GitHub app webhook token (WEBHOOK_SECRET)
             signature_header: header received from GitHub (x-hub-signature-256)
+
+        Returns:
+            bool: True if the signature is valid, False otherwise.
+
         """
         if not signature_header:
             return False
@@ -225,6 +274,4 @@ class GitHubWebhookView(views.APIView):
             return False
         hash_object = hmac.new(secret_token.encode("utf-8"), msg=payload_body, digestmod=hashlib.sha256)
         expected_signature = "sha256=" + hash_object.hexdigest()
-        if not hmac.compare_digest(expected_signature, signature_header):
-            return False
-        return True
+        return hmac.compare_digest(expected_signature, signature_header)

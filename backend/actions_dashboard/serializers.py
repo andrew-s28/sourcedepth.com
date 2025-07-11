@@ -1,4 +1,4 @@
-import pprint
+from typing import ClassVar
 
 from rest_framework import serializers
 
@@ -6,6 +6,8 @@ from webhook.models import GitHubRepository, GitHubUser, GitHubWorkflow, GitHubW
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Serializer for GitHub user data."""
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["id"] = data.pop("github_id", None)
@@ -14,11 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubUser
-        fields = ["github_id", "node_id", "username", "html_url"]
-        read_only_fields = ["github_id", "node_id", "username", "html_url"]
+        fields: ClassVar[list[str]] = ["github_id", "node_id", "username", "html_url"]
+        read_only_fields: ClassVar[list[str]] = ["github_id", "node_id", "username", "html_url"]
 
 
 class RepositorySerializer(serializers.ModelSerializer):
+    """Serializer for GitHub repository data."""
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["id"] = data.pop("github_id", None)
@@ -26,11 +30,20 @@ class RepositorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubRepository
-        fields = ["github_id", "node_id", "html_url", "stargazers_count", "forks_count", "owner"]
-        read_only_fields = ["github_id", "node_id", "html_url", "stargazers_count", "forks_count", "owner"]
+        fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "stargazers_count", "forks_count", "owner"]
+        read_only_fields: ClassVar[list[str]] = [
+            "github_id",
+            "node_id",
+            "html_url",
+            "stargazers_count",
+            "forks_count",
+            "owner",
+        ]
 
 
 class WorkflowSerializer(serializers.ModelSerializer):
+    """Serializer for GitHub workflow data."""
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["id"] = data.pop("github_id", None)
@@ -38,11 +51,13 @@ class WorkflowSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubWorkflow
-        fields = ["github_id", "node_id", "html_url", "repository"]
-        read_only_fields = ["github_id", "node_id", "html_url", "repository"]
+        fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository"]
+        read_only_fields: ClassVar[list[str]] = ["github_id", "node_id", "html_url", "repository"]
 
 
 class WorkflowRunSerializer(serializers.ModelSerializer):
+    """Serializer for GitHub workflow run data."""
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         data["updated_at"] = data.pop("github_updated_at", None)
@@ -50,5 +65,21 @@ class WorkflowRunSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = GitHubWorkflowRun
-        fields = ["action", "workflow", "conclusion", "name", "url", "display_title", "github_updated_at"]
-        read_only_fields = ["action", "workflow", "conclusion", "name", "url", "display_title", "github_updated_at"]
+        fields: ClassVar[list[str]] = [
+            "action",
+            "workflow",
+            "conclusion",
+            "name",
+            "url",
+            "display_title",
+            "github_updated_at",
+        ]
+        read_only_fields: ClassVar[list[str]] = [
+            "action",
+            "workflow",
+            "conclusion",
+            "name",
+            "url",
+            "display_title",
+            "github_updated_at",
+        ]

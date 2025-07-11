@@ -16,3 +16,21 @@ dependencies = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["api", "webhook", "actions_dashboard"]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",    # Type annotations not always used in, e.g., class-based viewsets.
+    "ARG002", # Argument names not always used in, e.g., class-based viewsets.
+    "D100",   # Missing docstring in public module
+    "D102",   # Missing docstring in public method
+    "D105",   # Missing docstring in magic method
+    "D106",   # Docstrings not always needed, e.g., for Meta classes in models and serializers.
+    "D203",   # Incorrect blank line before class
+    "D213",   # Multi line summary second line
+    "SLF001", # Private method model._meta is needed
+]
+
+[tool.ruff]
+line-length = 120
+exclude = ["migrations"]

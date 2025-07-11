@@ -1,5 +1,3 @@
-import pprint
-
 from django.core.exceptions import FieldDoesNotExist
 from rest_framework import serializers
 
@@ -12,8 +10,8 @@ from .models import (
 
 
 class GitHubSerializer(serializers.ModelSerializer):
-    """
-    Base serializer for GitHub data.
+    """Base serializer for GitHub data.
+
     This class can be extended by other serializers to provide common functionality.
     """
 
@@ -24,10 +22,16 @@ class GitHubSerializer(serializers.ModelSerializer):
         self,
         data,
         model: type[GitHubUser] | type[GitHubRepository] | type[GitHubWorkflow] | type[GitHubWorkflowRun] | None = None,
-    ):
-        """
-        Convert incoming data to the internal format expected by the serializer.
-        This method can be overridden by subclasses to handle specific data transformations.
+    ) -> dict:
+        """Convert incoming data to the internal format expected by the serializer.
+
+        Args:
+            data (dict): The incoming data to be converted.
+            model (type, optional): The model class to which the data belongs. Defaults to None.
+
+        Returns:
+            dict: The converted data in the internal format.
+
         """
         data["github_id"] = data.pop("id", None)
         data["github_updated_at"] = data.pop("updated_at", None)
@@ -44,24 +48,26 @@ class GitHubSerializer(serializers.ModelSerializer):
                 model._meta.get_field(field).get_internal_type() == "CharField"
                 or model._meta.get_field(field).get_internal_type() == "TextField"
                 or model._meta.get_field(field).get_internal_type() == "URLField"
-            ):
-                if data[field] is None:
-                    data[field] = ""
+            ) and data[field] is None:
+                data[field] = ""
         return super().to_internal_value(data)
 
 
 class GitHubUserSerializer(GitHubSerializer):
+    """Serializer for GitHub user data."""
+
     def create(self, validated_data):
+        """Create a new GitHub user instance with the provided validated data.
+
+        Returns:
+            GitHubUser: The created or updated user instance.
+
         """
-        Create a new GitHub user instance with the provided validated data.
-        This method ensures that all required fields are set and timestamps are initialized.
-        """
-        # pprint.pprint(validated_data)
         node_id = validated_data.pop("node_id", None)
-        user, created = GitHubUser.objects.update_or_create(defaults=validated_data, node_id=node_id)
+        user, _ = GitHubUser.objects.update_or_create(defaults=validated_data, node_id=node_id)
         return user
 
-    def to_internal_value(self, data, model=None):
+    def to_internal_value(self, data: dict, model=None) -> dict:
         # Modify incoming GitHub Webhook user data to match the serializer's expected format
         data["username"] = data.pop("login", None)
         data["user_type"] = data.pop("type", None)
@@ -79,15 +85,19 @@ class GitHubUserSerializer(GitHubSerializer):
 
 
 class GitHubRepositorySerializer(GitHubSerializer):
+    """Serializer for GitHub repository data."""
+
     owner = serializers.SlugRelatedField(slug_field="node_id", queryset=GitHubUser.objects.all())
 
     def create(self, validated_data):
-        """
-        Create a new GitHub repository instance with the provided validated data.
-        This method ensures that all required fields are set and timestamps are initialized.
+        """Create a new GitHub repository instance with the provided validated data.
+
+        Returns:
+            GitHubRepository: The created or updated repository instance.
+
         """
         node_id = validated_data.pop("node_id", None)
-        repo, created = GitHubRepository.objects.update_or_create(defaults=validated_data, node_id=node_id)
+        repo, _ = GitHubRepository.objects.update_or_create(defaults=validated_data, node_id=node_id)
         return repo
 
     def to_internal_value(self, data, model=None):
@@ -101,15 +111,19 @@ class GitHubRepositorySerializer(GitHubSerializer):
 
 
 class GitHubWorkflowSerializer(GitHubSerializer):
+    """Serializer for GitHub workflow data."""
+
     repository = serializers.SlugRelatedField(slug_field="node_id", queryset=GitHubRepository.objects.all())
 
     def create(self, validated_data):
-        """
-        Create a new GitHub workflow instance with the provided validated data.
-        This method ensures that all required fields are set and timestamps are initialized.
+        """Create a new GitHub workflow instance with the provided validated data.
+
+        Returns:
+            GitHubWorkflow: The created or updated workflow instance.
+
         """
         node_id = validated_data.pop("node_id", None)
-        workflow, created = GitHubWorkflow.objects.update_or_create(defaults=validated_data, node_id=node_id)
+        workflow, _ = GitHubWorkflow.objects.update_or_create(defaults=validated_data, node_id=node_id)
         return workflow
 
     def to_internal_value(self, data, model=None):
@@ -123,18 +137,22 @@ class GitHubWorkflowSerializer(GitHubSerializer):
 
 
 class GitHubWorkflowRunSerializer(GitHubSerializer):
+    """Serializer for GitHub workflow run data."""
+
     workflow = serializers.SlugRelatedField(slug_field="node_id", queryset=GitHubWorkflow.objects.all())
 
     def create(self, validated_data):
-        """
-        Create a new GitHub workflow run instance with the provided validated data.
-        This method ensures that all required fields are set and timestamps are initialized.
+        """Create a new GitHub workflow run instance with the provided validated data.
+
+        Returns:
+            GitHubWorkflowRun: The created or updated workflow run instance.
+
         """
         node_id = validated_data.pop("node_id", None)
-        workflow_run, created = GitHubWorkflowRun.objects.update_or_create(defaults=validated_data, node_id=node_id)
+        workflow_run, _ = GitHubWorkflowRun.objects.update_or_create(defaults=validated_data, node_id=node_id)
         return workflow_run
 
-    def to_internal_value(self, data, model=None):
+    def to_internal_value(self, data, model=None) -> dict:
         # Modify incoming GitHub Webhook user data to match the serializer's expected format
         data["workflow"] = data.pop("workflow_node_id")
         return GitHubSerializer.to_internal_value(self, data, model=GitHubWorkflowRun)

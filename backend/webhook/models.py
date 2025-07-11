@@ -1,8 +1,10 @@
+from typing import ClassVar
+
 from django.db import models
 
 
 class GitHubUser(models.Model):
-    """Model to store GitHub user information"""
+    """Model to store GitHub user information."""
 
     username = models.CharField(max_length=255, blank=False)
     github_id = models.BigIntegerField(blank=False)
@@ -41,14 +43,14 @@ class GitHubUser(models.Model):
     github_updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["name", "-github_updated_at"]
+        ordering: ClassVar[list[str]] = ["name", "-github_updated_at"]
 
     def __str__(self):
         return self.username
 
 
 class GitHubRepository(models.Model):
-    """Model to store GitHub repository information"""
+    """Model to store GitHub repository information."""
 
     name = models.CharField(max_length=255, blank=False)
     full_name = models.CharField(max_length=255, blank=False)
@@ -62,7 +64,6 @@ class GitHubRepository(models.Model):
     archived = models.BooleanField(default=False)
     default_branch = models.CharField(max_length=255, blank=True, default="")
     deployments_url = models.URLField(blank=True, default="")
-    description = models.TextField(blank=True, default="")
     disabled = models.BooleanField(default=False)
     downloads_url = models.URLField(blank=True, default="")
     events_url = models.URLField(blank=True, default="")
@@ -78,7 +79,6 @@ class GitHubRepository(models.Model):
     has_wiki = models.BooleanField(default=True)
     homepage = models.URLField(blank=True, default="")
     hooks_url = models.URLField(blank=True, default="")
-    html_url = models.URLField(blank=True, default="")
     url = models.URLField(blank=True, default="")
     is_template = models.BooleanField(default=False)
     language = models.CharField(max_length=255, blank=True, default="")
@@ -102,14 +102,14 @@ class GitHubRepository(models.Model):
     github_updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["name", "-github_updated_at"]
+        ordering: ClassVar[list[str]] = ["name", "-github_updated_at"]
 
     def __str__(self):
         return self.full_name
 
 
 class GitHubWorkflow(models.Model):
-    """Model to store GitHub workflow information"""
+    """Model to store GitHub workflow information."""
 
     repository = models.ForeignKey(GitHubRepository, on_delete=models.CASCADE, related_name="workflows")
     name = models.CharField(max_length=255, blank=False)
@@ -126,14 +126,14 @@ class GitHubWorkflow(models.Model):
     github_updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["-created_at"]
+        ordering: ClassVar[list[str]] = ["-created_at"]
 
     def __str__(self):
         return f"{self.repository.full_name} - {self.name}"
 
 
 class GitHubWorkflowRun(models.Model):
-    """Model to store GitHub workflow run information"""
+    """Model to store GitHub workflow run information."""
 
     action = models.CharField(max_length=50, blank=True, default="")
     workflow = models.ForeignKey(GitHubWorkflow, on_delete=models.CASCADE, related_name="runs")
@@ -168,7 +168,7 @@ class GitHubWorkflowRun(models.Model):
     github_updated_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
-        ordering = ["-github_updated_at"]
+        ordering: ClassVar[list[str]] = ["-github_updated_at"]
 
     def __str__(self):
         return self.display_title
