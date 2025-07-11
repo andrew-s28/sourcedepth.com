@@ -3,11 +3,11 @@ services:
     image: ascherer82/sourcedepth-api:latest
     ports:
       - 8000:8000
-    environment:
-      - DJANGO_DEBUG=False
     volumes:
       - ./backend/data:/usr/src/app/data
     restart: always
+    env_file:
+      - ./.env
   server:
     image: ascherer82/sourcedepth.com:latest
     ports:
