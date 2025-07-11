@@ -24,6 +24,8 @@ body {
 } */
 
 @theme {
+  --breakpoint-xs: 420px;
+
   --plot-background-color: #bae4fcbb;
   --plot-line-color: #0f172b;
   --font-serif: "Noto Serif";

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ActionsDashboardRouteImport } from './routes/actions-dashboard'
 import { Route as AboutSiteRouteImport } from './routes/about-site'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -23,6 +24,11 @@ import { Route as BlogPostsSlugRouteImport } from './routes/blog_.posts.$slug'
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActionsDashboardRoute = ActionsDashboardRouteImport.update({
+  id: '/actions-dashboard',
+  path: '/actions-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutSiteRoute = AboutSiteRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
+  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
@@ -87,6 +94,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
+  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
+  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog_/$category': typeof BlogCategoryRoute
   '/projects_/$category': typeof ProjectsCategoryRoute
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
+    | '/actions-dashboard'
     | '/privacy'
     | '/blog/$category'
     | '/projects/$category'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
+    | '/actions-dashboard'
     | '/privacy'
     | '/blog/$category'
     | '/projects/$category'
@@ -138,6 +149,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
+    | '/actions-dashboard'
     | '/privacy'
     | '/blog_/$category'
     | '/projects_/$category'
@@ -151,6 +163,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AboutSiteRoute: typeof AboutSiteRoute
+  ActionsDashboardRoute: typeof ActionsDashboardRoute
   PrivacyRoute: typeof PrivacyRoute
   BlogCategoryRoute: typeof BlogCategoryRoute
   ProjectsCategoryRoute: typeof ProjectsCategoryRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/actions-dashboard': {
+      id: '/actions-dashboard'
+      path: '/actions-dashboard'
+      fullPath: '/actions-dashboard'
+      preLoaderRoute: typeof ActionsDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about-site': {
@@ -239,6 +259,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AboutSiteRoute: AboutSiteRoute,
+  ActionsDashboardRoute: ActionsDashboardRoute,
   PrivacyRoute: PrivacyRoute,
   BlogCategoryRoute: BlogCategoryRoute,
   ProjectsCategoryRoute: ProjectsCategoryRoute,
