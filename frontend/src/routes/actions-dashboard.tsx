@@ -45,9 +45,17 @@ const loadRepositories = async () => {
         const workflowRunsbyWorkflow = workflowRuns.results.filter(
           (run) => run.workflow === workflow.node_id
         );
+        const mostRecentRun = workflowRunsbyWorkflow.reduce(
+          (latest, current) => {
+            return new Date(current.updated_at) > new Date(latest.updated_at)
+              ? current
+              : latest;
+          },
+          workflowRunsbyWorkflow[0] || null
+        );
         return {
           ...workflow,
-          runs: workflowRunsbyWorkflow,
+          runs: [mostRecentRun],
         };
       }
     );
