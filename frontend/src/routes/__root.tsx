@@ -1,3 +1,6 @@
+// src/routes/__root.tsx
+/// <reference types="vite/client" />
+
 import { ReactNode, StrictMode } from "react";
 import {
   HeadContent,
@@ -10,6 +13,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import Navbar from "~/components/Navbar";
 import { NotFound } from "~/components/NotFound";
+import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
 import { ThemeProvider, initialTheme } from "../components/ThemeProvider";
 import { MotionConfig } from "framer-motion";
@@ -32,7 +36,7 @@ export const Route = createRootRoute({
     ],
     scripts: [initialTheme()],
     links: [
-      { rel: "stylesheet", href: "~styles/app.css?url" },
+      { rel: "stylesheet", href: appCss },
       {
         rel: "apple-touch-icon",
         sizes: "180x180",
