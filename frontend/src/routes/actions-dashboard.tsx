@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import {
@@ -11,6 +11,7 @@ import {
   GitFork,
   CircleHelp,
   ExternalLink,
+  CircleAlert,
 } from "lucide-react";
 import {
   api,
@@ -27,7 +28,6 @@ import {
   CardContent,
 } from "~/components/ui/card";
 import { Wrapper } from "~/components/page";
-import { set } from "date-fns";
 
 const loadRepositories = async () => {
   const repositories = await api.getRepositories();
@@ -40,28 +40,32 @@ const loadRepositories = async () => {
     const repoWorkflows = workflows.results.filter(
       (workflow) => workflow.repository === repo.node_id
     );
-    const repoWorkflowsWithRuns: WorkflowWithRuns[] = repoWorkflows.map(
-      (workflow) => {
-        const workflowRunsbyWorkflow = workflowRuns.results.filter(
-          (run) => run.workflow === workflow.node_id
-        );
-        const mostRecentRun = workflowRunsbyWorkflow.reduce(
-          (latest, current) => {
-            return new Date(current.updated_at) > new Date(latest.updated_at)
-              ? current
-              : latest;
-          },
-          workflowRunsbyWorkflow[0] || null
-        );
+    const repoWorkflowsWithRuns = repoWorkflows.map((workflow) => {
+      const workflowRunsbyWorkflow = workflowRuns.results.filter(
+        (run) => run.workflow === workflow.node_id
+      );
+      const mostRecentRun = workflowRunsbyWorkflow.reduce((latest, current) => {
+        return new Date(current.updated_at) > new Date(latest.updated_at)
+          ? current
+          : latest;
+      }, workflowRunsbyWorkflow[0]) as GitHubWorkflowRun | undefined; // undefined if no runs exist
+      if (!mostRecentRun) {
         return {
           ...workflow,
-          runs: [mostRecentRun],
+          runs: [],
         };
       }
+      return {
+        ...workflow,
+        runs: [mostRecentRun],
+      };
+    });
+    const repoWorkflowsWithRunsFiltered = repoWorkflowsWithRuns.filter(
+      (workflow) => workflow.node_id !== "W_kwDOO6JGD84KA1C6" // manually excluding a specific workflow
     );
     return {
       ...repo,
-      workflows: repoWorkflowsWithRuns,
+      workflows: repoWorkflowsWithRunsFiltered,
       isExpanded: false, // Initialize expanded state
       isLoading: false, // Initialize loading state
     };
@@ -178,8 +182,8 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
   const getOverallStatus = () => {
     if (!repo.workflows || repo.workflows.length === 0) {
       return {
-        icon: <GitBranch className="w-4 h-4 text-gray-400" />,
-        text: "No workflows for this repository",
+        icon: <CircleHelp className="w-4 h-4 text-gray-400" />,
+        text: "N/A",
       };
     }
 
@@ -189,14 +193,17 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
     const hasInProgress = repo.workflows.some((workflow) =>
       workflow.runs?.some((run) => run.status === "in_progress")
     );
+    console.log(repo.workflows[0].runs);
     const allSuccess = repo.workflows.every((workflow) =>
-      workflow.runs?.every((run) => run.conclusion === "success")
+      workflow.runs?.every(
+        (run) => run.conclusion === "success" || run === undefined
+      )
     );
 
     if (hasFailure) {
       return {
         icon: <XCircle className="w-4 h-4 text-red-500" />,
-        text: "Some failures",
+        text: "Failing",
       };
     }
     if (hasInProgress) {
@@ -208,12 +215,14 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
     if (allSuccess) {
       return {
         icon: <CheckCircle className="w-4 h-4 text-green-500" />,
-        text: "All passing",
+        text: "Passing",
       };
     }
 
     return {
-      icon: <GitBranch className="w-4 h-4 text-gray-400" />,
+      icon: (
+        <CircleAlert className="w-4 h-4 text-yellow-500 dark:text-yellow-400" />
+      ),
       text: "Mixed",
     };
   };
@@ -278,6 +287,7 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
                   {overallStatus.text}
                 </span>
               </div>
+              <div className="border-l border-gray-300 dark:border-gray-600 h-6 mx-2"></div>
               <div className="flex items-center gap-2">
                 <Link
                   to={repo.html_url}
@@ -316,9 +326,9 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
               repo.workflows.map((workflow) =>
                 workflow.runs && workflow.runs.length > 0 ? (
                   <div key={workflow.id} className="py-1">
-                    {workflow.runs.map((run) => (
+                    {workflow.runs.map((run, i) => (
                       <div
-                        key={run.id}
+                        key={i}
                         className="flex items-center justify-between p-3 bg-gray-200 dark:bg-gray-700 rounded-lg"
                       >
                         <div className="flex items-center gap-3">
@@ -406,10 +416,10 @@ function RouteComponent() {
         className="py-8"
       >
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+          <h1 className="text-4xl font-bold font-serif text-gray-900 dark:text-gray-100 mb-2">
             GitHub Actions Dashboard
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-lg text-gray-600 dark:text-gray-400">
             Monitor workflow runs and repository status across your GitHub
             repositories.
           </p>
