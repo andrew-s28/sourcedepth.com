@@ -1,7 +1,7 @@
 import DarkModeSwitch from "./DarkModeSwitch";
 import GitHub from "./ui/GitHubMark";
 import { Link } from "@tanstack/react-router";
-import { useWindowSize } from "~/hooks/useWindowSize";
+import { useWidth } from "~/hooks/useWindowSize";
 import { Popover } from "radix-ui";
 import { MenuIcon, HomeIcon } from "lucide-react";
 import { Route as ProjectsRoute } from "~/routes/projects.index";
@@ -37,7 +37,7 @@ const navStyles = {
 };
 
 export default function Navbar() {
-  const { width } = useWindowSize();
+  const { width } = useWidth();
   return (
     <div className={navStyles.container}>
       {width >= 768 ? (
