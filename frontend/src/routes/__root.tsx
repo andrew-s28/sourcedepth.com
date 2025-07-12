@@ -15,6 +15,7 @@ import { seo } from "~/utils/seo";
 import { ThemeProvider, initialTheme } from "../components/ThemeProvider";
 import { MotionConfig } from "framer-motion";
 import Footer from "~/components/Footer";
+import { initialWindowSize } from "~/hooks/useWindowSize";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -31,7 +32,7 @@ export const Route = createRootRoute({
         description: `Personal website and blog for physical oceanographer and software developer Andrew Scherer.`,
       }),
     ],
-    scripts: [initialTheme()],
+    scripts: [initialTheme(), initialWindowSize()],
     links: [
       { rel: "stylesheet", href: appCss },
       {
