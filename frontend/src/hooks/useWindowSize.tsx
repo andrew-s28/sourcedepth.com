@@ -1,26 +1,23 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
 export function useWidth() {
-  const [width, setWidth] = useState(10000);
-  const didMount = useRef(false);
+  const [width, setWidth] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!didMount.current) {
-      // first width update is handled by script in the document itself, see initialTheme() below
-      const storedWidth = localStorage.getItem("innerWidth");
-      setWidth(Number(storedWidth ?? 10000));
-      didMount.current = true;
-      return;
-    }
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const handleResize = () => {
-      setWidth(window.innerWidth);
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setWidth(window.innerWidth);
+      }, 300); // Adjust debounce delay as needed
     };
 
     window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -29,48 +26,28 @@ export function useWidth() {
 }
 
 export function useHeight() {
-  const [height, setHeight] = useState(10000);
-  const didMount = useRef(false);
+  const [height, setHeight] = useState<number | null>(null);
 
   useEffect(() => {
-    if (!didMount.current) {
-      // first height update is handled by script in the document itself, see initialWindowSize() below
-      const storedHeight = localStorage.getItem("innerHeight");
-      setHeight(Number(storedHeight ?? 10000));
-      didMount.current = true;
-      return;
-    }
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
     const handleResize = () => {
-      setHeight(window.innerHeight);
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setHeight(window.innerHeight);
+      }, 300); // Adjust debounce delay as needed
     };
 
     window.addEventListener("resize", handleResize);
     handleResize();
 
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   return { height: height };
-}
-
-export function initialWindowSize() {
-  // this script sets theme on DOM load, before hydration
-  // https://tanstack.com/router/latest/docs/framework/react/guide/document-head-management/#scripts
-  return {
-    children: `
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      if (!("innerWidth" in localStorage)) {
-        localStorage.setItem("innerWidth", width);
-      }
-      if (!("innerHeight" in localStorage)) {
-        localStorage.setItem("innerHeight", height);
-      }
-    `,
-  };
 }
 
 export const useWindowSize = (debounce: boolean = false) => {
