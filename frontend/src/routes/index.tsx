@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, ReactNode } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useWindowSize } from "~/hooks/useWindowSize";
+import { useHeight, useWidth } from "~/hooks/useWindowSize";
 import { motion } from "motion/react";
 import { useIsSSR } from "~/hooks/useIsSSR";
 import hexToRgba from "hex-to-rgba";
@@ -60,7 +60,10 @@ interface StarfieldConfig {
 function Starfield({ configs }: { configs: StarfieldConfig[] }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const { width, height } = useWindowSize(true);
+  const { width: widthInit } = useWidth();
+  const { height: heightInit } = useHeight();
+  const width = widthInit || 1920; // Fallback to 1920 if width is not available
+  const height = heightInit || 400; // Fallback to 400 if height is not available
   const prefersReducedMotion = usePrefersReducedMotion();
 
   const milkyWayColors = [
@@ -366,7 +369,8 @@ function Waves({
   const wavePath =
     "10 0 10-10 20-10 2.34 0 4.25 1.9 4.25 4.25 0-1.03-.84-1.87-1.88-1.87-2.1 0-3.81 1.7-3.81 3.81 0 2.1 1.71 3.81 3.81 3.81 ";
   const waveWidth = 125;
-  const { width } = useWindowSize();
+  const { width: widthInit } = useWidth();
+  const width = widthInit || 600; // Fallback to 600 if width is not available
   const waveRepeat = Math.max(Math.ceil(width / waveWidth), 10);
   const path = `M0 0C10 0 10-10 20-10c2.35 0 4.25 1.9 4.25 4.25 0-1.03-.84-1.87-1.87-1.87-2.11 0-3.81 1.7-3.81 3.81 0 2.1 1.7 3.81 3.81 3.81 ${wavePath.repeat(waveRepeat)}`;
   const color = `${backgroundColor || ""} ${strokeColor || ""}`;

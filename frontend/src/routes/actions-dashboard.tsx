@@ -34,7 +34,6 @@ const loadRepositories = async () => {
   const workflows = await api.getWorkflows();
   const workflowRuns = await api.getWorkflowRuns();
   let repositoriesWithRuns: RepositoryWithRuns[] = [];
-  // console.log(repositories, workflows, workflowRuns);
   // Map repositories to include workflow runs
   repositoriesWithRuns = repositories.results.map((repo) => {
     const repoWorkflows = workflows.results.filter(
@@ -193,7 +192,6 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
     const hasInProgress = repo.workflows.some((workflow) =>
       workflow.runs?.some((run) => run.status === "in_progress")
     );
-    console.log(repo.workflows[0].runs);
     const allSuccess = repo.workflows.every((workflow) =>
       workflow.runs?.every(
         (run) => run.conclusion === "success" || run === undefined
