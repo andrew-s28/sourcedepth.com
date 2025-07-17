@@ -37,24 +37,47 @@ export const Route = createRootRoute({
     scripts: [initialTheme()],
     links: [
       { rel: "stylesheet", href: appCss },
+      // For iPhone
       {
         rel: "apple-touch-icon",
+        type: "image/png",
         sizes: "180x180",
-        href: "/apple-touch-icon.png",
+        href: "/public/favicon-180x180.png",
+      },
+      // For iPad
+      {
+        rel: "apple-touch-icon",
+        type: "image/png",
+        sizes: "167x167",
+        href: "/public/favicon-167x167.png",
+      },
+      // For Google and Android
+      {
+        rel: "icon",
+        type: "image/png",
+        sizes: "192x192",
+        href: "/public/favicon-192x192.png",
       },
       {
         rel: "icon",
         type: "image/png",
+        sizes: "48x48",
+        href: "/public/favicon-48x48.png",
+      },
+      // For all browsers
+      {
+        rel: "icon",
+        type: "image/png",
         sizes: "32x32",
-        href: "/favicon-32x32.png",
+        href: "/public/favicon-32x32.png",
       },
       {
         rel: "icon",
         type: "image/png",
         sizes: "16x16",
-        href: "/favicon-16x16.png",
+        href: "/public/favicon-16x16.png",
       },
-      { rel: "icon", href: "/favicon.ico" },
+      { rel: "icon", href: "/public/favicon.ico" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       {
         rel: "preconnect",
