@@ -19,9 +19,6 @@ body {
   overflow-x: hidden;
   margin-right: calc(-1 * (100vw - 100%));
 }
-/* li::before {
-  content: "▶";
-} */
 
 @theme {
   --breakpoint-xs: 420px;

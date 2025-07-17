@@ -84,7 +84,7 @@ export function initialTheme() {
   // https://tanstack.com/router/latest/docs/framework/react/guide/document-head-management/#scripts
   return {
     children: `
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    let prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
     if (!("theme" in localStorage)) {
       localStorage.setItem("theme", prefersDark ? "dark" : "light");
     }
