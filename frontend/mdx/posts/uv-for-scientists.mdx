@@ -1,0 +1,92 @@
+---
+slug: "uv-for-scientists"
+title: "uv: A Guide for Scientists"
+date: "2025-07-17"
+tags: ["tech"]
+description: "uv is the package manager that has taken the Python community by storm. It's also a fantastic tool for supporting reproducible science."
+---
+
+[uv](https://docs.astral.sh/uv/) has quickly become the de-facto package manager for Python development, and for good reason. Prior to uv, Python package management has been a headache and one of the weakpoints of the ecosystem. Now, developers [have been convinced](https://www.datacamp.com/tutorial/python-uv) by uv's stellar speed, package management, and general ease of use. But I want to talk about one use case - scripting - in which uv can be a game-changer for scientists, researchers, and science reproducibility more generally.
+
+## Scripting and Reproducibility
+
+Researchers might write a Python script for any number of reasons: downloading data, running a model, or just doing some quick analysis. The most useful of these scripts are often passed down through labs, with students being handed scripts written by their (perhaps no longer available) predecessors. Scripts are often added to, posted publicly, and passed between labs with little to no documentation. However, speaking from experience, getting these scripts to run can be a difficult task, made all the more difficult by a poor package management system.
+
+Consider a script that was written just last spring - one would imagine it is still working well! Within the script is the code snippet:
+
+```python showLineNumbers
+# divide.py
+
+import numpy as np
+
+denominator = np.arange(10)
+
+for denom in denominator:
+    if denom == 0:
+        value = np.infty
+    else:
+        value = 1 / denom
+```
+
+This script cleverly avoids a division by zero warning by explicitly handling the case of `denominator == 0`. However, the script was written with `numpy=1.24` installed. When I am given the script to run, I naively run `pip install numpy` in my current environment, which installs `numpy=2.0`. Now, the script will fail with ``AttributeError: `np.infty` was removed in the NumPy 2.0 release. Use `np.inf` instead.``
+
+Fortunately for me, this is a contrived example with a quick and easy fix and a helpful error message, but it is hopefully easy to imagine how bugs like this can get out of hand quickly. And, in any case, it still takes the most valuable resource for all researchers - time - to fix the script. Worst of all, it means the script is potentially not reproducible!
+
+## Scripting with uv
+
+Now, let's take advantage of one of my favorite features of uv: [running scripts with dependencies](https://docs.astral.sh/uv/guides/scripts/). We will start by running the following commands, declaring a specific version of `numpy` to use with the `divide.py` script:
+
+```bash
+uv add --script divide.py numpy=1.24
+```
+
+Now, uv has modified our `divide.py` script to include the [PEP 723](https://peps.python.org/pep-0723/) metadata at the top of the file:
+
+```python showLineNumbers
+# /// script
+# requires-python = "<3.11"
+# dependencies = [
+#     "numpy==1.24",
+# ]
+# ///
+
+# divide.py
+```
+
+Now, running the script can be done with uv as:
+
+```bash
+uv run divide.py
+```
+
+which runs without error! Behind the scenes, uv is creating a venv for this specific script and keeping it updated with any changes to dependencies or Python versions. Since uv is **really** fast, you won't even notice.
+
+The **key takeaway** here is that the only thing researchers will have to do, once this metadata is added, is *share their scripts as normal*. Then, anyone with uv installed can run the script and uv will take care of the package management and environment setup for this script.
+
+We can take this one step further by adding an `exclude-newer` field in the script metadata to ensure that dependencies must come from the day of the script's creation. This is really useful since it means you often don't even have to specify the version of the dependency. Now, the entire script looks like this:
+
+```python showLineNumbers
+# /// script
+# requires-python = "<3.11"
+# dependencies = [
+#     "numpy==1.24",
+# ]
+# [tool.uv]
+# exclude-newer = "2024-05-01T00:00:00Z"
+# ///
+# divide.py
+
+import numpy as np
+
+denominator = np.arange(10)
+
+for denom in denominator:
+    if denom == 0:
+        value = np.infty
+    else:
+        value = 1 / denom
+```
+
+Simply including this inline metadata at the top of scripts will ensure that this script will run on any machine that has uv installed. Indeed, as uv is just a tool for managing this metadata, the script will stay running even with whatever PEP-723 compliant tool comes next!
+
+If you want a real-world example, consider checking out my Ocean Observatories Initiative [nitrate data download script](https://github.com/andrew-s28/ooi-profiler-nitrate-retriever/blob/main/scripts/retrieve_profiler_data.py) or my [velocity, nitrate, and wind analysis scripts](https://github.com/andrew-s28/shelf-nitrate-response-to-upwelling/tree/main/scripts), both of which support my research on the [shelf nitrate response to upwelling](http://localhost:3000/projects/posts/shelf-nitrate-response-to-upwelling).
