@@ -23,7 +23,7 @@ function zip(...arrays: (string[] | number[])[]): (string | number)[][] {
 
 function IntroCard() {
   return (
-    <div className="flex flex-col h-full align-middle justify-center m-5">
+    <div className="flex flex-col h-full align-middle justify-center m-2 translate-y-[-8px]">
       <motion.div
         initial={{ opacity: 0, translateY: 20 }}
         animate={{
@@ -33,13 +33,22 @@ function IntroCard() {
         }}
         exit={{ opacity: 0, translateY: 20 }}
       >
-        <div className="bg-night-sky-950 text-dawn-pink-100 rounded-3xl px-5 py-2 w-fit mx-auto">
+        <div className="dark:bg-night-sky-950 bg-dawn-pink-100 dark:text-dawn-pink-100 text-night-sky-950 rounded-3xl px-5 py-2 w-fit mx-auto">
           <h1 className="text-[clamp(2rem,6vw,4rem)] text-center font-serif ">
             Andrew Scherer
           </h1>
           <h2 className="text-center text-[clamp(1rem,1vw,2rem)]">
             Physical Oceanographer <br /> Software Developer
           </h2>
+          <div className="flex justify-center mt-2">
+            <Link to="/about" className="group" resetScroll>
+              <div className="rounded dark:bg-dawn-pink-100 bg-night-sky-950 px-4 dark:text-night-sky-950 text-dawn-pink-100">
+                <span className="group-hover:font-bold after:content-[attr(title)] after:font-bold after:h-0 after:block after:invisible after:overflow-hidden after:bg-transparent bg-transparent">
+                  Learn More
+                </span>
+              </div>
+            </Link>
+          </div>
         </div>
       </motion.div>
     </div>
@@ -62,7 +71,7 @@ function Starfield({ configs }: { configs: StarfieldConfig[] }) {
 
   const { width: widthInit } = useWidth();
   const { height: heightInit } = useHeight();
-  const width = widthInit || 1920; // Fallback to 1920 if width is not available
+  const width = widthInit || 10000; // Fallback to 10000 if width is not available
   const height = heightInit || 400; // Fallback to 400 if height is not available
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -370,7 +379,7 @@ function Waves({
     "10 0 10-10 20-10 2.34 0 4.25 1.9 4.25 4.25 0-1.03-.84-1.87-1.88-1.87-2.1 0-3.81 1.7-3.81 3.81 0 2.1 1.71 3.81 3.81 3.81 ";
   const waveWidth = 125;
   const { width: widthInit } = useWidth();
-  const width = widthInit || 600; // Fallback to 600 if width is not available
+  const width = widthInit || 5000; // Fallback to 10000 if width is not available
   const waveRepeat = Math.max(Math.ceil(width / waveWidth), 10);
   const path = `M0 0C10 0 10-10 20-10c2.35 0 4.25 1.9 4.25 4.25 0-1.03-.84-1.87-1.87-1.87-2.11 0-3.81 1.7-3.81 3.81 0 2.1 1.7 3.81 3.81 3.81 ${wavePath.repeat(waveRepeat)}`;
   const color = `${backgroundColor || ""} ${strokeColor || ""}`;
@@ -575,10 +584,10 @@ function Background() {
         <NightSky />
       </div>
       <div className="absolute top-90 left-0">
-        <div className="flex h-30 justify-start w-full absolute animate-waves-top motion-reduce:animate-none motion-reduce:-translate-20">
+        <div className="flex h-30 justify-start w-full absolute animate-waves-top delay-1000 motion-reduce:animate-none motion-reduce:-translate-20">
           <Waves backgroundColor="fill-ocean-500" />
         </div>
-        <div className="flex h-30 justify-start w-full absolute animate-waves-middle motion-reduce:animate-none motion-reduce:-translate-10">
+        <div className="flex h-30 justify-start w-full absolute animate-waves-middle delay-1000 motion-reduce:animate-none motion-reduce:-translate-10">
           <Waves backgroundColor="fill-ocean-600" />
         </div>
         <div className="flex h-30 justify-start w-full absolute animate-waves-bottom">

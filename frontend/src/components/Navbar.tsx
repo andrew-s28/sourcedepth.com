@@ -20,6 +20,7 @@ const navStyles = {
     h-[3rem]
     rounded-full
     w-30
+    min-w-30
     transition-all
     dark:hover:bg-gray-600/20
     hover:bg-gray-300/50
@@ -49,7 +50,7 @@ export default function Navbar() {
       <nav
         className={cn(
           navStyles.nav,
-          "justify-between px-5 grid-cols-3 max-w-6xl hidden md:grid"
+          "justify-between px-5 grid-cols-3 max-w-6xl hidden md:grid-cols-[150px_1fr_150px] md:grid"
         )}
       >
         <Link
@@ -57,13 +58,20 @@ export default function Navbar() {
           activeProps={{ className: navStyles.active }}
           inactiveProps={{ className: navStyles.inactive }}
           activeOptions={{ exact: true }}
-          className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
+          className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20 justify-self-start"
           resetScroll
           aria-label="Home page link"
         >
-          <HomeIcon className="p-0" size={32} aria-label="Home icon" />
+          {/* <HomeIcon className="p-0" size={32} aria-label="Home icon" /> */}
+          <img src="/static/logo.svg" alt="Logo" className="h-8 dark:hidden" />
+          <img
+            src="/static/logo-light.svg"
+            alt="Logo"
+            className="h-8 hidden dark:inline"
+          />
+          <span className="sr-only">Home</span>
         </Link>
-        <div className="align-middle grow-0 flex px-5">
+        <div className="align-middle grow-0 flex px-5 justify-self-stretch justify-center">
           <Link
             to={BlogRoute.to}
             activeProps={{ className: navStyles.active }}
@@ -92,7 +100,7 @@ export default function Navbar() {
             About
           </Link>
         </div>
-        <div className="flex items-center justify-end grow-0">
+        <div className="flex items-center justify-self-end">
           <div className="px-2">
             <GitHub githubLink={"https://github.com/andrew-s28/"} />
           </div>
