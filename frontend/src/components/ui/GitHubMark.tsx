@@ -7,7 +7,7 @@ interface GitHubProps {
 export default function GitHub({ githubLink }: GitHubProps) {
   return (
     <Link
-      className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-gray-600/20"
+      className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 dark:hover:bg-night-sky-700 hover:bg-night-sky-300"
       to={githubLink}
       aria-label="GitHub Link"
     >

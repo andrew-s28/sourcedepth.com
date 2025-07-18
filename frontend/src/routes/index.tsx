@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, ReactNode } from "react";
+import { ArrowRight, ChevronRight } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useHeight, useWidth } from "~/hooks/useWindowSize";
 import { motion } from "motion/react";
@@ -33,7 +34,7 @@ function IntroCard() {
         }}
         exit={{ opacity: 0, translateY: 20 }}
       >
-        <div className="dark:bg-night-sky-950 bg-dawn-pink-100 dark:text-dawn-pink-100 text-night-sky-950 rounded-3xl px-5 py-2 w-fit mx-auto">
+        <div className="bg-night-sky-950 text-dawn-pink-100 rounded-3xl px-5 py-2 w-fit mx-auto">
           <h1 className="text-[clamp(2rem,6vw,4rem)] text-center font-serif ">
             Andrew Scherer
           </h1>
@@ -42,15 +43,61 @@ function IntroCard() {
           </h2>
           <div className="flex justify-center mt-2">
             <Link to="/about" className="group" resetScroll>
-              <div className="rounded dark:bg-dawn-pink-100 bg-night-sky-950 px-4 dark:text-night-sky-950 text-dawn-pink-100">
-                <span className="group-hover:font-bold after:content-[attr(title)] after:font-bold after:h-0 after:block after:invisible after:overflow-hidden after:bg-transparent bg-transparent">
+              <div className="relative rounded flex align-middle justify-center bg-dawn-pink-100  px-4 text-night-sky-950">
+                <span
+                  title="Learn More"
+                  className="px-2 my-auto transition-all duration-1000 ease-in-out group-hover:font-bold -translate-x-2  group-hover:-translate-x-3 after:content-[attr(title)] after:font-bold after:h-0 after:block after:invisible after:overflow-hidden after:bg-transparent bg-transparent"
+                >
                   Learn More
                 </span>
+                <ArrowRight
+                  className="absolute my-auto  right-5 top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+                  size={16}
+                  aria-hidden="true"
+                />
+                <ChevronRight
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto right-4 top-1/2 transform -translate-y-1/2 group-hover:translate-x-1.5 transition-all duration-1000 ease-in-out"
+                  size={16}
+                  aria-hidden="true"
+                />
+                <ChevronRight
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto right-3 top-1/2 transform -translate-y-1/2 group-hover:translate-x-2.5 transition-all duration-1000 ease-in-out animate-out"
+                  size={16}
+                  aria-hidden="true"
+                />
               </div>
             </Link>
           </div>
         </div>
       </motion.div>
+    </div>
+  );
+}
+
+function SeeMoreButton() {
+  return (
+    <div className="group flex relative px-5 text-dawn-pink-100">
+      <span
+        title="See More"
+        className="px-2 text-xl my-auto transition-all duration-1000 ease-in-out group-hover:font-bold -translate-x-2  group-hover:-translate-x-3 after:content-[attr(title)] after:font-bold after:h-0 after:block after:invisible after:overflow-hidden after:bg-transparent bg-transparent"
+      >
+        See More
+      </span>
+      <ArrowRight
+        className="absolute my-auto  right-5 top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+        size={20}
+        aria-hidden="true"
+      />
+      <ChevronRight
+        className="absolute opacity-0 group-hover:opacity-100 my-auto right-4 top-1/2 transform -translate-y-1/2 group-hover:translate-x-2 transition-all duration-1000 ease-in-out"
+        size={20}
+        aria-hidden="true"
+      />
+      <ChevronRight
+        className="absolute opacity-0 group-hover:opacity-100 my-auto right-3 top-1/2 transform -translate-y-1/2 group-hover:translate-x-3 transition-all duration-1000 ease-in-out animate-out"
+        size={20}
+        aria-hidden="true"
+      />
     </div>
   );
 }
@@ -249,25 +296,10 @@ function HomePageSections({
         {sectionLink ? (
           <Link
             to={sectionLink}
-            className=" text-dawn-pink-100 hover:text-dawn-pink-200 flex items-center space-x-2"
+            className="relative rounded flex align-middle justify-center px-4 text-night-sky-950 flex items-center space-x-2"
             resetScroll
           >
-            <span className="text-xl">See More</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-              className="w-5 h-5"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            <SeeMoreButton />
           </Link>
         ) : null}
       </div>
