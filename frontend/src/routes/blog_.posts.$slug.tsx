@@ -3,6 +3,7 @@ import { fetchMDXCode, fetchSingleMDXFrontMatter } from "../utils/mdx-fetcher";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { seo } from "~/utils/seo";
 
 let prevLoc: ParsedLocation | null = null;
 
@@ -38,6 +39,23 @@ export const Route = createFileRoute("/blog_/posts/$slug")({
   notFoundComponent: () => {
     return <NotFound />;
   },
+  head: ({ params, loaderData }) => ({
+    meta: [
+      ...seo({
+        title: `${loaderData?.frontmatter.title || ""} - Andrew Scherer`,
+        description:
+          loaderData?.frontmatter.description ||
+          `Explore my blog posts on ${
+            loaderData?.frontmatter.tags
+              .filter((value, index, self) => self.indexOf(value) === index)
+              .join(", ")
+              .replace(/, ([^,]*)$/, " and $1") ||
+            "technology, science, and software development"
+          }.`,
+        keywords: `blog, posts, articles, technology, science, software development, ${loaderData?.frontmatter.title || ""}, ${params.slug}`,
+      }),
+    ],
+  }),
 });
 
 function PostComponent() {

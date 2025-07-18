@@ -18,8 +18,13 @@ import { seo } from "~/utils/seo";
 import { ThemeProvider, initialTheme } from "../components/ThemeProvider";
 import { MotionConfig } from "framer-motion";
 import Footer from "~/components/Footer";
+import { fetchMDX } from "~/utils/mdx-fetcher";
 
 export const Route = createRootRoute({
+  loader: async () => {
+    const categories = await fetchMDX({ data: { directory: "posts" } });
+    return { categories };
+  },
   head: () => ({
     meta: [
       {
@@ -31,7 +36,10 @@ export const Route = createRootRoute({
       },
       ...seo({
         title: "Andrew Scherer",
-        description: `Personal website and blog for physical oceanographer and software developer Andrew Scherer.`,
+        description:
+          "Personal website and blog for physical oceanographer and software developer Andrew Scherer. Find out about my professional history, publications, and interests in oceanography and software development.",
+        keywords:
+          "Andrew, Scherer, Andrew Scherer, Andrew Scherer website, Andrew Scherer blog, Andrew Scherer oceanography, Andrew Scherer software developer, oceanography, software development, personal website, blog, tech, technology, science, ocean science, physical oceanography, software engineering, programming, coding, web development",
       }),
     ],
     scripts: [initialTheme()],
@@ -111,6 +119,11 @@ function RootComponent() {
 
 function RootDocument({ children }: { children: ReactNode }) {
   const pathname = useLocation().pathname;
+  const categories = Route.useLoaderData()
+    .categories.frontmatters.map((fm) => fm.tags)
+    .flat()
+    .filter((value, index, self) => self.indexOf(value) === index);
+
   return (
     <StrictMode>
       <html suppressHydrationWarning lang="en" className="antialiased">
@@ -119,7 +132,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         </head>
         <body suppressHydrationWarning>
           <ThemeProvider>
-            <Navbar />
+            <Navbar categories={categories} />
             <hr />
             <MotionConfig reducedMotion="user">{children}</MotionConfig>
             <TanStackRouterDevtools position="bottom-right" />

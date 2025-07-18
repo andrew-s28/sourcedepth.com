@@ -5,6 +5,7 @@ import { IFrontMatter } from "~/utils/mdx-fetcher";
 import { Content, Description, Intro, Wrapper } from "~/components/page";
 import { Route as BlogCategoryRoute } from "./blog_.$category";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/blog/")({
   loader: () => fetchMDX({ data: { directory: "posts" } }),
@@ -13,6 +14,21 @@ export const Route = createFileRoute("/blog/")({
   notFoundComponent: () => {
     return <NotFound />;
   },
+  head: ({ loaderData }) => ({
+    meta: [
+      ...seo({
+        title: `Blog - Andrew Scherer`,
+        description: `Explore my blog posts on ${
+          loaderData?.frontmatters
+            .map((fm) => fm.tags)
+            .flat()
+            .filter((value, index, self) => self.indexOf(value) === index)
+            .join(", ") || "technology,"
+        }, science, software development, and more.`,
+        keywords: `blog, posts, articles, technology, science, software development`,
+      }),
+    ],
+  }),
 });
 
 function RouteComponent() {

@@ -4,6 +4,8 @@ import { fetchMDX } from "~/utils/mdx-fetcher";
 import { NotFound } from "~/components/NotFound";
 import { BlogIndex } from "./blog.index";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { seo } from "~/utils/seo";
+import { capitalizeFirstLetter } from "~/utils/utils";
 
 export const Route = createFileRoute("/blog_/$category")({
   loader: ({ params: { category } }) =>
@@ -13,6 +15,15 @@ export const Route = createFileRoute("/blog_/$category")({
   notFoundComponent: () => {
     return <NotFound />;
   },
+  head: ({ params }) => ({
+    meta: [
+      ...seo({
+        title: `${capitalizeFirstLetter(params.category)} Blog - Andrew Scherer`,
+        description: `Explore my blog posts on ${params.category}.`,
+        keywords: `blog, posts, articles, technology, science, software development, ${params.category}`,
+      }),
+    ],
+  }),
 });
 
 function RouteComponent() {
