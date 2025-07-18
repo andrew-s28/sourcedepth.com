@@ -28,6 +28,7 @@ import {
   CardContent,
 } from "~/components/ui/card";
 import { Wrapper } from "~/components/page";
+import { seo } from "~/utils/seo";
 
 const loadRepositories = async () => {
   const repositories = await api.getRepositories();
@@ -75,6 +76,17 @@ const loadRepositories = async () => {
 export const Route = createFileRoute("/actions-dashboard")({
   loader: loadRepositories,
   component: RouteComponent,
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "GitHub Actions Dashboard - Andrew Scherer",
+        description:
+          "Monitors workflow runs and repository status across my GitHub repositories.",
+        keywords:
+          "GitHub, Actions, Dashboard, Workflow, Runs, Repositories, Monitoring, Software, Andrew Scherer, Andrew, Scherer",
+      }),
+    ],
+  }),
 });
 
 interface WorkflowWithRuns extends GitHubWorkflow {

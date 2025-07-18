@@ -1,6 +1,7 @@
 import { createFileRoute, ParsedLocation } from "@tanstack/react-router";
 import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { MDXPost } from "~/components/page";
+import { seo } from "~/utils/seo";
 
 let prevLoc: ParsedLocation | null = null;
 
@@ -32,6 +33,17 @@ export const Route = createFileRoute("/about-site")({
       prevLoc = match.location;
     }
   },
+  head: () => ({
+    meta: [
+      ...seo({
+        title: "About Site - Andrew Scherer",
+        description:
+          "Learn more about this site, its history and future, and the technologies used to build it.",
+        keywords:
+          "Andrew Scherer, about site, personal website, blog, technology, software development, web development",
+      }),
+    ],
+  }),
 });
 
 function AboutComponent() {
