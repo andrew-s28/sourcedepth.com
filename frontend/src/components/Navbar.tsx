@@ -182,7 +182,7 @@ export default function Navbar(
           to="/"
           inactiveProps={{ className: navStyles.inactive }}
           activeOptions={{ exact: true }}
-          className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-night-sky-300 dark:hover:bg-night-sky-700 justify-self-start"
+          className="flex cursor-pointer items-center justify-center mx-1 px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-night-sky-300 dark:hover:bg-night-sky-700 justify-self-start"
           resetScroll
           aria-label="Home page link"
         >
@@ -230,7 +230,7 @@ export default function Navbar(
             to="/"
             inactiveProps={{ className: navStyles.inactive }}
             activeOptions={{ exact: true }}
-            className="flex cursor-pointer items-center justify-center px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500"
+            className="flex cursor-pointer items-center justify-center px-1 mx-4 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500"
             resetScroll
           >
             <img
