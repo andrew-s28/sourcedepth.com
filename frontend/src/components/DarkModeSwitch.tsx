@@ -1,6 +1,6 @@
 import Sun from "./ui/Sun.js";
-import Moon from "./ui/Moon.js";
 import { Button } from "@/components/ui/button";
+import Moon from "./ui/Moon.js";
 import { useTheme } from "./ThemeProvider.js";
 
 export default function DarkModeSwitch() {

@@ -3,10 +3,10 @@
 
 import { ReactNode, StrictMode } from "react";
 import {
+  createRootRoute,
   HeadContent,
   Outlet,
   Scripts,
-  createRootRoute,
   useLocation,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
@@ -15,7 +15,7 @@ import Navbar from "~/components/Navbar";
 import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
 import { seo } from "~/utils/seo";
-import { ThemeProvider, initialTheme } from "../components/ThemeProvider";
+import { initialTheme, ThemeProvider } from "../components/ThemeProvider";
 import { MotionConfig } from "framer-motion";
 import Footer from "~/components/Footer";
 import { fetchMDX } from "~/utils/mdx-fetcher";

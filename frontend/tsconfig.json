@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "~/*": ["./src/*"],
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "react-chartjs-2/dist/types": ["node_modules/react-chartjs-2/dist/types"]
     },
     "noEmit": true
   }

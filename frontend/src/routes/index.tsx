@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, ReactNode } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useHeight, useWidth } from "~/hooks/useWindowSize";
@@ -350,13 +350,13 @@ function ProjectsIntro() {
             title="Shelf Nitrate Response to Upwelling on the Oregon Coast"
             description="Nitrate is a key nutrient for marine ecosystems, particularly in the Pacific Northwest coastal ocean. Using nearly a decade of in-situ nitrate data from profilers on the Newport Hydrographic Line, I am investigating how physical processes such as coastal, wind-driven upwelling effect the nitrate concentration on the Oregon continental
               shelf."
-            link="/projects/posts/shelf-nitrate-response-to-upwelling"
+            link="/projects/shelf-nitrate-response-to-upwelling"
           />
-          <HomePageCards
+          {/* <HomePageCards
             title="Lagrangian Particle Tracking in the California Current System"
             description="The ocean transports enormous amounts of heat, salt, and even tiny plankton! Lagrangian particle tracking is a powerful tool to understand ocean transport. I use Lagrangian particle tracking applied to long-term ocean velocity fields from satellites and models to understand how changes in ocean transport on yearly to decadal timescales effect the physical and biological properties of the Northern California Current System."
             link="/projects/posts/lagrangian-particle-tracking"
-          />
+          /> */}
         </HomePageSections>
       </motion.div>
     </div>

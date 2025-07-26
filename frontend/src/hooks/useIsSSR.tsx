@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export function useIsSSR() {
   const [isSSR, setIsSSR] = useState(true);

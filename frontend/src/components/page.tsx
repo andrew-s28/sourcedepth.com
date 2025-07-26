@@ -4,7 +4,7 @@ Stylistic components used by the website subpages.
 import { ReactNode } from "react";
 import { Await, Link } from "@tanstack/react-router";
 
-import { IMDX, IFrontMatter, AwaitIMDX } from "~/utils/mdx-fetcher";
+import { IFrontMatter, IMDX } from "~/utils/mdx-fetcher";
 import { motion } from "motion/react";
 import { MDX } from "~/components/mdx";
 

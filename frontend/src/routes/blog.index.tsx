@@ -90,7 +90,7 @@ export function BlogIndex({
             >
               {category}
             </Link>
-          )
+          ),
         )}
       </Intro>
       <Content>

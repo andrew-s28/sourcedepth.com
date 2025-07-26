@@ -2,7 +2,7 @@
   Modified from the Josh Comeau's blog post:
   https://www.joshwcomeau.com/snippets/react-hooks/use-random-interval/
 */
-import { useEffect, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 // Utility helper for random number generation
 const random = (min: number, max: number) =>

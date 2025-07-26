@@ -10,12 +10,13 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as ActionsDashboardRouteImport } from './routes/actions-dashboard'
 import { Route as AboutSiteRouteImport } from './routes/about-site'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as ProjectsShelfNitrateResponseToUpwellingRouteImport } from './routes/projects_.shelf-nitrate-response-to-upwelling'
+import { Route as ProjectsActionsDashboardRouteImport } from './routes/projects_.actions-dashboard'
 import { Route as ProjectsCategoryRouteImport } from './routes/projects_.$category'
 import { Route as BlogCategoryRouteImport } from './routes/blog_.$category'
 import { Route as ProjectsPostsSlugRouteImport } from './routes/projects_.posts.$slug'
@@ -24,11 +25,6 @@ import { Route as BlogPostsSlugRouteImport } from './routes/blog_.posts.$slug'
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ActionsDashboardRoute = ActionsDashboardRouteImport.update({
-  id: '/actions-dashboard',
-  path: '/actions-dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutSiteRoute = AboutSiteRouteImport.update({
@@ -56,6 +52,18 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsShelfNitrateResponseToUpwellingRoute =
+  ProjectsShelfNitrateResponseToUpwellingRouteImport.update({
+    id: '/projects_/shelf-nitrate-response-to-upwelling',
+    path: '/projects/shelf-nitrate-response-to-upwelling',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ProjectsActionsDashboardRoute =
+  ProjectsActionsDashboardRouteImport.update({
+    id: '/projects_/actions-dashboard',
+    path: '/projects/actions-dashboard',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProjectsCategoryRoute = ProjectsCategoryRouteImport.update({
   id: '/projects_/$category',
   path: '/projects/$category',
@@ -81,10 +89,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
-  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
+  '/projects/actions-dashboard': typeof ProjectsActionsDashboardRoute
+  '/projects/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
   '/blog': typeof BlogIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/blog/posts/$slug': typeof BlogPostsSlugRoute
@@ -94,10 +103,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
-  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog/$category': typeof BlogCategoryRoute
   '/projects/$category': typeof ProjectsCategoryRoute
+  '/projects/actions-dashboard': typeof ProjectsActionsDashboardRoute
+  '/projects/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
   '/blog': typeof BlogIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/blog/posts/$slug': typeof BlogPostsSlugRoute
@@ -108,10 +118,11 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/about-site': typeof AboutSiteRoute
-  '/actions-dashboard': typeof ActionsDashboardRoute
   '/privacy': typeof PrivacyRoute
   '/blog_/$category': typeof BlogCategoryRoute
   '/projects_/$category': typeof ProjectsCategoryRoute
+  '/projects_/actions-dashboard': typeof ProjectsActionsDashboardRoute
+  '/projects_/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
   '/blog/': typeof BlogIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/blog_/posts/$slug': typeof BlogPostsSlugRoute
@@ -123,10 +134,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
-    | '/actions-dashboard'
     | '/privacy'
     | '/blog/$category'
     | '/projects/$category'
+    | '/projects/actions-dashboard'
+    | '/projects/shelf-nitrate-response-to-upwelling'
     | '/blog'
     | '/projects'
     | '/blog/posts/$slug'
@@ -136,10 +148,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
-    | '/actions-dashboard'
     | '/privacy'
     | '/blog/$category'
     | '/projects/$category'
+    | '/projects/actions-dashboard'
+    | '/projects/shelf-nitrate-response-to-upwelling'
     | '/blog'
     | '/projects'
     | '/blog/posts/$slug'
@@ -149,10 +162,11 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/about-site'
-    | '/actions-dashboard'
     | '/privacy'
     | '/blog_/$category'
     | '/projects_/$category'
+    | '/projects_/actions-dashboard'
+    | '/projects_/shelf-nitrate-response-to-upwelling'
     | '/blog/'
     | '/projects/'
     | '/blog_/posts/$slug'
@@ -163,10 +177,11 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AboutSiteRoute: typeof AboutSiteRoute
-  ActionsDashboardRoute: typeof ActionsDashboardRoute
   PrivacyRoute: typeof PrivacyRoute
   BlogCategoryRoute: typeof BlogCategoryRoute
   ProjectsCategoryRoute: typeof ProjectsCategoryRoute
+  ProjectsActionsDashboardRoute: typeof ProjectsActionsDashboardRoute
+  ProjectsShelfNitrateResponseToUpwellingRoute: typeof ProjectsShelfNitrateResponseToUpwellingRoute
   BlogIndexRoute: typeof BlogIndexRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   BlogPostsSlugRoute: typeof BlogPostsSlugRoute
@@ -180,13 +195,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/actions-dashboard': {
-      id: '/actions-dashboard'
-      path: '/actions-dashboard'
-      fullPath: '/actions-dashboard'
-      preLoaderRoute: typeof ActionsDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about-site': {
@@ -224,6 +232,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects_/shelf-nitrate-response-to-upwelling': {
+      id: '/projects_/shelf-nitrate-response-to-upwelling'
+      path: '/projects/shelf-nitrate-response-to-upwelling'
+      fullPath: '/projects/shelf-nitrate-response-to-upwelling'
+      preLoaderRoute: typeof ProjectsShelfNitrateResponseToUpwellingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects_/actions-dashboard': {
+      id: '/projects_/actions-dashboard'
+      path: '/projects/actions-dashboard'
+      fullPath: '/projects/actions-dashboard'
+      preLoaderRoute: typeof ProjectsActionsDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/projects_/$category': {
       id: '/projects_/$category'
       path: '/projects/$category'
@@ -259,10 +281,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AboutSiteRoute: AboutSiteRoute,
-  ActionsDashboardRoute: ActionsDashboardRoute,
   PrivacyRoute: PrivacyRoute,
   BlogCategoryRoute: BlogCategoryRoute,
   ProjectsCategoryRoute: ProjectsCategoryRoute,
+  ProjectsActionsDashboardRoute: ProjectsActionsDashboardRoute,
+  ProjectsShelfNitrateResponseToUpwellingRoute:
+    ProjectsShelfNitrateResponseToUpwellingRoute,
   BlogIndexRoute: BlogIndexRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   BlogPostsSlugRoute: BlogPostsSlugRoute,
