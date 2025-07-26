@@ -8,7 +8,9 @@ import { ReactNode, useMemo, useRef, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
 
-export function Paragraph({ children }: { children: ReactNode }) {
+type TextChild = string | boolean | undefined | null;
+
+export function Paragraph({ children }: { children: TextChild }) {
   return (
     <p className="block me-1 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-3 text-base/loose">
       {children}
@@ -21,7 +23,7 @@ export function FancyLink({
   children,
 }: {
   href: string;
-  children: ReactNode;
+  children: TextChild;
 }) {
   // Check if the link is external
   const isExternal = useMemo(() => {
@@ -40,20 +42,30 @@ export function FancyLink({
     }
   }, [href]);
 
+  let lastWord = "";
+  let leadingWords = "";
+  if (typeof children === "string") {
+    lastWord = children.split(" ").pop() || "";
+    leadingWords = children.split(" ").slice(0, -1).join(" ") || "";
+  }
+
   return (
     <a
       target={isExternal ? "_blank" : ""}
       rel={isExternal ? "noreferrer" : ""}
       href={href}
-      className="text-night-sky-950 dark:text-dawn-pink-100 font-semibold border-b-2 border-blue-800 hover:border-0 transition-all duration-50 whitespace-nowrap"
+      className="text-night-sky-950 dark:text-dawn-pink-100 font-semibold border-b-2 border-blue-800 hover:border-0 transition-all duration-50"
     >
-      {children}
-      {isExternal && (
-        <span className="inline-flex align-middle ml-1">
-          <span className="sr-only">External link</span>
-          <ExternalLink size={16} className="mb-0.5" />
-        </span>
-      )}
+      {leadingWords}{" "}
+      <span className="inline-block whitespace-nowrap">
+        {lastWord}
+        {isExternal && (
+          <span className="inline-flex align-middle ml-1">
+            <span className="sr-only">External link</span>
+            <ExternalLink size={16} className="mb-0.5" />
+          </span>
+        )}{" "}
+      </span>
     </a>
   );
 }
@@ -117,7 +129,7 @@ export function Header({
   children,
   type,
 }: {
-  children: ReactNode;
+  children: TextChild;
   type: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }) {
   if (typeof children !== "string") {
@@ -147,26 +159,26 @@ export function Header({
   );
 }
 
-export function Header1({ children }: { children: ReactNode }) {
+export function Header1({ children }: { children: TextChild }) {
   return Header({ children, type: "h1" });
 }
-export function Header2({ children }: { children: ReactNode }) {
+export function Header2({ children }: { children: TextChild }) {
   return Header({ children, type: "h2" });
 }
-export function Header3({ children }: { children: ReactNode }) {
+export function Header3({ children }: { children: TextChild }) {
   return Header({ children, type: "h3" });
 }
-export function Header4({ children }: { children: ReactNode }) {
+export function Header4({ children }: { children: TextChild }) {
   return Header({ children, type: "h4" });
 }
-export function Header5({ children }: { children: ReactNode }) {
+export function Header5({ children }: { children: TextChild }) {
   return Header({ children, type: "h5" });
 }
-export function Header6({ children }: { children: ReactNode }) {
+export function Header6({ children }: { children: TextChild }) {
   return Header({ children, type: "h6" });
 }
 
-export function BlockQuote({ children }: { children: ReactNode }) {
+export function BlockQuote({ children }: { children: TextChild }) {
   return (
     <blockquote className="border-l-4 border-blue-800 dark:border-blue-700 bg-gray-100 dark:bg-gray-800 px-4 py-3 my-4 rounded-r-md text-night-sky-900 dark:text-dawn-pink-200 italic">
       <div className="text-pretty">{children}</div>
