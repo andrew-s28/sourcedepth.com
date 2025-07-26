@@ -104,12 +104,12 @@ export const MonthlyNitratePlot = () => {
   };
 
   return (
-    <div className="max-w-4xl p-4 bg-neutral-100 rounded-lg shadow-md border border-gray-200 flex-col justify-center mx-auto">
+    <div className="max-w-4xl overflow-x-auto p-4 bg-neutral-100 rounded-lg shadow-md border border-gray-200 flex-col justify-center mx-auto">
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Monthly Mean Nitrate Concentration
       </h2>
       <div className="flex flex-col md:flex-row w-full h-[800px] md:h-[500px]">
-        <div className="w-full h-full">
+        <div className="w-full min-w-[600px] h-full">
           <Line
             data={chartData}
             options={{

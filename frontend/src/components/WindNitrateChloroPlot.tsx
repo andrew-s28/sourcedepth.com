@@ -162,16 +162,16 @@ export const WindNitrateChlorophyllPlot = () => {
           },
           label1: {
             type: "label" as const,
-            content: "← Upwelling Favorable Winds",
-            xValue: -0.037,
+            content: "← Upwelling Favorable",
+            xValue: -0.05,
             yValue: 38,
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             color: "#fff",
           },
           label2: {
             type: "label" as const,
-            content: "Downwelling Favorable Winds →",
-            xValue: 0.04,
+            content: "Downwelling Favorable →",
+            xValue: 0.05,
             yValue: 38,
             backgroundColor: "rgba(0, 0, 0, 0.5)",
             color: "#fff",
@@ -188,9 +188,9 @@ export const WindNitrateChlorophyllPlot = () => {
   };
 
   return (
-    <div className="max-w-4xl p-4 bg-neutral-100 rounded-lg shadow-md border border-gray-200 flex-col justify-center mx-auto">
+    <div className="max-w-4xl p-4 overflow-x-auto bg-neutral-100 rounded-lg shadow-md border border-gray-200 flex-col justify-center mx-auto">
       <div className="flex flex-col md:flex-row w-full h-[800px] md:h-[500px]">
-        <div className="w-full h-full">
+        <div className="w-full min-w-[600px] h-full">
           <Scatter
             data={chartData}
             options={{
