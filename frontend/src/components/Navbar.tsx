@@ -120,7 +120,7 @@ function BlogLinkDropdown({ categories }: { categories?: string[] }) {
             className={cn(
               "w-full group",
               "px-4 py-2 rounded-md  dark:hover:bg-night-sky-700 hover:bg-night-sky-300 relative",
-              isActive ? navStyles.active : navStyles.inactive
+              isActive ? navStyles.active : navStyles.inactive,
             )}
           >
             Blog
@@ -161,7 +161,7 @@ function BlogLinkDropdown({ categories }: { categories?: string[] }) {
 }
 
 export default function Navbar(
-  { categories }: { categories?: string[] } = { categories: [] }
+  { categories }: { categories?: string[] } = { categories: [] },
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = useLocation().pathname;
@@ -175,7 +175,7 @@ export default function Navbar(
       <nav
         className={cn(
           navStyles.nav,
-          "justify-between px-5 grid-cols-3 max-w-6xl hidden md:grid-cols-[150px_1fr_150px] md:grid"
+          "justify-between px-5 grid-cols-3 max-w-6xl hidden md:grid-cols-[150px_1fr_150px] md:grid",
         )}
       >
         <Link

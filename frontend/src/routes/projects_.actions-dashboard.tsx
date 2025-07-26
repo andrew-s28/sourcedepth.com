@@ -2,30 +2,30 @@ import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import {
-  ChevronRight,
   CheckCircle,
-  XCircle,
-  Clock,
-  GitBranch,
-  Star,
-  GitFork,
-  CircleHelp,
-  ExternalLink,
+  ChevronRight,
   CircleAlert,
+  CircleHelp,
+  Clock,
+  ExternalLink,
+  GitBranch,
+  GitFork,
+  Star,
+  XCircle,
 } from "lucide-react";
 import {
   api,
   GitHubRepository,
   GitHubWorkflow,
   GitHubWorkflowRun,
-} from "~/utils/api";
+} from "~/utils/github-api";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
 } from "~/components/ui/card";
 import { Wrapper } from "~/components/page";
 import { seo } from "~/utils/seo";
@@ -73,7 +73,7 @@ const loadRepositories = async () => {
   return { repositoriesWithRuns };
 };
 
-export const Route = createFileRoute("/actions-dashboard")({
+export const Route = createFileRoute("/projects_/actions-dashboard")({
   loader: loadRepositories,
   component: RouteComponent,
   head: () => ({
@@ -186,7 +186,7 @@ function getStatusBadge(status: string, conclusion?: string) {
 
 interface RepositoryCardProps {
   repo: RepositoryWithRuns;
-  onToggle: (node_id: string) => void;
+  onToggle: (_node_id: string) => void;
 }
 
 function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
@@ -206,6 +206,7 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
     );
     const allSuccess = repo.workflows.every((workflow) =>
       workflow.runs?.every(
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (run) => run.conclusion === "success" || run === undefined
       )
     );
@@ -430,7 +431,7 @@ function RouteComponent() {
             GitHub Actions Dashboard
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400">
-            Monitor workflow runs and repository status across your GitHub
+            Monitor workflow runs and repository status across my GitHub
             repositories.
           </p>
         </div>

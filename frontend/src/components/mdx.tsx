@@ -4,11 +4,11 @@ https://mdxjs.com/docs/using-mdx/#components
 */
 
 import { Link, useMatch } from "@tanstack/react-router";
-import { ReactNode, useState, useRef, useMemo } from "react";
-import { Copy, Check, ExternalLink } from "lucide-react";
+import { ReactNode, useMemo, useRef, useState } from "react";
+import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
 
-function Paragraph({ children }: { children: ReactNode }) {
+export function Paragraph({ children }: { children: ReactNode }) {
   return (
     <p className="block me-1 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-3 text-base/loose">
       {children}
@@ -35,31 +35,30 @@ export function FancyLink({
       const url = new URL(href);
       return url.host !== window.location.host;
     } catch {
-      // If URL parsing fails, treat as internal link
-      return false;
+      // If URL parsing fails, treat as external link
+      return true;
     }
   }, [href]);
 
   return (
-    <>
-      <a
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noreferrer" : undefined}
-        href={href}
-        className="text-night-sky-950 dark:text-dawn-pink-100 font-semibold border-b-2 border-blue-800 hover:border-0 transition-all duration-50"
-      >
-        {children}
-        {isExternal && (
-          <span className="inline-flex align-middle">
-            <ExternalLink size={16} className="mb-0.5" />
-          </span>
-        )}
-      </a>
-    </>
+    <a
+      target={isExternal ? "_blank" : ""}
+      rel={isExternal ? "noreferrer" : ""}
+      href={href}
+      className="text-night-sky-950 dark:text-dawn-pink-100 font-semibold border-b-2 border-blue-800 hover:border-0 transition-all duration-50 whitespace-nowrap"
+    >
+      {children}
+      {isExternal && (
+        <span className="inline-flex align-middle ml-1">
+          <span className="sr-only">External link</span>
+          <ExternalLink size={16} className="mb-0.5" />
+        </span>
+      )}
+    </a>
   );
 }
 
-function Pre({ children }: { children: ReactNode }) {
+export function Pre({ children }: { children: ReactNode }) {
   const [isCopied, setIsCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
 
@@ -114,7 +113,7 @@ function Pre({ children }: { children: ReactNode }) {
   );
 }
 
-function Header({
+export function Header({
   children,
   type,
 }: {
@@ -148,26 +147,26 @@ function Header({
   );
 }
 
-function Header1({ children }: { children: ReactNode }) {
+export function Header1({ children }: { children: ReactNode }) {
   return Header({ children, type: "h1" });
 }
-function Header2({ children }: { children: ReactNode }) {
+export function Header2({ children }: { children: ReactNode }) {
   return Header({ children, type: "h2" });
 }
-function Header3({ children }: { children: ReactNode }) {
+export function Header3({ children }: { children: ReactNode }) {
   return Header({ children, type: "h3" });
 }
-function Header4({ children }: { children: ReactNode }) {
+export function Header4({ children }: { children: ReactNode }) {
   return Header({ children, type: "h4" });
 }
-function Header5({ children }: { children: ReactNode }) {
+export function Header5({ children }: { children: ReactNode }) {
   return Header({ children, type: "h5" });
 }
-function Header6({ children }: { children: ReactNode }) {
+export function Header6({ children }: { children: ReactNode }) {
   return Header({ children, type: "h6" });
 }
 
-function BlockQuote({ children }: { children: ReactNode }) {
+export function BlockQuote({ children }: { children: ReactNode }) {
   return (
     <blockquote className="border-l-4 border-blue-800 dark:border-blue-700 bg-gray-100 dark:bg-gray-800 px-4 py-3 my-4 rounded-r-md text-night-sky-900 dark:text-dawn-pink-200 italic">
       <div className="text-pretty">{children}</div>
@@ -175,7 +174,7 @@ function BlockQuote({ children }: { children: ReactNode }) {
   );
 }
 
-function Image({ src, alt }: { src: string; alt: string }) {
+export function Image({ src, alt }: { src: string; alt: string }) {
   // className = className ?
   const [loading, setLoading] = useState(true);
   return (
@@ -210,7 +209,9 @@ function Image({ src, alt }: { src: string; alt: string }) {
 }
 
 export function MDX({ code }: { code: string }) {
-  const Component = useMemo(() => getMDXComponent(code), [code]);
+  const Component = useMemo(() => {
+    return getMDXComponent(code);
+  }, [code]);
   return (
     <Component
       components={{

@@ -61,7 +61,7 @@ uv run divide.py
 
 which runs without error! Behind the scenes, uv is creating a venv for this specific script and keeping it updated with any changes to dependencies or Python versions. Since uv is **really** fast, you won't even notice.
 
-The **key takeaway** here is that the only thing researchers will have to do, once this metadata is added, is *share their scripts as normal*. Then, anyone with uv installed can run the script and uv will take care of the package management and environment setup for this script.
+The **key takeaway** here is that the only thing researchers will have to do, once this metadata is added, is _share their scripts as normal_. Then, anyone with uv installed can run the script and uv will take care of the package management and environment setup for this script.
 
 We can take this one step further by adding an `exclude-newer` field in the script metadata to ensure that dependencies must come from the day of the script's creation. This is really useful since it means you often don't even have to specify the version of the dependency. Now, the entire script looks like this:
 

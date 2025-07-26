@@ -3,6 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import fs from "node:fs/promises";
 import matter from "gray-matter";
 import path from "node:path";
+import { existsSync } from "node:fs";
 import { bundleMDX } from "mdx-bundler";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -85,6 +86,19 @@ async function fetchMDXFrontMatter(directory: string) {
 
 export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
   .validator((data: { directory: string; slug: string }) => {
+    if (!data.directory || !data.slug) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      throw notFound();
+    }
+    const mdxPath = path.join(
+      BASE_DIRECTORY,
+      data.directory,
+      data.slug + ".mdx"
+    );
+    if (!existsSync(mdxPath)) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      throw notFound();
+    }
     return {
       directory: data.directory.toLowerCase(),
       slug: data.slug.toLowerCase(),

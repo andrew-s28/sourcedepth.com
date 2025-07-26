@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "actions_dashboard",
     "webhook",
+    "dataset",
 ]
 
 MIDDLEWARE = [

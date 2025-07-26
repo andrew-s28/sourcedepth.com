@@ -1,24 +1,39 @@
-import { createFileRoute } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  notFound,
+  ParsedLocation,
+} from "@tanstack/react-router";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
-import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
-import { ParsedLocation } from "@tanstack/react-router";
+import {
+  fetchMDXCode,
+  fetchSingleMDXFrontMatter,
+  IFrontMatter,
+} from "~/utils/mdx-fetcher";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 let prevLoc: ParsedLocation | null = null;
 
 export const Route = createFileRoute("/projects_/posts/$slug")({
   loader: async ({ params: { slug } }) => {
+    let frontmatter: IFrontMatter;
+    try {
+      frontmatter = await fetchSingleMDXFrontMatter({
+        data: { slug: slug, directory: "projects" },
+      });
+    } catch (error) {
+      console.error("Error fetching frontmatter:", error);
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      throw notFound();
+    }
+    const bundle = fetchMDXCode({
+      data: { slug: slug, directory: "projects" },
+    });
     return {
-      bundle: fetchMDXCode({
-        data: { slug: slug, directory: "projects" },
-      }),
-      frontmatter: await fetchSingleMDXFrontMatter({
-        data: { slug: slug, directory: "projects" },
-      }),
+      bundle: bundle,
+      frontmatter: frontmatter,
     };
   },
-
   errorComponent: DefaultCatchBoundary,
   component: PostComponent,
   shouldReload(match) {

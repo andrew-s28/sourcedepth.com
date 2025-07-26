@@ -1,14 +1,11 @@
-import { Link } from "@tanstack/react-router";
-import { createFileRoute } from "@tanstack/react-router";
-import { fetchMDX, IFrontMatter } from "../utils/mdx-fetcher";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { IFrontMatter } from "../utils/mdx-fetcher";
 import { NotFound } from "~/components/NotFound";
 import { Content, Description, Intro, Wrapper } from "~/components/page";
-import { Route as ProjectSlugRoute } from "./projects_.posts.$slug";
 import { Route as ProjectCategoryRoute } from "./projects_.$category";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 export const Route = createFileRoute("/projects/")({
-  loader: () => fetchMDX({ data: { directory: "projects" } }),
   errorComponent: DefaultCatchBoundary,
   component: RouteComponent,
   notFoundComponent: () => {
@@ -16,14 +13,41 @@ export const Route = createFileRoute("/projects/")({
   },
 });
 
+interface IProjectFrontmatter extends IFrontMatter {
+  to: string;
+}
+
+export const projectFrontmatters: IProjectFrontmatter[] = [
+  {
+    title: "Shelf Nitrate Response to Upwelling",
+    slug: "shelf-nitrate-response-to-upwelling",
+    date: "",
+    description:
+      "Nitrate is an essential nutrient for phytoplankton growth, which forms the base of the marine food web. This project explores the response of Oregon shelf nitrate concentrations to upwelling events using newly available observational data from the Ocean Observatories Initiative.",
+    tags: ["research", "oceanography", "nitrate", "upwelling"],
+    to: "/projects/shelf-nitrate-response-to-upwelling",
+  },
+  {
+    title: "GitHub Actions Dashboard",
+    slug: "github-actions-dashboard",
+    date: "",
+    description:
+      "A dashboard to visualize my GitHub Actions workflows and their performance. This project provides a high-level overview of all my repositories with actions running.",
+    tags: ["tools", "software", "github", "dashboard"],
+    to: "/projects/actions-dashboard",
+  },
+];
+
+export const projectCategories = ["research", "tools"];
+
 function RouteComponent() {
-  const { frontmatters, categories } = Route.useLoaderData();
   const introDescription =
     "My projects span my research, software, and data interests, as well as some just-for-fun tools that I've built.";
+  const frontmatters = projectFrontmatters;
   return (
     <ProjectsIndex
       frontmatters={frontmatters}
-      categories={categories}
+      categories={projectCategories}
       intro={{
         title: "Projects",
         description: introDescription,
@@ -38,7 +62,7 @@ export function ProjectsIndex({
   categories,
   activeCategory,
 }: {
-  frontmatters: IFrontMatter[];
+  frontmatters: IProjectFrontmatter[];
   intro: { title: string; description: string };
   categories: string[];
   activeCategory?: string;
@@ -84,7 +108,7 @@ export function ProjectsIndex({
             <Description
               frontmatter={frontmatter}
               key={frontmatter.slug}
-              to={ProjectSlugRoute.to}
+              to={frontmatter.to}
               index={i}
             />
           );

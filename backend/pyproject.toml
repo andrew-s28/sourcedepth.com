@@ -12,6 +12,7 @@ dependencies = [
     "gunicorn>=23.0.0",
     "pygithub>=2.6.1",
     "python-dotenv>=1.1.0",
+    "xarray[accel,io,parallel]>=2025.7.1",
 ]
 
 [tool.ruff.lint.isort]
