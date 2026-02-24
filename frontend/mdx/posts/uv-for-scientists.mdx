@@ -2,7 +2,7 @@
 slug: "uv-for-scientists"
 title: "uv: A Guide for Scientists"
 date: "2025-07-17"
-tags: ["tech"]
+tags: ["science", "tech"]
 description: "uv is the package manager that has taken the Python community by storm. It's also a fantastic tool for supporting reproducible science."
 ---
 
@@ -28,7 +28,7 @@ for denom in denominator:
         value = 1 / denom
 ```
 
-This script cleverly avoids a division by zero warning by explicitly handling the case of `denominator == 0`. However, the script was written with `numpy=1.24` installed. When I am given the script to run, I naively run `pip install numpy` in my current environment, which installs `numpy=2.0`. Now, the script will fail with ``AttributeError: `np.infty` was removed in the NumPy 2.0 release. Use `np.inf` instead.``
+This script cleverly avoids a division by zero warning by explicitly handling the case of <nobr>`denominator == 0`</nobr>. However, the script was written with <nobr>`numpy=1.24`</nobr> installed. When I am given the script to run, I naively run `pip install numpy` in my current environment, which installs <nobr>`numpy=2.0`</nobr>. Now, the script will fail with ``AttributeError: `np.infty` was removed in the NumPy 2.0 release. Use `np.inf` instead.``
 
 Fortunately for me, this is a contrived example with a quick and easy fix and a helpful error message, but it is hopefully easy to imagine how bugs like this can get out of hand quickly. And, in any case, it still takes the most valuable resource for all researchers - time - to fix the script. Worst of all, it means the script is potentially not reproducible!
 
