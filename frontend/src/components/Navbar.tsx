@@ -195,7 +195,7 @@ export default function Navbar(
           <span className="sr-only">Home</span>
         </Link>
         <div className="align-middle grow-0 flex space-x-2 px-5 justify-self-stretch justify-center">
-          <BlogLinkButton categories={categories} />
+          <BlogLinkButton categories={categories?.sort()} />
           <Link
             to={ProjectsRoute.to}
             activeProps={{ className: navStyles.active }}

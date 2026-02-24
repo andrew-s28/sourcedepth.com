@@ -2,8 +2,6 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import globals from "globals";
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-import importPlugin from "eslint-plugin-import";
 
 export default defineConfig([
   {
@@ -15,12 +13,6 @@ export default defineConfig([
         "error",
         { argsIgnorePattern: "^_" },
       ],
-      // "sort-imports": [
-      //   "error",
-      //   {
-      //     ignoreCase: true,
-      //   },
-      // ],
     },
   },
   { settings: { react: { version: "detect" } } },
@@ -34,11 +26,9 @@ export default defineConfig([
       },
     },
   },
-  pluginReact.configs.flat.recommended,
   {
     files: ["src/**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     plugins: { js },
-    // extends: ["js/recommended", importPlugin.flatConfigs.recommended, importPlugin.flatConfigs.typescript],
     rules: {
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",

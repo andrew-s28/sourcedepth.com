@@ -45,6 +45,13 @@ export const Route = createRootRoute({
     scripts: [initialTheme()],
     links: [
       { rel: "stylesheet", href: appCss },
+      {
+        rel: "stylesheet",
+        href: "https://cdn.jsdelivr.net/npm/katex@0.16.33/dist/katex.min.css",
+        integrity:
+          "sha384-fgYS3VC1089n2J3rVcEbXDHlnDLQ9B2Y1hvpQ720q1NvxCduQqT4JoGc4u2QCnzE",
+        crossOrigin: "anonymous",
+      },
       // For iPhone
       {
         rel: "apple-touch-icon",

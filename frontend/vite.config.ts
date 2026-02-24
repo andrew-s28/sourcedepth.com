@@ -18,7 +18,6 @@ export default defineConfig({
         crawlLinks: true,
         failOnError: true,
       },
-      customViteReactPlugin: true,
     }),
     react({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
   ],

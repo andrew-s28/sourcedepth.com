@@ -7,6 +7,7 @@ import { Link, useMatch } from "@tanstack/react-router";
 import { ReactNode, useMemo, useRef, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
+import { NitratePlot } from "./NitratePlot";
 
 type TextChild = string | boolean | undefined | null;
 
@@ -238,6 +239,7 @@ export function MDX({ code }: { code: string }) {
         p: Paragraph,
         Image,
         blockquote: BlockQuote,
+        NitratePlot,
       }}
     />
   );

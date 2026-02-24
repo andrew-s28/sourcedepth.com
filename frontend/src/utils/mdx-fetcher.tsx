@@ -7,6 +7,8 @@ import { existsSync } from "node:fs";
 import { bundleMDX } from "mdx-bundler";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeKatex from "rehype-katex";
+import remarkMath from "remark-math";
 
 import type { Options } from "@mdx-js/esbuild";
 
@@ -40,11 +42,17 @@ const bundler = (file: string, directory: string): Promise<IMDX> => {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [
+          // rehypeMathjax,
           rehypePrettyCode,
           { theme: { dark: "github-dark-dimmed", light: "github-light" } },
         ],
+        [rehypeKatex],
       ];
-      options.remarkPlugins = [...(options.remarkPlugins ?? []), [remarkGfm]];
+      options.remarkPlugins = [
+        ...(options.remarkPlugins ?? []),
+        [remarkGfm],
+        [remarkMath],
+      ];
       return options;
     },
     esbuildOptions(options) {
@@ -76,16 +84,16 @@ async function fetchMDXFrontMatter(directory: string) {
   const frontmatters = await Promise.all(
     files.map(async (file) => {
       const { data } = matter(
-        await fs.readFile(path.join(BASE_DIRECTORY, directory, file), "utf8")
+        await fs.readFile(path.join(BASE_DIRECTORY, directory, file), "utf8"),
       );
       return data as IFrontMatter;
-    })
+    }),
   );
   return frontmatters.sort(orderByDate());
 }
 
 export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; slug: string }) => {
+  .inputValidator((data: { directory: string; slug: string }) => {
     if (!data.directory || !data.slug) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
@@ -93,7 +101,7 @@ export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
     const mdxPath = path.join(
       BASE_DIRECTORY,
       data.directory,
-      data.slug + ".mdx"
+      data.slug + ".mdx",
     );
     if (!existsSync(mdxPath)) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
@@ -107,7 +115,7 @@ export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const file = await fs.readFile(
       path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
-      "utf8"
+      "utf8",
     );
     const { data: frontmatter } = matter(file);
     return frontmatter as IFrontMatter;
@@ -121,13 +129,13 @@ function getCategories(frontmatters: IFrontMatter[]) {
           return frontmatter.tags.map((tag) => tag.toLowerCase());
         })
         .flat()
-        .sort()
-    )
+        .sort(),
+    ),
   );
 }
 
 export const fetchMDXCode = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; slug: string }) => {
+  .inputValidator((data: { directory: string; slug: string }) => {
     return {
       directory: data.directory.toLowerCase(),
       slug: data.slug.toLowerCase(),
@@ -146,7 +154,7 @@ export const fetchMDXCode = createServerFn({ method: "GET" })
   });
 
 export const fetchMDX = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; category?: string }) => {
+  .inputValidator((data: { directory: string; category?: string }) => {
     if (data.category) {
       data.category = data.category.toLowerCase();
     }
@@ -160,7 +168,7 @@ export const fetchMDX = createServerFn({ method: "GET" })
       let frontmatters = await fetchMDXFrontMatter(data.directory);
       const categories = getCategories(frontmatters);
       frontmatters = frontmatters.filter((post) =>
-        data.category ? post.tags.includes(data.category) : true
+        data.category ? post.tags.includes(data.category) : true,
       );
       if (frontmatters.length === 0) {
         // eslint-disable-next-line @typescript-eslint/only-throw-error

@@ -94,8 +94,8 @@ export interface FileRoutesByFullPath {
   '/projects/$category': typeof ProjectsCategoryRoute
   '/projects/actions-dashboard': typeof ProjectsActionsDashboardRoute
   '/projects/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
-  '/blog': typeof BlogIndexRoute
-  '/projects': typeof ProjectsIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/projects/': typeof ProjectsIndexRoute
   '/blog/posts/$slug': typeof BlogPostsSlugRoute
   '/projects/posts/$slug': typeof ProjectsPostsSlugRoute
 }
@@ -139,8 +139,8 @@ export interface FileRouteTypes {
     | '/projects/$category'
     | '/projects/actions-dashboard'
     | '/projects/shelf-nitrate-response-to-upwelling'
-    | '/blog'
-    | '/projects'
+    | '/blog/'
+    | '/projects/'
     | '/blog/posts/$slug'
     | '/projects/posts/$slug'
   fileRoutesByTo: FileRoutesByTo
@@ -221,14 +221,14 @@ declare module '@tanstack/react-router' {
     '/projects/': {
       id: '/projects/'
       path: '/projects'
-      fullPath: '/projects'
+      fullPath: '/projects/'
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
-      fullPath: '/blog'
+      fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -295,3 +295,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

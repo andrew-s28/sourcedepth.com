@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
+import type { ErrorComponentProps } from '@tanstack/react-router'
 import { ArrowLeft, Home } from "lucide-react";
 
-export function DefaultCatchBoundary() {
+export function DefaultCatchBoundary({error: _error, reset: _reset}: ErrorComponentProps) {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-dawn-pink-100 dark:bg-night-sky-950 px-4 text-center">
       <h1 className="text-6xl font-bold text-night-sky-950 dark:text-dawn-pink-100">
