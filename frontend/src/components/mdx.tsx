@@ -195,7 +195,7 @@ export function Image({ src, alt }: { src: string; alt: string }) {
       <img
         src={`/static${src}`}
         alt={alt}
-        className="rounded-lg shadow-md my-5 mx-auto min-w-[200px] w-2/3 h-auto"
+        className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-2/3 h-auto"
         onError={() => {
           setLoading(false);
         }}
@@ -209,7 +209,7 @@ export function Image({ src, alt }: { src: string; alt: string }) {
         }}
       />
       <div
-        className="rounded-lg shadow-md my-5 mx-auto min-w-[200px] bg-gray-500/70 dark:bg-gray-900/70 w-2/3 animate-pulse"
+        className="rounded-lg shadow-md my-5 mx-auto min-w-50 bg-gray-500/70 dark:bg-gray-900/70 w-2/3 animate-pulse"
         style={{
           height: "100%",
           position: "absolute",
@@ -218,6 +218,22 @@ export function Image({ src, alt }: { src: string; alt: string }) {
         }}
       />
     </div>
+  );
+}
+
+export function List({ children }: { children: ReactNode }) {
+  return (
+    <div className="block mr-1">
+      <ul className="list-disc list-inside pl-4">{children}</ul>
+    </div>
+  );
+}
+
+export function ListItem({ children }: { children: TextChild }) {
+  return (
+    <li className="pl-4 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-1 -indent-4">
+      {children}
+    </li>
   );
 }
 
@@ -237,8 +253,10 @@ export function MDX({ code }: { code: string }) {
         h6: Header6,
         pre: Pre,
         p: Paragraph,
-        Image,
+        li: ListItem,
+        ul: List,
         blockquote: BlockQuote,
+        Image,
         NitratePlot,
       }}
     />
