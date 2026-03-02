@@ -8,6 +8,7 @@ import { ReactNode, useMemo, useRef, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
 import { NitratePlot } from "./NitratePlot";
+import { LenticularClouds } from "./LenticularClouds";
 
 type TextChild = string | boolean | undefined | null;
 
@@ -258,6 +259,7 @@ export function MDX({ code }: { code: string }) {
         blockquote: BlockQuote,
         Image,
         NitratePlot,
+        LenticularClouds,
       }}
     />
   );

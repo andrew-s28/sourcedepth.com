@@ -1,7 +1,8 @@
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import viteReact from "@vitejs/plugin-react";
 import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
+import { nitro } from 'nitro/vite'
 import mdx from "@mdx-js/rollup";
 import rehypePrettyCode from "rehype-pretty-code";
 import tailwindcss from "@tailwindcss/vite";
@@ -19,6 +20,7 @@ export default defineConfig({
         failOnError: true,
       },
     }),
-    react({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
+    nitro(),
+    viteReact({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
   ],
 });

@@ -4,7 +4,7 @@ import fs from "node:fs/promises";
 import matter from "gray-matter";
 import path from "node:path";
 import { existsSync } from "node:fs";
-import { bundleMDX } from "mdx-bundler";
+import { createRequire } from "node:module";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeKatex from "rehype-katex";
@@ -31,6 +31,10 @@ export interface AwaitIMDX {
 }
 
 const BASE_DIRECTORY = path.join(process.cwd(), "mdx");
+
+// mdx-bundler deps aren't playing nice with ESM, so we have to use createRequire to import it
+const require = createRequire(import.meta.url);
+const { bundleMDX } = require("mdx-bundler") as typeof import("mdx-bundler");
 
 const bundler = (file: string, directory: string): Promise<IMDX> => {
   return bundleMDX({
