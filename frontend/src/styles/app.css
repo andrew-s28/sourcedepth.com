@@ -4,6 +4,9 @@
 @import "./rehypePretty.css";
 @import "./reactDayPicker.css";
 
+@source "../**/*.{ts,tsx,js,jsx}";
+@source "../../mdx/**/*.mdx";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 * {
