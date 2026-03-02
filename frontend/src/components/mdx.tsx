@@ -9,6 +9,8 @@ import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
 import { NitratePlot } from "./NitratePlot";
 import { LenticularClouds } from "./LenticularClouds";
+import { AllLogos, WebsiteStackLogos } from "./ui/Logos";
+import { Publication, Presentation } from "./Publications";
 
 type TextChild = string | boolean | undefined | null;
 
@@ -260,6 +262,10 @@ export function MDX({ code }: { code: string }) {
         Image,
         NitratePlot,
         LenticularClouds,
+        AllLogos,
+        WebsiteStackLogos,
+        Presentation,
+        Publication,
       }}
     />
   );
