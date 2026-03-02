@@ -85,5 +85,9 @@
     "prettier": "3.5.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0"
+  },
+    "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "*",
+    "@rollup/rollup-linux-x64-musl": "*"
   }
 }
