@@ -35,7 +35,7 @@ const BASE_DIRECTORY = path.join(process.cwd(), "mdx");
 const bundler = (file: string, directory: string): Promise<IMDX> => {
   return bundleMDX({
     file: path.join(BASE_DIRECTORY, directory, file),
-    cwd: BASE_DIRECTORY,
+    cwd: process.cwd(),
     bundleDirectory: path.join(BASE_DIRECTORY, directory),
     bundlePath: directory,
     mdxOptions(options: Options) {
@@ -56,6 +56,9 @@ const bundler = (file: string, directory: string): Promise<IMDX> => {
       return options;
     },
     esbuildOptions(options) {
+      options.alias = {
+        "~": path.resolve(process.cwd(), "src"),
+      };
       options.loader = {
         ...options.loader,
         ".png": "file",
