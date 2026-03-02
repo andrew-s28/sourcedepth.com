@@ -1,0 +1,89 @@
+---
+slug: "lenticular-clouds"
+title: "Internal Waves and Lenticular Clouds"
+date: "2026-02-23"
+tags: ["science"]
+description: "Internal gravity waves, among many other effects, can create distinctive lenticular clouds, which I was inspired to write a brief analysis of after a beautiful example over the Oregon Coast Range."
+---
+
+import { useState, useEffect, useRef } from "react";
+import { LenticularClouds } from "~/components/LenticularClouds";
+
+## Introduction
+
+I was inspired by this beautiful example of lenticular clouds one day on my drive home:
+
+<Image
+    src="/lenticular-clouds/lenticular-clouds.jpg"
+    alt="Lenticular clouds over the Oregon Coast Range"
+    width={800}
+    height={600}
+    className="rounded-lg shadow-lg mb-4"
+/>
+
+I tend to show my appreciation for natural beauty by trying to understand it, so I lost a day of my last weekend researching and writing up some very simplified analysis of mountain waves, a type of internal gravity wave that can create lenticular clouds. Here, I walk through the derivation of the governing equations for internal gravity waves with a background flow and then have a fun plot where you can examine their evolution based on different background flow and stratification conditions. This is a very simplified analysis, so please go check out the great work by Dale Durran (among others) for a more rigorous treatment (e.g., [Durran 2002](https://weather.ou.edu/~hblue/metr6413/Durran90.pdf), [Durran 2003](https://doi.org/10.1016/B0-12-227090-8/00202-5)).
+
+Want to skip the equations and get right to the fun stuff? [Click here to scroll down to the interactive plot](https://sourcedepth.com/blog/posts/lenticular-clouds#make-your-own-lenticular-clouds!) of mountain wave evolution!
+
+## Equations of motion
+
+We begin with the Navier-Stokes momentum equations, continuity equation, and divergence equation for Bousinessq ($$\rho' \ll \rho_0$$), nearly incompressible ($$\nabla \cdot \vec{u} \approx 0$$), frictionless ($$\nu = \mu = 0$$) flow with no mean horizontal density gradients ($$\partial \rho_0 / \partial x = \partial \rho_0 / \partial y = 0$$) and no Coriolis force ($$Ro \gg 1$$). After linearizing about a mean state and dropping all products of primed perturbation terms, we end up with the following equations of motion:
+
+```math
+\begin{gather}
+        \frac{D u}{D t} + \frac{1}{\rho_0} \frac{\partial P}{\partial x} = 0 \\[1em]
+        \frac{D w}{D t} + \frac{1}{\rho} \frac{\partial P}{\partial z} + \frac{\rho}{\rho_0}g = 0 \\[1em]
+        \frac{D \rho}{D t} + w \frac{\partial \rho_0}{\partial z} = 0 \\[1em]
+        \frac{\partial u}{\partial x} + \frac{\partial w}{\partial z} = 0
+\end{gather}
+```
+
+where all primes have been drpoped for ease of writing, with mean terms denoted by subscript zero (e.g., $$\rho_0$$). One can combine these equations in such a way as to be left with terms only including the vertical velocity perturbation $$w$$, which yields the following second-order, homogeneous, differential equation equation:
+
+```math
+\begin{equation}
+    \frac{\partial^2 w}{\partial x^2} + \frac{\partial^2 w}{\partial z^2} + \frac{N^2}{U^2} w = 0
+\end{equation}
+```
+
+with $$N^2 = - \frac{g}{\rho_0} \frac{\partial \rho_0}{\partial z}$$ being the buoyancy frequency and $$U$$ being the background flow speed. This is the governing equation for internal gravity waves in a continuously stratified fluid with a background flow.
+
+
+To solve this equation, we assume an infinite, sinusoidal mountain topography $$h(x) = h_m \sin{(kx)}$$ and apply two boundary conditions: 1) no normal flow at the surface with $$U \partial h / \partial x = w(x, 0)$$ (by continuity) such that $$w(x, 0)=U h_m k \cos{(kx)}$$, and 2) no flow at infinity such that $$w(x, z \rightarrow \infty) = 0$$. This ends up with two solutions depending on the intrinsic wave frequency $$U k$$ and the background stratification $$N$$. If the wave frequency is greater than the buoyancy frequency ($$U k > N$$), then the buoyancy cannot fully balance the wave oscillations and the wave therefore decays exponentially with height. If the wave frequency is less than the buoyancy frequency ($$U k < N$$), then the solution is oscillatory and propagates vertically. This yields the solution:
+
+```math
+\begin{equation}
+    w(x, z) = \left\{
+        \begin{array}{ll}
+            U h_m k e^{-\mu z} \cos{(kx)} & \text{if } U k > N \\
+            U h_m k \cos{(kx + \nu z)} & \text{if } U k < N
+        \end{array}
+    \right.
+\end{equation}
+```
+
+where $$\mu = \sqrt{N^2 - U^2 k^2}$$ and $$\nu = \sqrt{U^2 k^2 - N^2}$$.
+
+Using the vertical velocity, we can then also find the vertical displacement of an air parcel using $$U \partial \eta / \partial x = w$$. Using this, along with some background relative humidity and temperature profiles, we can then determine where the air parcel will reach saturation and form clouds (i.e., $$\text{RH}>1$$ for this simplified analysis).
+
+## Make your own lenticular clouds!
+
+I have implemented the above solution into the contour plot below so that you can explore how background flow speed and mountain profile effect the propagation of internal gravity waves above mountain ranges. I've also calculated the relative humidity profile based on vertical displacement, with the regions where $$\text{RH}>1$$ circled with a black line.
+
+In the default state below (i.e., $$U k > N$$), you should see that the wave decays exponentially with height ($$w \rightarrow 0$$ as $$z \rightarrow \infty$$). In this case, the background flow speed is too fast or the mountain wavelength too short for the buoyancy to balance the natural wave oscillations, so the wave decays with height. Here, the highest vertical velocity perturbations are near the surface, with regions of high relative humidity (i.e., potential cloud formation) centered on cloud peaks, perhaps similar to lenticular clouds. When you decrease the background flow speed or increase the mountain wavelength such that $$U k < N$$ (try $$U=5$$ m/s), the wave no longer decays with height, instead propagating vertically and upstream. The relative humidity in this case is large throughout the domain. Perhaps this is similar to layered lenticular clouds.
+
+<LenticularClouds />
+
+## Closing thoughts
+
+We've made a lot of assumptions in this analysis, including:
+
+- Infinite mountain range
+- Sinusoidal mountain profile
+- No Coriolis force
+- No friction
+- Constant background flow speed
+- Constant background stratification
+- Constant background relative humidity and temperature profiles
+
+In reality, all of these factors will be important to varying degrees. A natural next step would be to solve the fully non-linear equations with more realistic boundary conditions and background profiles, which is what Dale Durran and many others have done in their work on mountain waves. One could take this all the way to a full 3-D, primitive equation model with real topography, which is essentially what weather and climate models do. But I hope this simplified analysis highlights the fact that we can get a pretty decent model of lenticular cloud formation even frm a very simplified model!
