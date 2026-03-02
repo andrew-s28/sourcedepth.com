@@ -17,7 +17,7 @@ const navStyles = {
   button: `
     font-bold
     text-lg
-    h-[3rem]
+    h-12
     rounded
     w-30
     min-w-30
@@ -34,7 +34,7 @@ const navStyles = {
   active: "font-bold text-lg bg-night-sky-200 dark:bg-night-sky-900",
   inactive: "font-normal text-lg",
   container: "w-full sticky top-0 bg-dawn-pink-100 dark:bg-night-sky-950 z-50",
-  nav: "h-[4rem] p-0 items-center m-auto",
+  nav: "h-16 p-0 items-center m-auto",
 };
 
 function BlogLinkButton({ categories }: { categories?: string[] }) {
@@ -153,7 +153,7 @@ function BlogLinkDropdown({ categories }: { categories?: string[] }) {
           >
             See All Posts
           </Link>
-          <div className="w-full bg-night-sky-950 dark:bg-dawn-pink-100 h-[1px] mx-auto mt-2" />
+          <div className="w-full bg-night-sky-950 dark:bg-dawn-pink-100 h-px mx-auto mt-2" />
         </Accordion.Content>
       </Accordion.Item>
     </Accordion.Root>
@@ -182,7 +182,7 @@ export default function Navbar(
           to="/"
           inactiveProps={{ className: navStyles.inactive }}
           activeOptions={{ exact: true }}
-          className="flex cursor-pointer items-center justify-center mx-1 px-1 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-night-sky-300 dark:hover:bg-night-sky-700 justify-self-start"
+          className="flex cursor-pointer items-center justify-center mx-1 px-1 py-0 m-0 size-12 rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500 hover:bg-night-sky-300 dark:hover:bg-night-sky-700 justify-self-start"
           resetScroll
           aria-label="Home page link"
         >
@@ -230,7 +230,7 @@ export default function Navbar(
             to="/"
             inactiveProps={{ className: navStyles.inactive }}
             activeOptions={{ exact: true }}
-            className="flex cursor-pointer items-center justify-center px-1 mx-4 py-0 m-0 size-[3rem] rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500"
+            className="flex cursor-pointer items-center justify-center px-1 mx-4 py-0 m-0 size-12 rounded-full bg-transparent shadow-none border-solid focus-visible:ring-1 focus-visible:ring-blue-500"
             resetScroll
           >
             <img
