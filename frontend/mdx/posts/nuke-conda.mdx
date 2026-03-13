@@ -1,0 +1,29 @@
+---
+slug: "nuke-conda"
+title: "Nuke Conda From Your Machines"
+date: "2026-03-12"
+tags: ["tech"]
+description: "An ode to conda, a package manager of all time."
+---
+
+## conda, the heaviest package management
+
+I've most likely done something wrong.
+
+That said, having finally gotten around to uninstalling conda after moving into [uv](/blog/posts/uv-for-scientists), I couldn't believe how much space it freed up. I saved 30 GB on my hard drive, completely taken up by dozens of environments and whatever else conda was deciding to install, truly who knows. I was using miniconda, and still it took up such an obscene amount of space.
+
+No package management software should be relying on constant user supervision to prevent eating up several percent of your hard drive.
+
+## anaconda, an open-source nightmare
+
+Anaconda, which distributes an even-worse GUI version of Python package management, has big issues for use in open-source development and scientific software. The license terms are complex and dependent on organization size, with potential ramifications for academic use. Though it seems they're not interested in enforcing these terms on open-source devs, it's always a risk. Just using conda to install a package that may itself pull a dependency from an Anaconda channel is all it takes to find yourself in hot water with Anaconda's licensing terms.
+
+## conda, just so slow
+
+My gosh, please just solve the environment already. How is the environment not solved already? It's been DAYS.
+
+## uv, to the future
+
+I've been using uv for some time now, as it solves the pain points listed above and pain points I didn't even know I had. I'm pleased to report the bloatware of conda is off my machine, hopefully forever.
+
+If you can't tell, don't take this blog too seriously - it's mostly just my years of trauma from using conda relived one last time while uninstalling. And here's to the future, a future where I'm not stuck thinking about Python package management too much.
