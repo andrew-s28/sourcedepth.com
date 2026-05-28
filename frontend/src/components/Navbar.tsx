@@ -132,7 +132,7 @@ function BlogLinkDropdown({ categories }: { categories?: string[] }) {
           </Accordion.Trigger>
         </Accordion.Header>
         <Accordion.Content className="p-2 space-y-1">
-          <div className="w-full bg-night-sky-950 dark:bg-dawn-pink-100 h-[1px] mx-auto mb-2" />
+          <div className="w-full bg-night-sky-950 dark:bg-dawn-pink-100 h-px mx-auto mb-2" />
           {categories?.map((category) => (
             <Link
               key={category}

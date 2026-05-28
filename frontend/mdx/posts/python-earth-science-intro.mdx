@@ -1,0 +1,73 @@
+---
+slug: "python-earth-science-intro"
+title: "Python in the Earth Sciences: An Introduction"
+date: "2026-05-15"
+tags: ["software"]
+description: "This is the first in a series of posts that will cover the basics and best practices for using Python with a focus on Earth science research. Here, we will cover installing Python with the help of uv and creating our first program."
+---
+
+As a fourth year PhD candidate in physical oceanography as of writing, I use Python in some form every single day for my work. I'm a (mostly<TooltipPopover number="1" >No one is ever truly self taught</TooltipPopover>) self-taught Python developer of even more years, during which time I've found both the joys and frustrations with developing in Python. Over the course of several posts, I'd like to share the introduction to Python that I wish I had when I started my PhD.
+
+## Why Python?
+
+Python has become the de-facto programming language for scientific research. It is a general purpose programming language that is easy to learn, has a large and active community, and has a rich ecosystem of libraries and tools for scientific computing. In the Earth sciences, Python is used for a wide range of applications, from data analysis and visualization to numerical modeling and machine learning.
+
+## Installing Python
+
+Historically, there have been lots of ways to get Python on your machine. One could install the source code directly from [python.org](https://www.python.org/downloads/), but this requires more management to keep your Python installation up-to-date. Many in the Earth sciences have also used Python installed and managed through [miniconda](https://www.anaconda.com/docs/getting-started/miniconda/main) which also includes an "environment management"<TooltipPopover number="2">Don't worry, we will discuss environments later</TooltipPopover> software called conda. These different ways to manage Python have resulted in Python having a bit of a reputation for quickly getting unmanageable:
+
+<Image
+  src="https://imgs.xkcd.com/comics/python_environment.png"
+  alt="An XKCD comic showing lots of Python installs with wild arrows connecting them all, indicating an absolute mess"
+/>
+
+Instead, I want to encourage all new developers to simply start with [installing uv](https://docs.astral.sh/uv/getting-started/installation/). I've [written about some of the powers of uv before](/blog/posts/uv-for-scientists) and I strongly believe it's where everyone should now start their Python journey<TooltipPopover number="3">If you're absolutely sure you will need supporot for non-Python dependencies, consider [pixi](https://pixi.prefix.dev/latest/) instead</TooltipPopover>. Simply open up your terminal (or Powershell on Windows) and run the first command provided on the uv install site.
+
+## Editing Python
+
+In addition to installing Python, we also need a way to write Python code. Fortunately, it's even easier to write Python code than it is to write in a Word document! Python code is, ultimately, just plain text, so anything you can write plain text in can also write Python. This includes NotePad, which comes pre-installed on most Windows devices.
+
+However, there's advantages to having a slightly more sophisticated editor setup. In the interest of providing a path of least resistance, I recommend downloading [VSCode]
+(https://code.visualstudio.com/)<TooltipPopover number="4">There's lots of strong opinions about editors. If you prefer a different one, please use it!</TooltipPopover>, which is a much fancier text editor with plugins that support lots of different programming languages. Don't get too overwhelmed by the options to start, though. Just download it and open any directory and you'll be ready to start writing code!
+
+## Hello World!
+
+Now that we have uv installed, let's run our first Python program. We are going to be wokring out of the terminal, which you should follow along with to get more comfortable which will make your life much easier down the road. Open your terminal and run the following to create a new directory:
+
+```bash
+cd
+mkdir hello_world
+cd hello_world
+```
+
+Here we have <ins>c</ins>hanged to your "home" <ins>d</ins>irectory by using a bare `cd`, then we <ins>m</ins>a<ins>k</ins>e a new directory with `mkdir hello_world` and again <ins>c</ins>hange <ins>d</ins>irectory to it with `cd hello_world`. Now we initialize a new project by running:
+
+```bash
+uv init --bare
+```
+
+This makes a new project with only a `pyproject.toml`<TooltipPopover number="5">More on this later as well!</TooltipPopover>. Now we need to create a Python file named `hello_world.py`. If you are using VSCode, you can run `code hello_world.py` in your terminal which will create the file and open up an editor all in one go. However you choose to edit Python code, once you've created and opened the file, write the following code, save, and exit:
+
+```python showLineNumbers
+print("Hello world!")
+```
+
+Finally, go back to the terminal and run:
+
+```bash
+uv run hello_world.py
+```
+
+You should now see an output that looks smoething like the following:
+
+```txt
+Using CPython 3.13.2
+Creating virtual environment at: .venv
+Hello world!
+```
+
+The first two lines indicate that uv has taken care of finding a Python installation, setting up, and activating a virtual environment for us -- all stuff that we would have had to take care of manually back in the days of only conda and pip. Congratulations on your first Python program!
+
+## What's Next?
+
+There's lots still to cover, of course. In the next installment, I will expand on what "environments" mean in Python and why it's important to "manage" them, as well as how uv abstracts a lot of these chores away. This will also cover the `pyproject.toml` file and what it does.

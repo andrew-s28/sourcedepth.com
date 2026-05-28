@@ -11,8 +11,16 @@ import { NitratePlot } from "./NitratePlot";
 import { LenticularClouds } from "./LenticularClouds";
 import { AllLogos, WebsiteStackLogos } from "./ui/Logos";
 import { Publication, Presentation } from "./Publications";
+import { Popover } from "radix-ui";
 
 type TextChild = string | boolean | undefined | null;
+type NumberedContentProps = {
+  number: number;
+  children: ReactNode;
+};
+type FootnotesWrapperProps = {
+  children: ReactNode;
+};
 
 export function Paragraph({ children }: { children: TextChild }) {
   return (
@@ -193,10 +201,11 @@ export function BlockQuote({ children }: { children: TextChild }) {
 export function Image({ src, alt }: { src: string; alt: string }) {
   // className = className ?
   const [loading, setLoading] = useState(true);
+  src = src.startsWith("http") ? src : `/static${src}`;
   return (
     <div className="relative w-full h-full flex justify-center items-center">
       <img
-        src={`/static${src}`}
+        src={src}
         alt={alt}
         className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-2/3 h-auto"
         onError={() => {
@@ -240,6 +249,60 @@ export function ListItem({ children }: { children: TextChild }) {
   );
 }
 
+export function TooltipPopover({ number, children }: NumberedContentProps) {
+
+  return (
+    <Popover.Popover>
+      <Popover.PopoverTrigger asChild>
+        <button
+          type="button"
+          className="align-super text-xs font-semibold text-blue-800 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-200 transition-colors"
+          aria-label={`Footnote ${String(number)}`}
+          aria-describedby={`footnote-${String(number)}`}
+        >
+          [{number}]
+        </button>
+      </Popover.PopoverTrigger>
+      <Popover.PopoverContent
+        className="mx-4 bg-dawn-pink-100 dark:bg-night-sky-950 p-2 rounded-lg shadow-xl z-50 border-night-sky-950 dark:border-dawn-pink-100 border-2"
+        sideOffset={5}
+      >
+        <div className="gap-2 w-fit max-w-60 table">
+          <p className="text-sm inline-block">
+          {children}
+          </p>
+        </div>
+        <Popover.Arrow
+          height={10}
+          className="dark:fill-dawn-pink-100 fill-night-sky-950"
+        />
+      </Popover.PopoverContent>
+
+    </Popover.Popover>
+  );
+}
+
+export function TooltipNote({ number, children }: NumberedContentProps) {
+  return (
+    <div
+      id={`footnote-${String(number)}`}
+      className="text-sm text-night-sky-900 dark:text-dawn-pink-200 py-1 flex gap-2"
+    >
+      <span className="font-semibold text-xs">[{String(number)}]</span>
+      <span className="flex-1 text-xs">{children}</span>
+    </div>
+  );
+}
+
+export function TooltipNotes({ children }: FootnotesWrapperProps) {
+  return (
+    <section aria-label="Footnotes" className="mt-8">
+      <hr className="border-night-sky-200 dark:border-dawn-pink-200/40" />
+      <div className="pt-4">{children}</div>
+    </section>
+  );
+}
+
 export function MDX({ code }: { code: string }) {
   const Component = useMemo(() => {
     return getMDXComponent(code);
@@ -266,6 +329,9 @@ export function MDX({ code }: { code: string }) {
         WebsiteStackLogos,
         Presentation,
         Publication,
+        TooltipPopover,
+        TooltipNote,
+        TooltipNotes,
       }}
     />
   );
