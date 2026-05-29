@@ -22,9 +22,9 @@ type FootnotesWrapperProps = {
   children: ReactNode;
 };
 
-export function Paragraph({ children }: { children: TextChild }) {
+export function Paragraph({ children }: { children: ReactNode }) {
   return (
-    <p className="block me-1 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-3 text-base/loose">
+    <p className="block me-1 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-3 text-base/7">
       {children}
     </p>
   );

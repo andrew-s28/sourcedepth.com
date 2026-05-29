@@ -137,7 +137,7 @@ function RootDocument({ children }: { children: ReactNode }) {
         <head>
           <HeadContent />
         </head>
-        <body suppressHydrationWarning>
+        <body suppressHydrationWarning className="bg-dawn-pink-100 dark:bg-night-sky-950 text-night-sky-950 dark:text-dawn-pink-100">
           <ThemeProvider>
             <Navbar categories={categories} />
             <hr />
