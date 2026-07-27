@@ -198,16 +198,18 @@ export function BlockQuote({ children }: { children: TextChild }) {
   );
 }
 
-export function Image({ src, alt }: { src: string; alt: string }) {
+export function Image({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
   // className = className ?
   const [loading, setLoading] = useState(true);
   src = src.startsWith("http") ? src : `/static${src}`;
   return (
-    <div className="relative w-full h-full flex justify-center items-center">
+    <>
       <img
         src={src}
         alt={alt}
-        className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-2/3 h-auto"
+        className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-2/3 h-auto bg-gray-500"
+        width={width}
+        height={height}
         onError={() => {
           setLoading(false);
         }}
@@ -216,20 +218,38 @@ export function Image({ src, alt }: { src: string; alt: string }) {
         }}
         style={{
           display: "block",
-          opacity: loading ? 0.25 : 0.75,
+          opacity: loading ? 0 : 1,
           transition: "opacity 1s ease-in-out",
         }}
       />
-      <div
-        className="rounded-lg shadow-md my-5 mx-auto min-w-50 bg-gray-500/70 dark:bg-gray-900/70 w-2/3 animate-pulse"
+      <img
+        className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-2/3 h-auto bg-gray-500/70 dark:bg-gray-900/70 animate-pulse"
         style={{
-          height: "100%",
           position: "absolute",
-          backgroundColor: "rgba(209, 213, 219, 0.75)",
           display: loading ? "block" : "none",
         }}
+        width={width}
+        height={height}
       />
-    </div>
+      </>
+  );
+}
+
+export function FigureWithCaption({ src, alt, width, height, caption }: { src: string; alt: string; width: number; height: number; caption: string }) {
+  return (
+      <figure>
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+        />
+        <figcaption className="text-sm text-center -mt-5 mb-5 mx-auto min-w-50 w-2/3 h-auto opacity-70">
+        <em>
+          {caption}
+          </em>
+        </figcaption>
+      </figure>
   );
 }
 
@@ -323,6 +343,7 @@ export function MDX({ code }: { code: string }) {
         ul: List,
         blockquote: BlockQuote,
         Image,
+        FigureWithCaption,
         NitratePlot,
         LenticularClouds,
         AllLogos,
