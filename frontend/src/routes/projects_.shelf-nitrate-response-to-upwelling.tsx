@@ -32,7 +32,7 @@ function RouteComponent() {
             <div className="min-h-0.5 max-h-0.5 w-2/3 bg-night-sky-800"></div>
           </div>
         </div>
-        <div className="max-w-3xl mx-auto px-4 pt-6">
+        <div className="max-w-3xl mx-auto">
           <Header2>Introduction</Header2>
           <Paragraph>
             Nitrate is an essential nutrient for phytoplankton growth, which
