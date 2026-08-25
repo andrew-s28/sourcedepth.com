@@ -280,7 +280,7 @@ function RepositoryCard({ repo, onToggle }: RepositoryCardProps) {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center ">
-            <div className="flex items-center gap-2 py-1 hidden sm:flex">
+            <div className="items-center gap-2 py-1 hidden sm:flex">
               <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                 <Star className="w-4 h-4" />
                 {repo.stargazers_count}
