@@ -102,7 +102,7 @@ async function fetchMDXFrontMatter(directory: string) {
 }
 
 export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
-  .inputValidator((data: { directory: string; slug: string }) => {
+  .validator((data: { directory: string; slug: string }) => {
     if (!data.directory || !data.slug) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
@@ -155,7 +155,7 @@ function fetchMDXFrontMatterInSeries(directory: string, series?: string) {
 }
 
 export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
-  .inputValidator((data: { directory: string; slug: string }) => {
+  .validator((data: { directory: string; slug: string }) => {
     if (!data.directory || !data.slug) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
@@ -199,7 +199,7 @@ export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
   });
 
 export const fetchMDXCode = createServerFn({ method: "GET" })
-  .inputValidator((data: { directory: string; slug: string }) => {
+  .validator((data: { directory: string; slug: string }) => {
     return {
       directory: data.directory.toLowerCase(),
       slug: data.slug.toLowerCase(),
@@ -218,7 +218,7 @@ export const fetchMDXCode = createServerFn({ method: "GET" })
   });
 
 export const fetchMDX = createServerFn({ method: "GET" })
-  .inputValidator((data: { directory: string; category?: string }) => {
+  .validator((data: { directory: string; category?: string }) => {
     if (data.category) {
       data.category = data.category.toLowerCase();
     }

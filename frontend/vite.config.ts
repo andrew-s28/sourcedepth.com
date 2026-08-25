@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import viteReact from "@vitejs/plugin-react";
-import tsConfigPaths from "vite-tsconfig-paths";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import { nitro } from 'nitro/vite'
 import mdx from "@mdx-js/rollup";
@@ -10,9 +9,6 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [
     { enforce: "pre", ...mdx({ rehypePlugins: [rehypePrettyCode] }) },
-    tsConfigPaths({
-      projects: ["./tsconfig.json"],
-    }),
     tailwindcss(),
     tanstackStart({
       prerender: {
@@ -23,4 +19,7 @@ export default defineConfig({
     nitro(),
     viteReact({ include: /\.(mdx|js|jsx|ts|tsx)$/ }),
   ],
+  resolve: {
+    tsconfigPaths: true,
+  }
 });

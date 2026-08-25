@@ -324,9 +324,8 @@ function BlogsIntro() {
     <IntroCard title="Recent Blog Posts">
       <div className="grid grid-cols-1 gap-4">
         {frontmatters.slice(0, SHOW_N_POSTS).map((fm: IFrontMatter) => (
-          <>
+          <div key={fm.slug}>
             <Link
-              key={fm.slug}
               to={`/blog/posts/$slug`}
               params={{ slug: fm.slug }}
               resetScroll
@@ -358,7 +357,7 @@ function BlogsIntro() {
               </div>
             </Link>
             <div className="flex justify-center mx-auto my-1 bg-night-sky-950 dark:bg-dawn-pink-100 h-0.5 w-2/3" />
-          </>
+          </div>
         ))}
       </div>
       <div className="flex justify-center mt-5">
