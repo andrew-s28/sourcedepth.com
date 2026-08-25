@@ -1,9 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { IFrontMatter } from "../utils/mdx-fetcher";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import { Content, Description, Intro, Wrapper } from "~/components/page";
+import { IFrontMatter } from "../utils/mdx-fetcher";
 import { Route as ProjectCategoryRoute } from "./projects_.$category";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 export const Route = createFileRoute("/projects/")({
   errorComponent: DefaultCatchBoundary,

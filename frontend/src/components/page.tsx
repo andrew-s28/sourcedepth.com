@@ -1,13 +1,13 @@
 /*
 Stylistic components used by the website subpages.
 */
-import { ReactNode } from "react";
 import { Await, Link } from "@tanstack/react-router";
+import { ReactNode } from "react";
 
-import { IFrontMatter, IMDX } from "~/utils/mdx-fetcher";
 import { motion } from "motion/react";
 import { MDX } from "~/components/mdx";
 import SeriesNavigationCards from "~/components/SeriesNavigationCards";
+import { IFrontMatter, IMDX } from "~/utils/mdx-fetcher";
 
 export function Wrapper({ children }: { children: ReactNode }) {
   return (

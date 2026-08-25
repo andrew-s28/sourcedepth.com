@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import "chartjs-adapter-date-fns";
 import {
   ArcElement,
   CategoryScale,
@@ -9,9 +7,11 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
-import { api } from "../utils/dataset-api";
-import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import "chartjs-adapter-date-fns";
+import { useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import { api } from "../utils/dataset-api";
 
 import annotationPlugin from "chartjs-plugin-annotation";
 
@@ -108,8 +108,8 @@ export const MonthlyNitratePlot = () => {
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Monthly Mean Nitrate Concentration
       </h2>
-      <div className="flex flex-col md:flex-row w-full h-[800px] md:h-[500px]">
-        <div className="w-full min-w-[600px] h-full">
+      <div className="flex flex-col md:flex-row w-full h-200 md:h-125">
+        <div className="w-full min-w-150 h-full">
           <Line
             data={chartData}
             options={{

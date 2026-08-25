@@ -1,13 +1,13 @@
-import { type ComponentProps, useMemo, useState } from "react";
+import { useMemo, useState, type ComponentProps } from "react";
 
-import { meshGrid } from "../utils/utils";
-import { SliderWithValue } from "~/components/Slider";
-import useDebounce from "~/hooks/useDebounce";
 import {
   ContourPlot,
   type BuildClipPathFn,
   type CanvasDrawFn,
 } from "~/components/Plots";
+import { SliderWithValue } from "~/components/Slider";
+import useDebounce from "~/hooks/useDebounce";
+import { meshGrid } from "../utils/utils";
 
 const defaultBackgroundFlowSpeed = 20; // m/s
 const defaultMountainWavelength = 5; // km
@@ -34,7 +34,7 @@ function LenticularContourPlot({
           marginRight,
           marginTop,
           marginBottom,
-        },
+        }
       ) => {
         ctx.moveTo(marginLeft, marginTop);
         ctx.lineTo(width - marginRight, marginTop);
@@ -42,7 +42,7 @@ function LenticularContourPlot({
         for (let i = mountainProfile.x.length - 1; i >= 0; i--) {
           ctx.lineTo(
             xScale(mountainProfile.x[i]),
-            yScale(mountainProfile.y[i]),
+            yScale(mountainProfile.y[i])
           );
         }
         ctx.lineTo(marginLeft, height - marginBottom);
@@ -52,15 +52,7 @@ function LenticularContourPlot({
   const onCanvasDraw: CanvasDrawFn | undefined = mountainProfile
     ? (
         ctx,
-        {
-          xScale,
-          yScale,
-          width,
-          height,
-          marginLeft,
-          marginRight,
-          marginBottom,
-        },
+        { xScale, yScale, width, height, marginLeft, marginRight, marginBottom }
       ) => {
         // Filled terrain body
         ctx.beginPath();
@@ -68,7 +60,7 @@ function LenticularContourPlot({
         for (let i = 0; i < mountainProfile.x.length; i++) {
           ctx.lineTo(
             xScale(mountainProfile.x[i]),
-            yScale(mountainProfile.y[i]),
+            yScale(mountainProfile.y[i])
           );
         }
         ctx.lineTo(width - marginRight, height - marginBottom);
@@ -100,10 +92,10 @@ function LenticularContourPlot({
 
 export function LenticularClouds() {
   const [backgroundFlowSpeed, setBackgroundFlowSpeed] = useState(
-    defaultBackgroundFlowSpeed,
+    defaultBackgroundFlowSpeed
   ); // m/s
   const [mountainWavelength, setMountainWavelength] = useState(
-    defaultMountainWavelength,
+    defaultMountainWavelength
   ); // km
 
   const debouncedBackgroundFlowSpeed = useDebounce(backgroundFlowSpeed, 100);
@@ -115,7 +107,7 @@ export function LenticularClouds() {
         backgroundFlowSpeed: debouncedBackgroundFlowSpeed,
         mountainWavelength: debouncedMountainWavelength,
       }),
-    [debouncedBackgroundFlowSpeed, debouncedMountainWavelength],
+    [debouncedBackgroundFlowSpeed, debouncedMountainWavelength]
   );
 
   const onChange = ({
@@ -181,31 +173,30 @@ export function LenticularCloudSolution({
     const mu = Math.sqrt(k ** 2 - N ** 2 / U ** 2);
     w = xx.map((x_i, i) =>
       x_i.map(
-        (x_ij, j) =>
-          U * k * h_m * Math.exp(-mu * zz[i][j]) * Math.cos(k * x_ij),
-      ),
+        (x_ij, j) => U * k * h_m * Math.exp(-mu * zz[i][j]) * Math.cos(k * x_ij)
+      )
     );
     eta = xx.map((x_i, i) =>
-      x_i.map((x_ij, j) => h_m * Math.exp(-mu * zz[i][j]) * Math.sin(k * x_ij)),
+      x_i.map((x_ij, j) => h_m * Math.exp(-mu * zz[i][j]) * Math.sin(k * x_ij))
     );
   } else {
     const nu = Math.sqrt(N ** 2 / U ** 2 - k ** 2);
     w = xx.map((x_i, i) =>
-      x_i.map((x_ij, j) => U * k * h_m * Math.cos(k * x_ij + nu * zz[i][j])),
+      x_i.map((x_ij, j) => U * k * h_m * Math.cos(k * x_ij + nu * zz[i][j]))
     );
     eta = xx.map((x_i, i) =>
-      x_i.map((x_ij, j) => h_m * Math.sin(k * x_ij + nu * zz[i][j])),
+      x_i.map((x_ij, j) => h_m * Math.sin(k * x_ij + nu * zz[i][j]))
     );
   }
   const theta_prime = eta.map((eta_i) =>
-    eta_i.map((eta_ij) => -lapseRate * eta_ij),
+    eta_i.map((eta_ij) => -lapseRate * eta_ij)
   ); // Potential temperature perturbation
   const alpha = lv / (R * T_s ** 2); // Clausius-Clapeyron constant (K⁻¹)
 
   const rh = theta_prime.map((theta_prime_i) =>
     theta_prime_i.map(
-      (theta_prime_ij) => rh_bg * Math.exp(-alpha * theta_prime_ij),
-    ),
+      (theta_prime_ij) => rh_bg * Math.exp(-alpha * theta_prime_ij)
+    )
   ); // Relative humidity perturbation
 
   // Convert w from km/s to km/hr
@@ -233,10 +224,10 @@ export function LenticularCloudParams({
   }) => void;
 }) {
   const [backgroundFlowSpeed, setBackgroundFlowSpeed] = useState(
-    defaultBackgroundFlowSpeed,
+    defaultBackgroundFlowSpeed
   ); // m/s
   const [mountainWavelength, setMountainWavelength] = useState(
-    defaultMountainWavelength,
+    defaultMountainWavelength
   ); // km
   return (
     <div className="flex flex-col md:flex-row gap-4 px-2 pb-2 ">

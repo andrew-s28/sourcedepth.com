@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FancyLink, Header2, Header3, Paragraph } from "~/components/mdx";
+import { MonthlyNitratePlot } from "~/components/MonthlyNitratePlot";
 import { NitratePlot } from "~/components/NitratePlot";
 import { WindNitrateChlorophyllPlot } from "~/components/WindNitrateChloroPlot";
-import { MonthlyNitratePlot } from "~/components/MonthlyNitratePlot";
 
 export const Route = createFileRoute(
   "/projects_/shelf-nitrate-response-to-upwelling"

@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { fetchMDX } from "~/utils/mdx-fetcher";
-import { NotFound } from "~/components/NotFound";
-import { BlogIndex } from "./blog.index";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { NotFound } from "~/components/NotFound";
+import { fetchMDX } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
 import { capitalizeFirstLetter } from "~/utils/utils";
+import { BlogIndex } from "./blog.index";
 
 export const Route = createFileRoute("/blog_/$category")({
   loader: ({ params: { category } }) =>

@@ -1,9 +1,12 @@
 import { createFileRoute, ParsedLocation } from "@tanstack/react-router";
-import { fetchMDXCode, fetchMDXFrontMatterAndSeries } from "../utils/mdx-fetcher";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { seo } from "~/utils/seo";
+import {
+  fetchMDXCode,
+  fetchMDXFrontMatterAndSeries,
+} from "../utils/mdx-fetcher";
 
 let prevLoc: ParsedLocation | null = null;
 
@@ -13,9 +16,9 @@ export const Route = createFileRoute("/blog_/posts/$slug")({
       bundle: fetchMDXCode({
         data: { slug: slug, directory: "posts" },
       }),
-      ...await fetchMDXFrontMatterAndSeries({
+      ...(await fetchMDXFrontMatterAndSeries({
         data: { slug: slug, directory: "posts" },
-      }),
+      })),
     };
   },
   errorComponent: DefaultCatchBoundary,

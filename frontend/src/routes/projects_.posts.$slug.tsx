@@ -3,6 +3,7 @@ import {
   notFound,
   ParsedLocation,
 } from "@tanstack/react-router";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
 import {
@@ -10,7 +11,6 @@ import {
   fetchSingleMDXFrontMatter,
   IFrontMatter,
 } from "~/utils/mdx-fetcher";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 let prevLoc: ParsedLocation | null = null;
 

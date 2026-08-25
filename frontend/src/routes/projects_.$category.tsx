@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { NotFound } from "~/components/NotFound";
 import {
   ProjectsIndex,
   projectCategories,
   projectFrontmatters,
 } from "~/routes/projects.index";
-import { NotFound } from "~/components/NotFound";
-import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 
 export const Route = createFileRoute("/projects_/$category")({
   errorComponent: DefaultCatchBoundary,

@@ -4,14 +4,21 @@ https://mdxjs.com/docs/using-mdx/#components
 */
 
 import { Link, useMatch } from "@tanstack/react-router";
-import { Children, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
-import { NitratePlot } from "./NitratePlot";
-import { LenticularClouds } from "./LenticularClouds";
-import { AllLogos, WebsiteStackLogos } from "./ui/Logos";
-import { Publication, Presentation } from "./Publications";
 import { Popover } from "radix-ui";
+import {
+  Children,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { LenticularClouds } from "./LenticularClouds";
+import { NitratePlot } from "./NitratePlot";
+import { Presentation, Publication } from "./Publications";
+import { AllLogos, WebsiteStackLogos } from "./ui/Logos";
 
 type TextChild = string | boolean | undefined | null;
 type NumberedContentProps = {
@@ -91,7 +98,7 @@ export function Pre({ children }: { children: ReactNode }) {
   // code and the hoverable element must share the same parent element with the attribute "code-hover-highlight"
   useEffect(() => {
     const highlighter = containerRef.current?.closest<HTMLElement>(
-      "[data-code-hover-highlight]",
+      "[data-code-hover-highlight]"
     );
     if (!highlighter) return;
 
@@ -108,9 +115,10 @@ export function Pre({ children }: { children: ReactNode }) {
 
     const updateHighlight = (event: Event) => {
       const target = event.target;
-      const item = target instanceof Element
-        ? target.closest<HTMLElement>("[data-code-line]")
-        : null;
+      const item =
+        target instanceof Element
+          ? target.closest<HTMLElement>("[data-code-line]")
+          : null;
       const lineNumber = item?.dataset.codeLine;
 
       lines?.forEach((line) => {
@@ -245,7 +253,17 @@ export function BlockQuote({ children }: { children: TextChild }) {
   );
 }
 
-export function Image({ src, alt, width, height }: { src: string; alt: string; width: number; height: number }) {
+export function Image({
+  src,
+  alt,
+  width,
+  height,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+}) {
   // className = className ?
   const [loading, setLoading] = useState(true);
   src = src.startsWith("http") ? src : `/static${src}`;
@@ -278,25 +296,30 @@ export function Image({ src, alt, width, height }: { src: string; alt: string; w
         width={width}
         height={height}
       />
-      </>
+    </>
   );
 }
 
-export function FigureWithCaption({ src, alt, width, height, caption }: { src: string; alt: string; width: number; height: number; caption: string }) {
+export function FigureWithCaption({
+  src,
+  alt,
+  width,
+  height,
+  caption,
+}: {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+  caption: string;
+}) {
   return (
-      <figure>
-        <Image
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-        />
-        <figcaption className="text-sm text-center -mt-5 mb-5 mx-auto min-w-50 w-2/3 h-auto opacity-70">
-        <em>
-          {caption}
-          </em>
-        </figcaption>
-      </figure>
+    <figure>
+      <Image src={src} alt={alt} width={width} height={height} />
+      <figcaption className="text-sm text-center -mt-5 mb-5 mx-auto min-w-50 w-2/3 h-auto opacity-70">
+        <em>{caption}</em>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -317,12 +340,14 @@ export function OrderedList({ children }: { children: ReactNode }) {
 }
 
 export function ListItem({ children }: { children: ReactNode }) {
-  const normalizedChildren = Children.toArray(children).flatMap((child, index) => {
-    if (index !== 0 || typeof child !== "string") return [child];
+  const normalizedChildren = Children.toArray(children).flatMap(
+    (child, index) => {
+      if (index !== 0 || typeof child !== "string") return [child];
 
-    const trimmed = child.replace(/^\s+/, "");
-    return trimmed.length > 0 ? [trimmed] : [];
-  });
+      const trimmed = child.replace(/^\s+/, "");
+      return trimmed.length > 0 ? [trimmed] : [];
+    }
+  );
 
   return (
     <li className="pl-5 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-1 -indent-5">
@@ -332,7 +357,6 @@ export function ListItem({ children }: { children: ReactNode }) {
 }
 
 export function TooltipPopover({ number, children }: NumberedContentProps) {
-
   return (
     <Popover.Popover>
       <Popover.PopoverTrigger asChild>
@@ -350,16 +374,13 @@ export function TooltipPopover({ number, children }: NumberedContentProps) {
         sideOffset={5}
       >
         <div className="gap-2 w-fit max-w-60 table">
-          <p className="text-sm inline-block">
-          {children}
-          </p>
+          <p className="text-sm inline-block">{children}</p>
         </div>
         <Popover.Arrow
           height={10}
           className="dark:fill-dawn-pink-100 fill-night-sky-950"
         />
       </Popover.PopoverContent>
-
     </Popover.Popover>
   );
 }

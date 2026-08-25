@@ -1,22 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import * as d3 from "d3";
-import { cn } from "~/utils/utils";
+import type { ChartData, ChartOptions } from "chart.js";
 import {
   ArcElement,
   CategoryScale,
   Chart as ChartJS,
+  Legend,
   LinearScale,
   LineElement,
   PointElement,
   TimeScale,
-  Legend,
   Tooltip,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import annotationPlugin from "chartjs-plugin-annotation";
+import * as d3 from "d3";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
-import type { ChartData, ChartOptions } from "chart.js";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import { cn } from "~/utils/utils";
 
 ChartJS.register(
   ArcElement,
@@ -27,7 +27,7 @@ ChartJS.register(
   TimeScale,
   Legend,
   Tooltip,
-  annotationPlugin,
+  annotationPlugin
 );
 
 interface LinearPlotData {
@@ -216,7 +216,7 @@ function YearSelector({
   const years = Array.from(
     { length: 10 },
     (_, i) =>
-      new Date(defaultYear ?? new Date().getFullYear()).getFullYear() - i,
+      new Date(defaultYear ?? new Date().getFullYear()).getFullYear() - i
   );
   return (
     <div className="mb-4">
@@ -319,7 +319,7 @@ export interface ContourPlotLayout {
  */
 export type BuildClipPathFn = (
   ctx: CanvasRenderingContext2D,
-  layout: ContourPlotLayout,
+  layout: ContourPlotLayout
 ) => void;
 
 /**
@@ -329,7 +329,7 @@ export type BuildClipPathFn = (
  */
 export type CanvasDrawFn = (
   ctx: CanvasRenderingContext2D,
-  layout: ContourPlotLayout,
+  layout: ContourPlotLayout
 ) => void;
 
 interface ColorbarProps {
@@ -488,7 +488,7 @@ export function ContourPlot({
           data: [] as number[],
           contour: [] as ReturnType<ReturnType<typeof d3.contours>>,
           colors: d3.scaleDiverging([-1, 0, 1], (t) =>
-            d3.interpolateRdBu(1 - t),
+            d3.interpolateRdBu(1 - t)
           ),
           dataMin: -1,
           dataMax: 1,
@@ -505,14 +505,14 @@ export function ContourPlot({
       ];
       const flat = Array.from(
         { length: pxLen * pyLen },
-        (_, i) => paddedZ[Math.floor(i / pxLen)][i % pxLen],
+        (_, i) => paddedZ[Math.floor(i / pxLen)][i % pxLen]
       );
       const c = d3.contours().size([pxLen, pyLen]).smooth(true).thresholds(30)(
-        flat,
+        flat
       );
       const col = d3.scaleDiverging(
         [Math.min(...flat), 0, Math.max(...flat)],
-        (t) => d3.interpolateRdBu(1 - t),
+        (t) => d3.interpolateRdBu(1 - t)
       );
       return {
         paddedXLength: pxLen,
@@ -541,10 +541,10 @@ export function ContourPlot({
     ];
     const flat = Array.from(
       { length: pxLen * pyLen },
-      (_, i) => paddedZ[Math.floor(i / pxLen)][i % pxLen],
+      (_, i) => paddedZ[Math.floor(i / pxLen)][i % pxLen]
     );
     return d3.contours().size([pxLen, pyLen]).thresholds([overlayThreshold])(
-      flat,
+      flat
     );
   }, [overlayZ, overlayThreshold]);
 
@@ -602,7 +602,7 @@ export function ContourPlot({
         marginLeft,
         marginTop,
         width - marginLeft - marginRight,
-        height - marginTop - marginBottom,
+        height - marginTop - marginBottom
       );
     }
     ctx.closePath();
@@ -618,7 +618,7 @@ export function ContourPlot({
             this.stream.point(px, py);
           },
         }),
-        ctx,
+        ctx
       );
       for (const c of contour) {
         ctx.beginPath();
@@ -645,11 +645,11 @@ export function ContourPlot({
           point: function (gx, gy) {
             this.stream.point(
               xScale(overlayGridToDataX(gx)),
-              yScale(overlayGridToDataY(gy)),
+              yScale(overlayGridToDataY(gy))
             );
           },
         }),
-        ctx,
+        ctx
       );
       ctx.save();
       ctx.beginPath();
@@ -660,7 +660,7 @@ export function ContourPlot({
           marginLeft,
           marginTop,
           width - marginLeft - marginRight,
-          height - marginTop - marginBottom,
+          height - marginTop - marginBottom
         );
       }
       ctx.closePath();

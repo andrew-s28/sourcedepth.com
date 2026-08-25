@@ -1,5 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import "chartjs-adapter-date-fns";
 import {
   ArcElement,
   CategoryScale,
@@ -9,9 +7,11 @@ import {
   LineElement,
   PointElement,
 } from "chart.js";
-import { api } from "../utils/dataset-api";
-import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import "chartjs-adapter-date-fns";
+import { useEffect, useRef, useState } from "react";
 import { Scatter } from "react-chartjs-2";
+import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import { api } from "../utils/dataset-api";
 
 import annotationPlugin from "chartjs-plugin-annotation";
 
@@ -189,8 +189,8 @@ export const WindNitrateChlorophyllPlot = () => {
 
   return (
     <div className="max-w-4xl p-4 overflow-x-auto bg-neutral-100 rounded-lg shadow-md border border-gray-200 flex-col justify-center mx-auto">
-      <div className="flex flex-col md:flex-row w-full h-[800px] md:h-[500px]">
-        <div className="w-full min-w-[600px] h-full">
+      <div className="flex flex-col md:flex-row w-full h-200 md:h-125">
+        <div className="w-full min-w-150 h-full">
           <Scatter
             data={chartData}
             options={{

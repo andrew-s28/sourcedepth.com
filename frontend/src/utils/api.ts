@@ -38,7 +38,7 @@ export function buildQueryString(params: QueryParams): string {
 // Generic fetch function with error handling
 export async function apiFetch<T>(
   url: string,
-  params?: QueryParams,
+  params?: QueryParams
 ): Promise<T> {
   try {
     const queryString = buildQueryString(params ? params : {});
@@ -50,7 +50,7 @@ export async function apiFetch<T>(
       }))) as ApiError;
       throw new Error(
         errorData.detail ||
-          `Request failed with status ${response.status.toString()}`,
+          `Request failed with status ${response.status.toString()}`
       );
     }
 
@@ -102,7 +102,7 @@ export const paginationUtils = {
   // Calculate total pages
   getTotalPages: <T>(
     response: PaginatedResponse<T>,
-    pageSize: number = 20,
+    pageSize: number = 20
   ): number => {
     return Math.ceil(response.count / pageSize);
   },
@@ -120,7 +120,7 @@ export const queryHelpers = {
   orderBy: (
     field: string,
     direction: "asc" | "desc" = "asc",
-    page?: number,
+    page?: number
   ): QueryParams => ({
     ordering: direction === "desc" ? `-${field}` : field,
     page,
@@ -135,7 +135,7 @@ export const queryHelpers = {
   combine: (...queryParams: QueryParams[]): QueryParams => {
     return queryParams.reduce(
       (combined, params) => ({ ...combined, ...params }),
-      {},
+      {}
     );
   },
 };

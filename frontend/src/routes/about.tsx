@@ -1,6 +1,6 @@
 import { createFileRoute, ParsedLocation } from "@tanstack/react-router";
-import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { MDXPost } from "~/components/page";
+import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
 
 let prevLoc: ParsedLocation | null = null;
@@ -57,7 +57,7 @@ function AboutComponent() {
           <img
             src="/static/self_portrait.jpg"
             alt="A picture of the author on a rainy day surrounded by cherry blossom trees"
-            className="rounded-lg shadow-md my-5 mx-auto min-w-[200px] w-1/2"
+            className="rounded-lg shadow-md my-5 mx-auto min-w-50 w-1/2"
           />
         }
       />

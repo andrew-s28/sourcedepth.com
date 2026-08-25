@@ -1,6 +1,4 @@
-import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "motion/react";
 import {
   CheckCircle,
   ChevronRight,
@@ -13,12 +11,9 @@ import {
   Star,
   XCircle,
 } from "lucide-react";
-import {
-  api,
-  GitHubRepository,
-  GitHubWorkflow,
-  GitHubWorkflowRun,
-} from "~/utils/github-api";
+import { motion } from "motion/react";
+import { useState } from "react";
+import { Wrapper } from "~/components/page";
 import { Badge } from "~/components/ui/badge";
 import {
   Card,
@@ -27,7 +22,12 @@ import {
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
-import { Wrapper } from "~/components/page";
+import {
+  api,
+  GitHubRepository,
+  GitHubWorkflow,
+  GitHubWorkflowRun,
+} from "~/utils/github-api";
 import { seo } from "~/utils/seo";
 
 const loadRepositories = async () => {

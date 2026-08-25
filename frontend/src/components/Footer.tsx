@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
 import { Mail, MailCheck } from "lucide-react";
+import { useState } from "react";
 
 function FooterLink({ to, name }: { to: string; name: string }) {
   return (

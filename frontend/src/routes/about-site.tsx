@@ -1,6 +1,6 @@
 import { createFileRoute, ParsedLocation } from "@tanstack/react-router";
-import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { MDXPost } from "~/components/page";
+import { fetchMDXCode, fetchSingleMDXFrontMatter } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
 
 let prevLoc: ParsedLocation | null = null;

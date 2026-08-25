@@ -11,7 +11,7 @@ const random = (min: number, max: number) =>
 export const useRandomInterval = (
   callback: () => void,
   minDelay: number | null,
-  maxDelay: number | null,
+  maxDelay: number | null
 ) => {
   const timeoutId = useRef<number | null>(null);
   const savedCallback = useRef(callback);

@@ -12,7 +12,7 @@ if (process.env.NODE_ENV !== "production") {
   BASE_URL = "https://api.sourcedepth.com/github";
 }
 
-BASE_URL = "https://api.sourcedepth.com/github"
+BASE_URL = "https://api.sourcedepth.com/github";
 
 // Limited reproduction of GitHub API interfaces
 export interface GitHubUser {
@@ -65,38 +65,38 @@ export interface GitHubQueryParams extends QueryParams {
 export const api = {
   // Get paginated list of users with optional query parameters
   getUsers: async (
-    params?: GitHubQueryParams,
+    params?: GitHubQueryParams
   ): Promise<PaginatedResponse<GitHubUser>> => {
     return apiFetch<PaginatedResponse<GitHubUser>>(`${BASE_URL}/users`, params);
   },
 
   // Get paginated list of repositories with optional query parameters
   getRepositories: async (
-    params?: GitHubQueryParams,
+    params?: GitHubQueryParams
   ): Promise<PaginatedResponse<GitHubRepository>> => {
     return apiFetch<PaginatedResponse<GitHubRepository>>(
       `${BASE_URL}/repos`,
-      params,
+      params
     );
   },
 
   // Get paginated list of workflows with optional query parameters
   getWorkflows: async (
-    params?: GitHubQueryParams,
+    params?: GitHubQueryParams
   ): Promise<PaginatedResponse<GitHubWorkflow>> => {
     return apiFetch<PaginatedResponse<GitHubWorkflow>>(
       `${BASE_URL}/workflows`,
-      params,
+      params
     );
   },
 
   // Get paginated list of workflow runs with optional query parameters
   getWorkflowRuns: async (
-    params?: GitHubQueryParams,
+    params?: GitHubQueryParams
   ): Promise<PaginatedResponse<GitHubWorkflowRun>> => {
     return apiFetch<PaginatedResponse<GitHubWorkflowRun>>(
       `${BASE_URL}/runs`,
-      params,
+      params
     );
   },
 

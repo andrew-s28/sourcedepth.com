@@ -1,11 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { fetchMDX } from "../utils/mdx-fetcher";
-import { NotFound } from "~/components/NotFound";
-import { IFrontMatter } from "~/utils/mdx-fetcher";
-import { Content, Description, Intro, Wrapper } from "~/components/page";
-import { Route as BlogCategoryRoute } from "./blog_.$category";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import { NotFound } from "~/components/NotFound";
+import { Content, Description, Intro, Wrapper } from "~/components/page";
+import { IFrontMatter } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
+import { fetchMDX } from "../utils/mdx-fetcher";
+import { Route as BlogCategoryRoute } from "./blog_.$category";
 
 export const Route = createFileRoute("/blog/")({
   loader: () => fetchMDX({ data: { directory: "posts" } }),
@@ -90,7 +90,7 @@ export function BlogIndex({
             >
               {category}
             </Link>
-          ),
+          )
         )}
       </Intro>
       <Content>

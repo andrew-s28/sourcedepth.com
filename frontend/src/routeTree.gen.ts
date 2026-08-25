@@ -8,272 +8,272 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as AboutSiteRouteImport } from './routes/about-site'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProjectsIndexRouteImport } from './routes/projects.index'
-import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as ProjectsShelfNitrateResponseToUpwellingRouteImport } from './routes/projects_.shelf-nitrate-response-to-upwelling'
-import { Route as ProjectsActionsDashboardRouteImport } from './routes/projects_.actions-dashboard'
-import { Route as ProjectsCategoryRouteImport } from './routes/projects_.$category'
-import { Route as BlogCategoryRouteImport } from './routes/blog_.$category'
-import { Route as ProjectsPostsSlugRouteImport } from './routes/projects_.posts.$slug'
-import { Route as BlogPostsSlugRouteImport } from './routes/blog_.posts.$slug'
+import { Route as rootRouteImport } from "./routes/__root";
+import { Route as PrivacyRouteImport } from "./routes/privacy";
+import { Route as AboutSiteRouteImport } from "./routes/about-site";
+import { Route as AboutRouteImport } from "./routes/about";
+import { Route as IndexRouteImport } from "./routes/index";
+import { Route as ProjectsIndexRouteImport } from "./routes/projects.index";
+import { Route as BlogIndexRouteImport } from "./routes/blog.index";
+import { Route as ProjectsShelfNitrateResponseToUpwellingRouteImport } from "./routes/projects_.shelf-nitrate-response-to-upwelling";
+import { Route as ProjectsActionsDashboardRouteImport } from "./routes/projects_.actions-dashboard";
+import { Route as ProjectsCategoryRouteImport } from "./routes/projects_.$category";
+import { Route as BlogCategoryRouteImport } from "./routes/blog_.$category";
+import { Route as ProjectsPostsSlugRouteImport } from "./routes/projects_.posts.$slug";
+import { Route as BlogPostsSlugRouteImport } from "./routes/blog_.posts.$slug";
 
 const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
+  id: "/privacy",
+  path: "/privacy",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AboutSiteRoute = AboutSiteRouteImport.update({
-  id: '/about-site',
-  path: '/about-site',
+  id: "/about-site",
+  path: "/about-site",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
+  id: "/about",
+  path: "/about",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
-  id: '/projects/',
-  path: '/projects/',
+  id: "/projects/",
+  path: "/projects/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const BlogIndexRoute = BlogIndexRouteImport.update({
-  id: '/blog/',
-  path: '/blog/',
+  id: "/blog/",
+  path: "/blog/",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ProjectsShelfNitrateResponseToUpwellingRoute =
   ProjectsShelfNitrateResponseToUpwellingRouteImport.update({
-    id: '/projects_/shelf-nitrate-response-to-upwelling',
-    path: '/projects/shelf-nitrate-response-to-upwelling',
+    id: "/projects_/shelf-nitrate-response-to-upwelling",
+    path: "/projects/shelf-nitrate-response-to-upwelling",
     getParentRoute: () => rootRouteImport,
-  } as any)
+  } as any);
 const ProjectsActionsDashboardRoute =
   ProjectsActionsDashboardRouteImport.update({
-    id: '/projects_/actions-dashboard',
-    path: '/projects/actions-dashboard',
+    id: "/projects_/actions-dashboard",
+    path: "/projects/actions-dashboard",
     getParentRoute: () => rootRouteImport,
-  } as any)
+  } as any);
 const ProjectsCategoryRoute = ProjectsCategoryRouteImport.update({
-  id: '/projects_/$category',
-  path: '/projects/$category',
+  id: "/projects_/$category",
+  path: "/projects/$category",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const BlogCategoryRoute = BlogCategoryRouteImport.update({
-  id: '/blog_/$category',
-  path: '/blog/$category',
+  id: "/blog_/$category",
+  path: "/blog/$category",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const ProjectsPostsSlugRoute = ProjectsPostsSlugRouteImport.update({
-  id: '/projects_/posts/$slug',
-  path: '/projects/posts/$slug',
+  id: "/projects_/posts/$slug",
+  path: "/projects/posts/$slug",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const BlogPostsSlugRoute = BlogPostsSlugRouteImport.update({
-  id: '/blog_/posts/$slug',
-  path: '/blog/posts/$slug',
+  id: "/blog_/posts/$slug",
+  path: "/blog/posts/$slug",
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/about-site': typeof AboutSiteRoute
-  '/privacy': typeof PrivacyRoute
-  '/blog/$category': typeof BlogCategoryRoute
-  '/projects/$category': typeof ProjectsCategoryRoute
-  '/projects/actions-dashboard': typeof ProjectsActionsDashboardRoute
-  '/projects/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
-  '/blog/': typeof BlogIndexRoute
-  '/projects/': typeof ProjectsIndexRoute
-  '/blog/posts/$slug': typeof BlogPostsSlugRoute
-  '/projects/posts/$slug': typeof ProjectsPostsSlugRoute
+  "/": typeof IndexRoute;
+  "/about": typeof AboutRoute;
+  "/about-site": typeof AboutSiteRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/blog/$category": typeof BlogCategoryRoute;
+  "/projects/$category": typeof ProjectsCategoryRoute;
+  "/projects/actions-dashboard": typeof ProjectsActionsDashboardRoute;
+  "/projects/shelf-nitrate-response-to-upwelling": typeof ProjectsShelfNitrateResponseToUpwellingRoute;
+  "/blog/": typeof BlogIndexRoute;
+  "/projects/": typeof ProjectsIndexRoute;
+  "/blog/posts/$slug": typeof BlogPostsSlugRoute;
+  "/projects/posts/$slug": typeof ProjectsPostsSlugRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/about-site': typeof AboutSiteRoute
-  '/privacy': typeof PrivacyRoute
-  '/blog/$category': typeof BlogCategoryRoute
-  '/projects/$category': typeof ProjectsCategoryRoute
-  '/projects/actions-dashboard': typeof ProjectsActionsDashboardRoute
-  '/projects/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
-  '/blog': typeof BlogIndexRoute
-  '/projects': typeof ProjectsIndexRoute
-  '/blog/posts/$slug': typeof BlogPostsSlugRoute
-  '/projects/posts/$slug': typeof ProjectsPostsSlugRoute
+  "/": typeof IndexRoute;
+  "/about": typeof AboutRoute;
+  "/about-site": typeof AboutSiteRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/blog/$category": typeof BlogCategoryRoute;
+  "/projects/$category": typeof ProjectsCategoryRoute;
+  "/projects/actions-dashboard": typeof ProjectsActionsDashboardRoute;
+  "/projects/shelf-nitrate-response-to-upwelling": typeof ProjectsShelfNitrateResponseToUpwellingRoute;
+  "/blog": typeof BlogIndexRoute;
+  "/projects": typeof ProjectsIndexRoute;
+  "/blog/posts/$slug": typeof BlogPostsSlugRoute;
+  "/projects/posts/$slug": typeof ProjectsPostsSlugRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/about-site': typeof AboutSiteRoute
-  '/privacy': typeof PrivacyRoute
-  '/blog_/$category': typeof BlogCategoryRoute
-  '/projects_/$category': typeof ProjectsCategoryRoute
-  '/projects_/actions-dashboard': typeof ProjectsActionsDashboardRoute
-  '/projects_/shelf-nitrate-response-to-upwelling': typeof ProjectsShelfNitrateResponseToUpwellingRoute
-  '/blog/': typeof BlogIndexRoute
-  '/projects/': typeof ProjectsIndexRoute
-  '/blog_/posts/$slug': typeof BlogPostsSlugRoute
-  '/projects_/posts/$slug': typeof ProjectsPostsSlugRoute
+  __root__: typeof rootRouteImport;
+  "/": typeof IndexRoute;
+  "/about": typeof AboutRoute;
+  "/about-site": typeof AboutSiteRoute;
+  "/privacy": typeof PrivacyRoute;
+  "/blog_/$category": typeof BlogCategoryRoute;
+  "/projects_/$category": typeof ProjectsCategoryRoute;
+  "/projects_/actions-dashboard": typeof ProjectsActionsDashboardRoute;
+  "/projects_/shelf-nitrate-response-to-upwelling": typeof ProjectsShelfNitrateResponseToUpwellingRoute;
+  "/blog/": typeof BlogIndexRoute;
+  "/projects/": typeof ProjectsIndexRoute;
+  "/blog_/posts/$slug": typeof BlogPostsSlugRoute;
+  "/projects_/posts/$slug": typeof ProjectsPostsSlugRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | '/about'
-    | '/about-site'
-    | '/privacy'
-    | '/blog/$category'
-    | '/projects/$category'
-    | '/projects/actions-dashboard'
-    | '/projects/shelf-nitrate-response-to-upwelling'
-    | '/blog/'
-    | '/projects/'
-    | '/blog/posts/$slug'
-    | '/projects/posts/$slug'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | "/about"
+    | "/about-site"
+    | "/privacy"
+    | "/blog/$category"
+    | "/projects/$category"
+    | "/projects/actions-dashboard"
+    | "/projects/shelf-nitrate-response-to-upwelling"
+    | "/blog/"
+    | "/projects/"
+    | "/blog/posts/$slug"
+    | "/projects/posts/$slug";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | '/about'
-    | '/about-site'
-    | '/privacy'
-    | '/blog/$category'
-    | '/projects/$category'
-    | '/projects/actions-dashboard'
-    | '/projects/shelf-nitrate-response-to-upwelling'
-    | '/blog'
-    | '/projects'
-    | '/blog/posts/$slug'
-    | '/projects/posts/$slug'
+    | "/"
+    | "/about"
+    | "/about-site"
+    | "/privacy"
+    | "/blog/$category"
+    | "/projects/$category"
+    | "/projects/actions-dashboard"
+    | "/projects/shelf-nitrate-response-to-upwelling"
+    | "/blog"
+    | "/projects"
+    | "/blog/posts/$slug"
+    | "/projects/posts/$slug";
   id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/about-site'
-    | '/privacy'
-    | '/blog_/$category'
-    | '/projects_/$category'
-    | '/projects_/actions-dashboard'
-    | '/projects_/shelf-nitrate-response-to-upwelling'
-    | '/blog/'
-    | '/projects/'
-    | '/blog_/posts/$slug'
-    | '/projects_/posts/$slug'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/about"
+    | "/about-site"
+    | "/privacy"
+    | "/blog_/$category"
+    | "/projects_/$category"
+    | "/projects_/actions-dashboard"
+    | "/projects_/shelf-nitrate-response-to-upwelling"
+    | "/blog/"
+    | "/projects/"
+    | "/blog_/posts/$slug"
+    | "/projects_/posts/$slug";
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  AboutSiteRoute: typeof AboutSiteRoute
-  PrivacyRoute: typeof PrivacyRoute
-  BlogCategoryRoute: typeof BlogCategoryRoute
-  ProjectsCategoryRoute: typeof ProjectsCategoryRoute
-  ProjectsActionsDashboardRoute: typeof ProjectsActionsDashboardRoute
-  ProjectsShelfNitrateResponseToUpwellingRoute: typeof ProjectsShelfNitrateResponseToUpwellingRoute
-  BlogIndexRoute: typeof BlogIndexRoute
-  ProjectsIndexRoute: typeof ProjectsIndexRoute
-  BlogPostsSlugRoute: typeof BlogPostsSlugRoute
-  ProjectsPostsSlugRoute: typeof ProjectsPostsSlugRoute
+  IndexRoute: typeof IndexRoute;
+  AboutRoute: typeof AboutRoute;
+  AboutSiteRoute: typeof AboutSiteRoute;
+  PrivacyRoute: typeof PrivacyRoute;
+  BlogCategoryRoute: typeof BlogCategoryRoute;
+  ProjectsCategoryRoute: typeof ProjectsCategoryRoute;
+  ProjectsActionsDashboardRoute: typeof ProjectsActionsDashboardRoute;
+  ProjectsShelfNitrateResponseToUpwellingRoute: typeof ProjectsShelfNitrateResponseToUpwellingRoute;
+  BlogIndexRoute: typeof BlogIndexRoute;
+  ProjectsIndexRoute: typeof ProjectsIndexRoute;
+  BlogPostsSlugRoute: typeof BlogPostsSlugRoute;
+  ProjectsPostsSlugRoute: typeof ProjectsPostsSlugRoute;
 }
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about-site': {
-      id: '/about-site'
-      path: '/about-site'
-      fullPath: '/about-site'
-      preLoaderRoute: typeof AboutSiteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects/': {
-      id: '/projects/'
-      path: '/projects'
-      fullPath: '/projects/'
-      preLoaderRoute: typeof ProjectsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog/': {
-      id: '/blog/'
-      path: '/blog'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects_/shelf-nitrate-response-to-upwelling': {
-      id: '/projects_/shelf-nitrate-response-to-upwelling'
-      path: '/projects/shelf-nitrate-response-to-upwelling'
-      fullPath: '/projects/shelf-nitrate-response-to-upwelling'
-      preLoaderRoute: typeof ProjectsShelfNitrateResponseToUpwellingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects_/actions-dashboard': {
-      id: '/projects_/actions-dashboard'
-      path: '/projects/actions-dashboard'
-      fullPath: '/projects/actions-dashboard'
-      preLoaderRoute: typeof ProjectsActionsDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects_/$category': {
-      id: '/projects_/$category'
-      path: '/projects/$category'
-      fullPath: '/projects/$category'
-      preLoaderRoute: typeof ProjectsCategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog_/$category': {
-      id: '/blog_/$category'
-      path: '/blog/$category'
-      fullPath: '/blog/$category'
-      preLoaderRoute: typeof BlogCategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects_/posts/$slug': {
-      id: '/projects_/posts/$slug'
-      path: '/projects/posts/$slug'
-      fullPath: '/projects/posts/$slug'
-      preLoaderRoute: typeof ProjectsPostsSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/blog_/posts/$slug': {
-      id: '/blog_/posts/$slug'
-      path: '/blog/posts/$slug'
-      fullPath: '/blog/posts/$slug'
-      preLoaderRoute: typeof BlogPostsSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+    "/privacy": {
+      id: "/privacy";
+      path: "/privacy";
+      fullPath: "/privacy";
+      preLoaderRoute: typeof PrivacyRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/about-site": {
+      id: "/about-site";
+      path: "/about-site";
+      fullPath: "/about-site";
+      preLoaderRoute: typeof AboutSiteRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/about": {
+      id: "/about";
+      path: "/about";
+      fullPath: "/about";
+      preLoaderRoute: typeof AboutRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/projects/": {
+      id: "/projects/";
+      path: "/projects";
+      fullPath: "/projects/";
+      preLoaderRoute: typeof ProjectsIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/blog/": {
+      id: "/blog/";
+      path: "/blog";
+      fullPath: "/blog/";
+      preLoaderRoute: typeof BlogIndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/projects_/shelf-nitrate-response-to-upwelling": {
+      id: "/projects_/shelf-nitrate-response-to-upwelling";
+      path: "/projects/shelf-nitrate-response-to-upwelling";
+      fullPath: "/projects/shelf-nitrate-response-to-upwelling";
+      preLoaderRoute: typeof ProjectsShelfNitrateResponseToUpwellingRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/projects_/actions-dashboard": {
+      id: "/projects_/actions-dashboard";
+      path: "/projects/actions-dashboard";
+      fullPath: "/projects/actions-dashboard";
+      preLoaderRoute: typeof ProjectsActionsDashboardRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/projects_/$category": {
+      id: "/projects_/$category";
+      path: "/projects/$category";
+      fullPath: "/projects/$category";
+      preLoaderRoute: typeof ProjectsCategoryRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/blog_/$category": {
+      id: "/blog_/$category";
+      path: "/blog/$category";
+      fullPath: "/blog/$category";
+      preLoaderRoute: typeof BlogCategoryRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/projects_/posts/$slug": {
+      id: "/projects_/posts/$slug";
+      path: "/projects/posts/$slug";
+      fullPath: "/projects/posts/$slug";
+      preLoaderRoute: typeof ProjectsPostsSlugRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    "/blog_/posts/$slug": {
+      id: "/blog_/posts/$slug";
+      path: "/blog/posts/$slug";
+      fullPath: "/blog/posts/$slug";
+      preLoaderRoute: typeof BlogPostsSlugRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
@@ -291,16 +291,16 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsIndexRoute: ProjectsIndexRoute,
   BlogPostsSlugRoute: BlogPostsSlugRoute,
   ProjectsPostsSlugRoute: ProjectsPostsSlugRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
-import type { getRouter } from './router.tsx'
-import type { createStart } from '@tanstack/react-start'
-declare module '@tanstack/react-start' {
+import type { getRouter } from "./router.tsx";
+import type { createStart } from "@tanstack/react-start";
+declare module "@tanstack/react-start" {
   interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
+    ssr: true;
+    router: Awaited<ReturnType<typeof getRouter>>;
   }
 }

@@ -48,11 +48,21 @@ export const api = {
     return await apiFetch<NitrateData>(`${BASE_URL}/nitrate`, params);
   },
 
-  getWindNitrateChlorophyllData: async (params?: QueryParams): Promise<WindNitrateChlorophyllData> => {
-    return await apiFetch<WindNitrateChlorophyllData>(`${BASE_URL}/wind-nitrate-chlorophyll`, params);
+  getWindNitrateChlorophyllData: async (
+    params?: QueryParams
+  ): Promise<WindNitrateChlorophyllData> => {
+    return await apiFetch<WindNitrateChlorophyllData>(
+      `${BASE_URL}/wind-nitrate-chlorophyll`,
+      params
+    );
   },
 
-  getMonthlyNitrateData: async (params?: QueryParams): Promise<MonthlyNitrateData> => {
-    return await apiFetch<MonthlyNitrateData>(`${BASE_URL}/nitrate-monthly`, params);
-  }
-}
+  getMonthlyNitrateData: async (
+    params?: QueryParams
+  ): Promise<MonthlyNitrateData> => {
+    return await apiFetch<MonthlyNitrateData>(
+      `${BASE_URL}/nitrate-monthly`,
+      params
+    );
+  },
+};

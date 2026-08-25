@@ -1,14 +1,14 @@
 import { notFound } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import fs from "node:fs/promises";
 import matter from "gray-matter";
-import path from "node:path";
 import { existsSync } from "node:fs";
+import fs from "node:fs/promises";
 import { createRequire } from "node:module";
-import remarkGfm from "remark-gfm";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypePrism from 'rehype-prism-plus'
+import path from "node:path";
 import rehypeKatex from "rehype-katex";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypePrism from "rehype-prism-plus";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 
 import type { Options } from "@mdx-js/esbuild";
@@ -93,10 +93,10 @@ async function fetchMDXFrontMatter(directory: string) {
   const frontmatters = await Promise.all(
     files.map(async (file) => {
       const { data } = matter(
-        await fs.readFile(path.join(BASE_DIRECTORY, directory, file), "utf8"),
+        await fs.readFile(path.join(BASE_DIRECTORY, directory, file), "utf8")
       );
       return data as IFrontMatter;
-    }),
+    })
   );
   return frontmatters.sort(orderByDate());
 }
@@ -110,7 +110,7 @@ export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
     const mdxPath = path.join(
       BASE_DIRECTORY,
       data.directory,
-      data.slug + ".mdx",
+      data.slug + ".mdx"
     );
     if (!existsSync(mdxPath)) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
@@ -124,7 +124,7 @@ export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const file = await fs.readFile(
       path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
-      "utf8",
+      "utf8"
     );
     const { data: frontmatter } = matter(file);
     return frontmatter as IFrontMatter;
@@ -138,20 +138,19 @@ function getCategories(frontmatters: IFrontMatter[]) {
           return frontmatter.tags.map((tag) => tag.toLowerCase());
         })
         .flat()
-        .sort(),
-    ),
+        .sort()
+    )
   );
 }
 
 function fetchMDXFrontMatterInSeries(directory: string, series?: string) {
   return fetchMDXFrontMatter(directory).then((frontmatters) => {
-    return (
-      frontmatters
-        .filter(
-          (frontmatter) => frontmatter.series?.toLowerCase() === series?.toLowerCase(),
-        )
-        .sort(orderByDate())
-    );
+    return frontmatters
+      .filter(
+        (frontmatter) =>
+          frontmatter.series?.toLowerCase() === series?.toLowerCase()
+      )
+      .sort(orderByDate());
   });
 }
 
@@ -164,7 +163,7 @@ export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
     const mdxPath = path.join(
       BASE_DIRECTORY,
       data.directory,
-      data.slug + ".mdx",
+      data.slug + ".mdx"
     );
     if (!existsSync(mdxPath)) {
       // eslint-disable-next-line @typescript-eslint/only-throw-error
@@ -178,13 +177,15 @@ export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
   .handler(async ({ data }) => {
     const file = await fs.readFile(
       path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
-      "utf8",
+      "utf8"
     );
-    const { data: frontmatter } = matter(file) as unknown as { data: IFrontMatter };
+    const { data: frontmatter } = matter(file) as unknown as {
+      data: IFrontMatter;
+    };
     if (frontmatter.series) {
       const seriesFrontmatters = await fetchMDXFrontMatterInSeries(
         data.directory,
-        frontmatter.series,
+        frontmatter.series
       );
       return {
         frontmatter,
@@ -231,7 +232,7 @@ export const fetchMDX = createServerFn({ method: "GET" })
       let frontmatters = await fetchMDXFrontMatter(data.directory);
       const categories = getCategories(frontmatters);
       frontmatters = frontmatters.filter((post) =>
-        data.category ? post.tags.includes(data.category) : true,
+        data.category ? post.tags.includes(data.category) : true
       );
       if (frontmatters.length === 0) {
         // eslint-disable-next-line @typescript-eslint/only-throw-error

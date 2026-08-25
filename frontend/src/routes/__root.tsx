@@ -1,7 +1,6 @@
 // src/routes/__root.tsx
 /// <reference types="vite/client" />
 
-import { ReactNode, StrictMode } from "react";
 import {
   createRootRoute,
   HeadContent,
@@ -10,15 +9,16 @@ import {
   useLocation,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { MotionConfig } from "framer-motion";
+import { ReactNode, StrictMode } from "react";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
+import Footer from "~/components/Footer";
 import Navbar from "~/components/Navbar";
 import { NotFound } from "~/components/NotFound";
 import appCss from "~/styles/app.css?url";
+import { fetchMDX } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
 import { initialTheme, ThemeProvider } from "../components/ThemeProvider";
-import { MotionConfig } from "framer-motion";
-import Footer from "~/components/Footer";
-import { fetchMDX } from "~/utils/mdx-fetcher";
 
 export const Route = createRootRoute({
   loader: async () => {
@@ -137,7 +137,10 @@ function RootDocument({ children }: { children: ReactNode }) {
         <head>
           <HeadContent />
         </head>
-        <body suppressHydrationWarning className="bg-dawn-pink-100 dark:bg-night-sky-950 text-night-sky-950 dark:text-dawn-pink-100">
+        <body
+          suppressHydrationWarning
+          className="bg-dawn-pink-100 dark:bg-night-sky-950 text-night-sky-950 dark:text-dawn-pink-100"
+        >
           <ThemeProvider>
             <Navbar categories={categories} />
             <hr />

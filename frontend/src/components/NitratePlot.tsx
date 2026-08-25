@@ -1,4 +1,3 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
 import {
   ArcElement,
   CategoryScale,
@@ -10,11 +9,12 @@ import {
 } from "chart.js";
 import "chartjs-adapter-date-fns";
 import annotationPlugin from "chartjs-plugin-annotation";
-import { clamp } from "~/utils/utils";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import { Line } from "react-chartjs-2";
+import { clamp } from "~/utils/utils";
 
-import { api } from "../utils/dataset-api";
 import { ChartJSOrUndefined } from "react-chartjs-2/dist/types";
+import { api } from "../utils/dataset-api";
 
 ChartJS.register(
   ArcElement,
@@ -318,7 +318,7 @@ export const NitratePlot = () => {
       <h2 className="text-2xl font-bold mb-4 text-gray-800">
         Nitrate Concentration
       </h2>
-      <div className="flex flex-col w-full min-w-[600px] md:flex-row w-full h-[800px] md:h-[500px]">
+      <div className="flex flex-col w-full min-w-150 md:flex-row w-full h-200 md:h-125">
         <div className="w-full md:w-2/3 h-1/2 md:h-full">
           <Line
             data={chartData}

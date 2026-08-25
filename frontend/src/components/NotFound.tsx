@@ -1,5 +1,5 @@
-import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { ArrowLeft, Home } from "lucide-react";
 export function NotFound() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-dawn-pink-100 dark:bg-night-sky-950 px-4 text-center">
