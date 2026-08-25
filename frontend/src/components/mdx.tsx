@@ -4,7 +4,7 @@ https://mdxjs.com/docs/using-mdx/#components
 */
 
 import { Link, useMatch } from "@tanstack/react-router";
-import { ReactNode, useMemo, useRef, useState } from "react";
+import { Children, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Check, Copy, ExternalLink } from "lucide-react";
 import { getMDXComponent } from "mdx-bundler/client";
 import { NitratePlot } from "./NitratePlot";
@@ -84,7 +84,54 @@ export function FancyLink({
 
 export function Pre({ children }: { children: ReactNode }) {
   const [isCopied, setIsCopied] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const preRef = useRef<HTMLPreElement>(null);
+
+  // highlight code lines based on hovering another element
+  // code and the hoverable element must share the same parent element with the attribute "code-hover-highlight"
+  useEffect(() => {
+    const highlighter = containerRef.current?.closest<HTMLElement>(
+      "[data-code-hover-highlight]",
+    );
+    if (!highlighter) return;
+
+    const lines = preRef.current?.querySelectorAll<HTMLElement>("span[line]");
+    lines?.forEach((line) => {
+      line.classList.add("transition-all", "duration-150");
+    });
+
+    const highlightClasses = [
+      "!bg-blue-500/15",
+      "border-l-4",
+      "border-blue-500",
+    ];
+
+    const updateHighlight = (event: Event) => {
+      const target = event.target;
+      const item = target instanceof Element
+        ? target.closest<HTMLElement>("[data-code-line]")
+        : null;
+      const lineNumber = item?.dataset.codeLine;
+
+      lines?.forEach((line) => {
+        const isHighlighted = line.getAttribute("line") === lineNumber;
+        highlightClasses.forEach((className) => {
+          line.classList.toggle(className, isHighlighted);
+        });
+      });
+    };
+
+    highlighter.addEventListener("pointerover", updateHighlight);
+    highlighter.addEventListener("focusin", updateHighlight);
+    highlighter.addEventListener("pointerleave", updateHighlight);
+    highlighter.addEventListener("focusout", updateHighlight);
+    return () => {
+      highlighter.removeEventListener("pointerover", updateHighlight);
+      highlighter.removeEventListener("focusin", updateHighlight);
+      highlighter.removeEventListener("pointerleave", updateHighlight);
+      highlighter.removeEventListener("focusout", updateHighlight);
+    };
+  }, []);
 
   const handleCopy = async () => {
     if (!preRef.current) return;
@@ -103,7 +150,7 @@ export function Pre({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="relative group py-4">
+    <div ref={containerRef} className="relative group py-4">
       <pre
         ref={preRef}
         className="overflow-x-auto bg-gray-100 dark:bg-gray-800 p-4 rounded-md border border-night-sky-950 dark:border-dawn-pink-100"
@@ -261,10 +308,25 @@ export function List({ children }: { children: ReactNode }) {
   );
 }
 
-export function ListItem({ children }: { children: TextChild }) {
+export function OrderedList({ children }: { children: ReactNode }) {
   return (
-    <li className="pl-4 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-1 -indent-4">
-      {children}
+    <div className="block mr-1">
+      <ol className="list-decimal list-inside pl-4">{children}</ol>
+    </div>
+  );
+}
+
+export function ListItem({ children }: { children: ReactNode }) {
+  const normalizedChildren = Children.toArray(children).flatMap((child, index) => {
+    if (index !== 0 || typeof child !== "string") return [child];
+
+    const trimmed = child.replace(/^\s+/, "");
+    return trimmed.length > 0 ? [trimmed] : [];
+  });
+
+  return (
+    <li className="pl-5 text-night-sky-950 dark:text-dawn-pink-100 text-pretty py-1 -indent-5">
+      {normalizedChildren}
     </li>
   );
 }
@@ -341,6 +403,7 @@ export function MDX({ code }: { code: string }) {
         p: Paragraph,
         li: ListItem,
         ul: List,
+        ol: OrderedList,
         blockquote: BlockQuote,
         Image,
         FigureWithCaption,

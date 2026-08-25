@@ -1,5 +1,5 @@
 import { createFileRoute, ParsedLocation } from "@tanstack/react-router";
-import { fetchMDXCode, fetchSingleMDXFrontMatter } from "../utils/mdx-fetcher";
+import { fetchMDXCode, fetchMDXFrontMatterAndSeries } from "../utils/mdx-fetcher";
 import { NotFound } from "~/components/NotFound";
 import { MDXPost } from "~/components/page";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
@@ -13,7 +13,7 @@ export const Route = createFileRoute("/blog_/posts/$slug")({
       bundle: fetchMDXCode({
         data: { slug: slug, directory: "posts" },
       }),
-      frontmatter: await fetchSingleMDXFrontMatter({
+      ...await fetchMDXFrontMatterAndSeries({
         data: { slug: slug, directory: "posts" },
       }),
     };
@@ -59,10 +59,10 @@ export const Route = createFileRoute("/blog_/posts/$slug")({
 });
 
 function PostComponent() {
-  const { bundle, frontmatter } = Route.useLoaderData();
+  const { bundle, frontmatter, series } = Route.useLoaderData();
   return (
     <>
-      <MDXPost bundle={bundle} frontmatter={frontmatter} />
+      <MDXPost bundle={bundle} frontmatter={frontmatter} series={series} />
     </>
   );
 }

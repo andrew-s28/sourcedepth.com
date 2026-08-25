@@ -7,6 +7,7 @@ import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import remarkGfm from "remark-gfm";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypePrism from 'rehype-prism-plus'
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 
@@ -18,6 +19,7 @@ export interface IFrontMatter {
   date: string;
   description: string;
   tags: string[];
+  series?: string;
 }
 
 export interface IMDX {
@@ -46,10 +48,10 @@ const bundler = (file: string, directory: string): Promise<IMDX> => {
       options.rehypePlugins = [
         ...(options.rehypePlugins ?? []),
         [
-          // rehypeMathjax,
           rehypePrettyCode,
           { theme: { dark: "github-dark-dimmed", light: "github-light" } },
         ],
+        [rehypePrism],
         [rehypeKatex],
       ];
       options.remarkPlugins = [
@@ -140,6 +142,60 @@ function getCategories(frontmatters: IFrontMatter[]) {
     ),
   );
 }
+
+function fetchMDXFrontMatterInSeries(directory: string, series?: string) {
+  return fetchMDXFrontMatter(directory).then((frontmatters) => {
+    return (
+      frontmatters
+        .filter(
+          (frontmatter) => frontmatter.series?.toLowerCase() === series?.toLowerCase(),
+        )
+        .sort(orderByDate())
+    );
+  });
+}
+
+export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
+  .inputValidator((data: { directory: string; slug: string }) => {
+    if (!data.directory || !data.slug) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      throw notFound();
+    }
+    const mdxPath = path.join(
+      BASE_DIRECTORY,
+      data.directory,
+      data.slug + ".mdx",
+    );
+    if (!existsSync(mdxPath)) {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
+      throw notFound();
+    }
+    return {
+      directory: data.directory.toLowerCase(),
+      slug: data.slug.toLowerCase(),
+    };
+  })
+  .handler(async ({ data }) => {
+    const file = await fs.readFile(
+      path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
+      "utf8",
+    );
+    const { data: frontmatter } = matter(file) as unknown as { data: IFrontMatter };
+    if (frontmatter.series) {
+      const seriesFrontmatters = await fetchMDXFrontMatterInSeries(
+        data.directory,
+        frontmatter.series,
+      );
+      return {
+        frontmatter,
+        series: seriesFrontmatters,
+      };
+    }
+    return {
+      frontmatter,
+      series: undefined,
+    };
+  });
 
 export const fetchMDXCode = createServerFn({ method: "GET" })
   .inputValidator((data: { directory: string; slug: string }) => {

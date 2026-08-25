@@ -7,6 +7,7 @@ import { Await, Link } from "@tanstack/react-router";
 import { IFrontMatter, IMDX } from "~/utils/mdx-fetcher";
 import { motion } from "motion/react";
 import { MDX } from "~/components/mdx";
+import SeriesNavigationCards from "~/components/SeriesNavigationCards";
 
 export function Wrapper({ children }: { children: ReactNode }) {
   return (
@@ -48,7 +49,7 @@ export function Description({
           className="p-6 bg-dawn-pink-100 dark:bg-night-sky-950 rounded-lg shadow-md hover:underline transition-all border border-night-sky-950 dark:border-dawn-pink-100"
         >
           <div className="flex md:flex-row flex-col">
-            <div className="my-auto min-w-[200px] md:max-w-[200px]">
+            <div className="my-auto min-w-50 md:max-w-50">
               <h3 className="text-lg font-bold">{frontmatter.title}</h3>
               <h4 className="text-nowrap">{frontmatter.date}</h4>
             </div>
@@ -94,10 +95,12 @@ export function MDXPost({
   bundle,
   frontmatter,
   leadImage,
+  series,
 }: {
   bundle: Promise<IMDX>;
   frontmatter: IFrontMatter;
   leadImage?: ReactNode;
+  series?: IFrontMatter[] | undefined;
 }) {
   return (
     <>
@@ -127,6 +130,12 @@ export function MDXPost({
             );
           }}
         </Await>
+        {series && series.length > 0 ? (
+          <SeriesNavigationCards
+            seriesFrontmatter={series}
+            currentSlug={frontmatter.slug}
+          />
+        ) : null}
       </div>
     </>
   );
