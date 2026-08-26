@@ -1,9 +1,10 @@
 ---
 slug: "python-earth-science-intro"
-title: "Python in the Earth Sciences: An Introduction"
+title: "An Introduction"
 date: "2026-05-15"
 tags: ["tech"]
 description: "This is the first in a series of posts that will cover the basics and best practices for using Python with a focus on Earth science research. Here, we will cover installing Python with the help of uv and creating our first program."
+series: "Python in the Earth Sciences"
 ---
 
 As a fourth year PhD candidate in physical oceanography as of writing, I use Python in some form every single day for my work. I'm a (mostly<TooltipPopover number="1" >No one is ever truly self taught</TooltipPopover>) self-taught Python developer of even more years, during which time I've found both the joys and frustrations with developing in Python. Over the course of several posts, I'd like to share the introduction to Python that I wish I had when I started my PhD.
@@ -49,7 +50,8 @@ uv init --bare
 
 This makes a new project with only a `pyproject.toml`<TooltipPopover number="5">More on this later as well!</TooltipPopover>. Now we need to create a Python file named `hello_world.py`. If you are using VSCode, you can run `code hello_world.py` in your terminal which will create the file and open up an editor all in one go. However you choose to edit Python code, once you've created and opened the file, write the following code, save, and exit:
 
-```python showLineNumbers
+```python
+# hello_world.py <- this is a typical way to show what file we are editing, no need to include this line!
 print("Hello world!")
 ```
 

@@ -49,8 +49,11 @@ export function Description({
           className="p-6 bg-dawn-pink-100 dark:bg-night-sky-950 rounded-lg shadow-md hover:underline transition-all border border-night-sky-950 dark:border-dawn-pink-100"
         >
           <div className="flex md:flex-row flex-col">
-            <div className="my-auto min-w-50 md:max-w-50">
-              <h3 className="text-lg font-bold">{frontmatter.title}</h3>
+            <div className="my-auto min-w-60 md:max-w-60">
+              {frontmatter.series? (
+                  <h4 className="text-sm font-bold italic">{frontmatter.series}</h4>
+              ) : null}
+              <h3 className="text-md font-bold">{frontmatter.title}</h3>
               <h4 className="text-nowrap">{frontmatter.date}</h4>
             </div>
             <div className="my-5 mx-0 md:mx-5 md:my-0 flex flex-col md:flex-row justify-center">

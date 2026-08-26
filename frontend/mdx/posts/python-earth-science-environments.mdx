@@ -1,0 +1,166 @@
+---
+slug: "python-earth-science-environments"
+title: "Environment Management"
+date: "2026-08-25"
+tags: ["tech"]
+description: "This is the second in a series of posts that will cover the basics and best practices for using Python with a focus on Earth science research. Here, we will cover modern Python environment management."
+series: "Python in the Earth Sciences"
+---
+
+*Just want a quick line of code to get your project started? Jump down to [Setting Up Your Project](#setting-up-your-project).*
+
+When you ran `uv init --bare` in the [previous tutorial](/blog/posts/python-earth-science-intro), you should have found a new file that was created with the name `pyproject.toml`<TooltipPopover number="1">TOML: Tom's Obvious Minimal Language. But if it was so obvious, why did we need Tom to create it?</TooltipPopover>. This "TOML file" is the configuration file used by packaging tools like [uv](https://docs.astral.sh/uv/) to manage the Python packages associated with that project<TooltipPopover number="2">The "project" (oversimplified) is the collection of Python scripts that are written and saved in the same directory you ran `uv init --bare` in.</TooltipPopover>.
+
+## pyproject.toml
+
+If you open up the newly created `pyproject.toml` file, you should find that it looks something like this<TooltipPopover number="3">The Python version might vary depending on what is set as your default</TooltipPopover>:
+
+<div data-code-hover-highlight className="group/box">
+
+```toml showLineNumbers
+[project]
+name = "hello-world"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = []
+```
+
+We will take this line-by-line<TooltipPopover number="4">Try hovering on each line below!</TooltipPopover>:
+
+1. <span data-code-line="1" tabindex="0" className="inline-block indent-0 align-top text-left hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150">This is the header of the project section, it contains project level configuration.</span>
+2. <span data-code-line="2" tabindex="0" className="inline-block indent-0 align-top text-left hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150">The name of the project. Set it to whatever you like!</span>
+3. <span data-code-line="3" tabindex="0" className="inline-block indent-0 align-top text-left hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150">The version of the project. You can usually leave this alone in scientific code bases, but it's important if you're publishing a Python package.</span>
+4. <span data-code-line="4" tabindex="0" className="inline-block indent-0 align-top text-left hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150">This defines the Python versions your project uses. Here, we use a minimum version of 3.13. This is important as your code may depend on features that do not exist in older versions.</span>
+5. <span data-code-line="5" tabindex="0" className="inline-block indent-0 align-top text-left hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150">This defines the dependencies of your project. This is perhaps the most important section, as it defines what packages you will have available to use in your project (e.g., NumPy, Xarray, etc.). This will be the focus of the rest of this tutorial.</span>
+
+</div>
+
+## The Standard Library
+
+You can do a lot with the Python standard library (the packages and functions bundled with any Python installation). However, you'll quickly find lots of things you can't do, or simply can't do as easily as you would like.
+
+One typical example is the addition of two vectors. Using the `list` type available in the Python standard library, you might try something like the following:
+
+```python showLineNumbers
+list1 = [0, 1, 2]
+list2 = [3, 4, 5]
+print(list1 + list2)
+```
+
+Take a moment to see if you can figure out what you expect the output of this to be. When you're ready, you can find the output of the code above by clicking the "Show Answer" button below (or run the code yourself!).
+
+<Spoiler label="Answer">
+```python
+[0, 1, 2, 3, 4, 5]
+```
+</Spoiler>
+
+If you're anything like me, especially coming from a traditional mathematics background, then you might've guessed that the answer would be something like `[3, 5, 7]`. This "elementwise" or "pairwise" addition is not the default behavior for Python lists; in order to replicate it, you would need to do something like this<TooltipPopover number="5">Don't worry about the details here.</TooltipPopover>:
+
+```python showLineNumbers
+list1 = [0, 1, 2]
+list2 = [3, 4, 5]
+print([l1 + l2 for l1, l2 in zip(list1, list2)])
+```
+
+Now, I don't want to have to do that every time I need to add two vectors together. Luckily, [one of the core strengths of Python](/blog/posts/python-earth-science-intro#why-python?) is the vast open-source ecosystem of packages designed to simplify your life. Indeed, this might even enable us to *fly*!
+
+<Image
+  src="https://imgs.xkcd.com/comics/python.png"
+  alt="An XKCD comic showing two stick figures, one flying, with the claim all they had to do was import antigravity in Python."
+  width={492}
+  height={487}
+/>
+
+Jokes aside<TooltipPopover number="6">Though you really can [import antigravity](https://pypi.org/project/antigravity/)</TooltipPopover>, Python packages really do some powerful stuff for us, including vector math, climate data analysis, plotting results, and beyond.
+
+Now that we're thoroughly motivated to include some Python *dependencies* in our project, how do we actually do that?
+
+## Using Python Dependencies
+
+The best way to handle adding two vectors would be to use a package that provides this support built-in, such as [NumPy](https://numpy.org/). Let's try to make a new file in our project from the [last tutorial](/blog/posts/python-earth-science-intro#hello-world!). As a reminder, we created that in our home directory and can access it like so:
+
+```bash
+cd
+mkdir hello_world
+cd hello_world
+```
+Now create a new file named `add_vectors.py`, import the `numpy` package, and create our two arrays to add:
+
+```python showLineNumbers
+# add_vectors.py
+import numpy as np  # first we import numpy so we have access to it's functions
+
+# now we create "numpy arrays"
+arr1 = np.array([0, 1, 2])
+arr2 = np.array([3, 4, 5])
+
+print(arr1 + arr2)
+```
+
+And let's run it:
+
+```bash
+uv run add_vectors.py
+```
+
+And - oh no! - we get the following error:
+
+```bash
+Traceback (most recent call last):
+  File "~\hello_world\add_vectors.py", line 1, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
+```
+
+We can see that Python is reporting `ModuleNotFoundError`, which is exactly what it sounds like. While we've  tried to import NumPy in our script, we haven't downloaded the source code that gives Python access to NumPy. That's where virtual environments, managed by `uv`, come to the rescue.
+
+## Managing Dependencies
+
+The problem might seem simple to solve at first: we need some source code, we download it, and add it to our Python path. That works great when we have a handful of packages. But, what if one project needs NumPy version 1.23 and another requires NumPy version 2.1? Well, now we're stuck.
+
+To solve this issue, Python includes support for virtual environments. These are essentially just directories (most often named `.venv`) that include a Python installation and additional packages like NumPy. These are separated on a per-project basis &mdash; that is, if you have two virtual environments in two separate folders, these are entirely distinct from one another, controlled by the dependencies listed in the `pyproject.toml` file in each folder.
+
+In order to add dependencies to our project, we could manually type them into each `pyproject.toml`, but `uv` makes it easier:
+
+```bash
+uv add numpy
+```
+
+Now re-run the command `uv run add_vectors.py` and you should see the following printed without error:
+
+```python
+[3 5 7]
+```
+
+Indistinguishable from magic<TooltipPopover number="7">While it's not *really* magic, if you experienced [Python environment management before modern tooling](/blog/posts/nuke-conda), this truly feels revolutionary.</TooltipPopover>, as far as I'm concerned!
+
+Now, if you open up your `pyproject.toml` file, it should look something like the following:
+
+```toml
+[project]
+name = "hello-world"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "numpy>=2.5.2",
+]
+```
+
+We now see that `numpy>=2.5.2` is included in the dependencies. Since we didn't specify a version, `uv` chose the latest stable release (2.5.2) compatible with our minimum Python version (3.13). This is the beauty of `uv` - it manages this dependency section for us and, if any packages don't play nice together, it will let us know. Otherwise, we should never have to think about this again!
+
+## Setting Up Your Project
+
+Whenever I start a new project in the Earth sciences, I have a few must-have packages I install. If you're looking to get started quickly, running the following command whenever you initialize a new project should give you almost everything you'll need to get started:
+
+```bash
+uv add numpy xarray[accel,io,parallel] matplotlib ipykernel
+```
+
+You'll now have access to `import numpy as np`, `import xarray as xr`, and `import matplotlib.pyplot as plt`<TooltipPopover number="8">These are "conventional" imports and you should follow them.</TooltipPopover> as well as the interactive python kernel (`ipykernel`) for running Jupyter notebooks. These can be used within any scripts that you create within your project directory and even any subdirectories of our project directory.
+
+## Looking Forward
+
+Is there anything else we should worry about? Well, of course! The first is utilizing the power (and being aware of the drawbacks) of Python interactive notebooks. We'll cover getting started on notebooks in the next tutorial.
+
+After we're up to speed on running our code, we may want to ensure our code is readable and consistent, which we have some tools (linters, formatters, and type checkers) to help us with. Related to this, we should consider *type hinting* our Python code, which involves telling type checkers (and, more importantly, us!) what types<TooltipPopover number="9">Types of variables refer to things like `int` (`1`), `str` (`"Hello, World!"`), `bool` (`True`), and many, many more.</TooltipPopover> we expect each function to take and return. These will be the focus of future tutorials in this series.

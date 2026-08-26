@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { IFrontMatter } from "~/utils/mdx-fetcher";
-import LongArrow from "./ui/LongArrow";
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function SeriesNavigationCards({
   seriesFrontmatter,
@@ -29,39 +29,69 @@ export default function SeriesNavigationCards({
       : null;
   return (
     <div className="max-w-3xl mx-auto mt-10">
-      <div className="flex flex-row">
-        <div className="relative max-w-1/3 justify-start">
+      <div className="flex sm:flex-row flex-col px-10">
+        <div className="relative group sm:max-w-2/5 w-full justify-start">
           {prevFrontmatter ? (
             <Link
               to="/blog/posts/$slug"
               params={{ slug: prevFrontmatter.slug }}
-              className="flex flex-col p-2 gap-2 items-center bg-dawn-pink-100 dark:bg-night-sky-950 rounded-lg shadow-md hover:underline transition-all border border-night-sky-950 dark:border-dawn-pink-100"
+              className="flex flex-row items-center justify-start text-left"
             >
-              <div className="flex flex-row gap-2 w-2/3">
-                <LongArrow orientation="left" width={50} />
-                <div className="mx-auto"> </div>
-                <h3 className="text-lg font-bold">Prev Post</h3>
+            <div className="relative me-2 -translate-x-5">
+            <ChevronLeft
+              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-5 transition-all duration-1000 ease-in-out animate-out"
+              size={20}
+              aria-hidden="true"
+            />
+            <ChevronLeft
+              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-3 transition-all duration-1000 ease-in-out"
+              size={20}
+              aria-hidden="true"
+            />
+            <ArrowLeft
+              className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+              size={20}
+              aria-hidden="true"
+            />
+          </div>
+              <div className="flex flex-col w-2/3">
+                                <h3 className="text-md italic">Last Post</h3>
+                <h4 className="text-md font-bold">{prevFrontmatter.title}</h4>
               </div>
-              <h4 className="text-md font-bold">{prevFrontmatter.title}</h4>
             </Link>
           ) : null}
         </div>
 
         <div className="mx-auto"> </div>
 
-        <div className="relative max-w-1/3 justify-end">
+        <div className="relative group sm:max-w-2/5 w-full justify-end">
           {nextFrontmatter ? (
             <Link
               to="/blog/posts/$slug"
               params={{ slug: nextFrontmatter.slug }}
-              className="flex flex-col p-2 gap-2 items-center bg-dawn-pink-100 dark:bg-night-sky-950 rounded-lg shadow-md hover:underline transition-all border border-night-sky-950 dark:border-dawn-pink-100"
+              className="flex flex-row items-center justify-end text-right"
             >
-              <div className="flex flex-row gap-2 w-2/3">
-                <h3 className="text-lg font-bold">Next Post</h3>
-                <div className="mx-auto"> </div>
-                <LongArrow orientation="right" width={50} />
+              <div className="flex flex-col w-2/3">
+                <h3 className="text-md italic">Next Post</h3>
+                <h4 className="text-md font-bold">{nextFrontmatter.title}</h4>
               </div>
-              <h4 className="text-md font-bold">{nextFrontmatter.title}</h4>
+              <div className="relative ms-2">
+            <ArrowRight
+              className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+              size={20}
+              aria-hidden="true"
+            />
+            <ChevronRight
+              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-3 transition-all duration-1000 ease-in-out"
+              size={20}
+              aria-hidden="true"
+            />
+            <ChevronRight
+              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-5 transition-all duration-1000 ease-in-out animate-out"
+              size={20}
+              aria-hidden="true"
+            />
+          </div>
             </Link>
           ) : null}
         </div>
