@@ -406,13 +406,21 @@ export function TooltipNotes({ children }: FootnotesWrapperProps) {
   );
 }
 
-export function Spoiler({ label, children }: { label?: string; children: ReactNode }) {
+export function Spoiler({
+  label,
+  children,
+}: {
+  label?: string;
+  children: ReactNode;
+}) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className="my-4">
       <button
-        onClick={() => { setIsOpen(!isOpen); }}
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
         className="cursor-pointer bg-gray-100 dark:bg-gray-800 text-night-sky-900 dark:text-dawn-pink-200 font-semibold px-4 py-2 rounded-md hover:bg-gray-300 dark:hover:bg-gray-700  transition-all duration-200 border-night-sky-950 dark:border-dawn-pink-100 border"
       >
         {isOpen ? `Hide ${label || "Spoiler"}` : `Show ${label || "Spoiler"}`}

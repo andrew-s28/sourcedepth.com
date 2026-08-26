@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { IFrontMatter } from "~/utils/mdx-fetcher";
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { IFrontMatter } from "~/utils/mdx-fetcher";
 
 export default function SeriesNavigationCards({
   seriesFrontmatter,
@@ -37,25 +37,25 @@ export default function SeriesNavigationCards({
               params={{ slug: prevFrontmatter.slug }}
               className="flex flex-row items-center justify-start text-left"
             >
-            <div className="relative me-2 -translate-x-5">
-            <ChevronLeft
-              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-5 transition-all duration-1000 ease-in-out animate-out"
-              size={20}
-              aria-hidden="true"
-            />
-            <ChevronLeft
-              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-3 transition-all duration-1000 ease-in-out"
-              size={20}
-              aria-hidden="true"
-            />
-            <ArrowLeft
-              className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
-              size={20}
-              aria-hidden="true"
-            />
-          </div>
+              <div className="relative me-2 -translate-x-5">
+                <ChevronLeft
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-5 transition-all duration-1000 ease-in-out animate-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+                <ChevronLeft
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:-translate-x-3 transition-all duration-1000 ease-in-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+                <ArrowLeft
+                  className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+              </div>
               <div className="flex flex-col w-2/3">
-                                <h3 className="text-md italic">Last Post</h3>
+                <h3 className="text-md italic">Last Post</h3>
                 <h4 className="text-md font-bold">{prevFrontmatter.title}</h4>
               </div>
             </Link>
@@ -76,22 +76,22 @@ export default function SeriesNavigationCards({
                 <h4 className="text-md font-bold">{nextFrontmatter.title}</h4>
               </div>
               <div className="relative ms-2">
-            <ArrowRight
-              className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
-              size={20}
-              aria-hidden="true"
-            />
-            <ChevronRight
-              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-3 transition-all duration-1000 ease-in-out"
-              size={20}
-              aria-hidden="true"
-            />
-            <ChevronRight
-              className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-5 transition-all duration-1000 ease-in-out animate-out"
-              size={20}
-              aria-hidden="true"
-            />
-          </div>
+                <ArrowRight
+                  className="absolute my-auto top-1/2 transform -translate-y-1/2 transition-transform duration-1000 ease-in-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+                <ChevronRight
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-3 transition-all duration-1000 ease-in-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+                <ChevronRight
+                  className="absolute opacity-0 group-hover:opacity-100 my-auto top-1/2 transform -translate-y-1/2 group-hover:translate-x-5 transition-all duration-1000 ease-in-out animate-out"
+                  size={20}
+                  aria-hidden="true"
+                />
+              </div>
             </Link>
           ) : null}
         </div>

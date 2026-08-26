@@ -50,8 +50,10 @@ export function Description({
         >
           <div className="flex md:flex-row flex-col">
             <div className="my-auto min-w-60 md:max-w-60">
-              {frontmatter.series? (
-                  <h4 className="text-sm font-bold italic">{frontmatter.series}</h4>
+              {frontmatter.series ? (
+                <h4 className="text-sm font-bold italic">
+                  {frontmatter.series}
+                </h4>
               ) : null}
               <h3 className="text-md font-bold">{frontmatter.title}</h3>
               <h4 className="text-nowrap">{frontmatter.date}</h4>
