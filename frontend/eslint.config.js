@@ -13,6 +13,23 @@ export default defineConfig([
         "error",
         { argsIgnorePattern: "^_" },
       ],
+      "@typescript-eslint/only-throw-error": [
+        "error",
+        {
+          allow: [
+            {
+              "from": "package",
+              "package": "@tanstack/router-core",
+              "name": "Redirect"
+            },
+            {
+              "from": "package",
+              "package": "@tanstack/router-core",
+              "name": "NotFoundError"
+            }
+          ]
+        }
+      ]
     },
   },
   { settings: { react: { version: "detect" } } },

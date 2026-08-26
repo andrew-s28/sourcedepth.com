@@ -23,7 +23,6 @@ export const Route = createFileRoute("/projects_/posts/$slug")({
       });
     } catch (error) {
       console.error("Error fetching frontmatter:", error);
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
     const bundle = fetchMDXCode({

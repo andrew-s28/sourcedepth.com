@@ -3,8 +3,7 @@
 import { apiFetch, PaginatedResponse, QueryParams } from "./api";
 
 let BASE_URL:
-  | "http://localhost:8000/github"
-  | "https://api.sourcedepth.com/github";
+  "http://localhost:8000/github" | "https://api.sourcedepth.com/github";
 
 if (process.env.NODE_ENV !== "production") {
   BASE_URL = "http://localhost:8000/github";

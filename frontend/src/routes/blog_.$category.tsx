@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { BlogIndex } from "~/components/BlogIndex";
 import { DefaultCatchBoundary } from "~/components/DefaultCatchBoundary";
 import { NotFound } from "~/components/NotFound";
 import { fetchMDX } from "~/utils/mdx-fetcher";
 import { seo } from "~/utils/seo";
 import { capitalizeFirstLetter } from "~/utils/utils";
-import { BlogIndex } from "./blog.index";
 
 export const Route = createFileRoute("/blog_/$category")({
   loader: ({ params: { category } }) =>
@@ -35,6 +35,8 @@ function RouteComponent() {
       frontmatters={frontmatters}
       categories={categories}
       activeCategory={activeCategory}
+      clearCategoryTo="/blog"
+      categoryTo="/blog/$category"
       intro={{
         title: "Blog",
         description: introDescription,

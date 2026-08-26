@@ -1,17 +1,8 @@
 import { notFound } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { createMiddleware, createServerFn } from "@tanstack/react-start";
 import matter from "gray-matter";
 import { existsSync } from "node:fs";
-import fs from "node:fs/promises";
-import { createRequire } from "node:module";
-import path from "node:path";
-import rehypeKatex from "rehype-katex";
-import rehypePrettyCode from "rehype-pretty-code";
-import rehypePrism from "rehype-prism-plus";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-
-import type { Options } from "@mdx-js/esbuild";
+import { z } from "zod";
 
 export interface IFrontMatter {
   title: string;
@@ -32,96 +23,73 @@ export interface AwaitIMDX {
   frontmatter: IFrontMatter;
 }
 
-const BASE_DIRECTORY = path.join(process.cwd(), "mdx");
+const mdxPostInputSchema = z.object({
+  directory: z.string().min(1),
+  slug: z.string().min(1),
+});
 
-// mdx-bundler deps aren't playing nice with ESM, so we have to use createRequire to import it
-const require = createRequire(import.meta.url);
-const { bundleMDX } = require("mdx-bundler") as typeof import("mdx-bundler");
+const mdxFrontMatterInputSchema = z.object({
+  directory: z.string().min(1),
+  category: z.string().min(1).optional(),
+});
 
-const bundler = (file: string, directory: string): Promise<IMDX> => {
-  return bundleMDX({
-    file: path.join(BASE_DIRECTORY, directory, file),
-    cwd: process.cwd(),
-    bundleDirectory: path.join(BASE_DIRECTORY, directory),
-    bundlePath: directory,
-    mdxOptions(options: Options) {
-      options.rehypePlugins = [
-        ...(options.rehypePlugins ?? []),
-        [
-          rehypePrettyCode,
-          { theme: { dark: "github-dark-dimmed", light: "github-light" } },
-        ],
-        [rehypePrism],
-        [rehypeKatex],
-      ];
-      options.remarkPlugins = [
-        ...(options.remarkPlugins ?? []),
-        [remarkGfm],
-        [remarkMath],
-      ];
-      return options;
-    },
-    esbuildOptions(options) {
-      options.alias = {
-        "~": path.resolve(process.cwd(), "src"),
-      };
-      options.loader = {
-        ...options.loader,
-        ".png": "file",
-      };
-      return options;
-    },
-  });
-};
-
-function orderByDate() {
-  return (a: IFrontMatter, b: IFrontMatter) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB.getTime() - dateA.getTime();
+const lowercaseSingleMdxMiddleware = createMiddleware({
+  type: "function",
+}).validator((data: { directory: string; slug: string }) => {
+  const parsed = mdxPostInputSchema.parse(data);
+  return {
+    directory: parsed.directory.toLowerCase(),
+    slug: parsed.slug.toLowerCase(),
   };
-}
+});
 
-async function fetchMDXFrontMatter(directory: string) {
-  const allFiles = await fs.readdir(path.join(BASE_DIRECTORY, directory), {
-    withFileTypes: true,
-  });
-  const files = allFiles
-    .filter((file) => file.isFile())
-    .map((file) => file.name)
-    .filter((file) => file.endsWith(".mdx"));
-  const frontmatters = await Promise.all(
-    files.map(async (file) => {
-      const { data } = matter(
-        await fs.readFile(path.join(BASE_DIRECTORY, directory, file), "utf8")
-      );
-      return data as IFrontMatter;
-    })
-  );
-  return frontmatters.sort(orderByDate());
-}
+const lowercaseMultipleMdxMiddleware = createMiddleware({
+  type: "function",
+}).validator((data: { directory: string; category?: string }) => {
+  const parsed = mdxFrontMatterInputSchema.parse(data);
+  return {
+    directory: parsed.directory.toLowerCase(),
+    category: parsed.category?.toLowerCase(),
+  };
+});
 
-export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; slug: string }) => {
-    if (!data.directory || !data.slug) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw notFound();
-    }
+const ensureImports = createMiddleware({ type: "function" }).server(
+  async ({ next }) => {
+    const module = await import("./mdx-fetcher.server"); // make sure imports are loaded before proceeding
+    return next({
+      context: {
+        module,
+      },
+    });
+  }
+);
+
+const ensureMdxFileExistsMiddleware = createMiddleware({ type: "function" })
+  .validator(mdxPostInputSchema)
+  .server(async ({ next, data }) => {
+    const { getNodeUtils, BASE_DIRECTORY } =
+      await import("./mdx-fetcher.server");
+    const { path } = getNodeUtils();
     const mdxPath = path.join(
       BASE_DIRECTORY,
       data.directory,
       data.slug + ".mdx"
     );
     if (!existsSync(mdxPath)) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
-    return {
-      directory: data.directory.toLowerCase(),
-      slug: data.slug.toLowerCase(),
-    };
-  })
-  .handler(async ({ data }) => {
+    return next();
+  });
+
+export const fetchSingleMDXFrontMatter = createServerFn({ method: "GET" })
+  .middleware([
+    ensureImports,
+    lowercaseSingleMdxMiddleware,
+    ensureMdxFileExistsMiddleware,
+  ])
+  .handler(async ({ data, context }) => {
+    const { getNodeUtils, BASE_DIRECTORY } = context.module;
+    const { fs, path } = getNodeUtils();
     const file = await fs.readFile(
       path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
       "utf8"
@@ -143,38 +111,16 @@ function getCategories(frontmatters: IFrontMatter[]) {
   );
 }
 
-function fetchMDXFrontMatterInSeries(directory: string, series?: string) {
-  return fetchMDXFrontMatter(directory).then((frontmatters) => {
-    return frontmatters
-      .filter(
-        (frontmatter) =>
-          frontmatter.series?.toLowerCase() === series?.toLowerCase()
-      )
-      .sort(orderByDate());
-  });
-}
-
 export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; slug: string }) => {
-    if (!data.directory || !data.slug) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw notFound();
-    }
-    const mdxPath = path.join(
-      BASE_DIRECTORY,
-      data.directory,
-      data.slug + ".mdx"
-    );
-    if (!existsSync(mdxPath)) {
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      throw notFound();
-    }
-    return {
-      directory: data.directory.toLowerCase(),
-      slug: data.slug.toLowerCase(),
-    };
-  })
-  .handler(async ({ data }) => {
+  .middleware([
+    ensureImports,
+    lowercaseSingleMdxMiddleware,
+    ensureMdxFileExistsMiddleware,
+  ])
+  .handler(async ({ data, context }) => {
+    const { getNodeUtils, BASE_DIRECTORY, fetchMDXFrontMatterInSeries } =
+      context.module;
+    const { fs, path } = getNodeUtils();
     const file = await fs.readFile(
       path.join(BASE_DIRECTORY, data.directory, data.slug + ".mdx"),
       "utf8"
@@ -199,35 +145,27 @@ export const fetchMDXFrontMatterAndSeries = createServerFn({ method: "GET" })
   });
 
 export const fetchMDXCode = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; slug: string }) => {
-    return {
-      directory: data.directory.toLowerCase(),
-      slug: data.slug.toLowerCase(),
-    };
-  })
-  .handler(async ({ data }) => {
+  .middleware([
+    ensureImports,
+    lowercaseSingleMdxMiddleware,
+    ensureMdxFileExistsMiddleware,
+  ])
+  .handler(async ({ data, context }) => {
+    const { bundler } = context.module;
     try {
       // post names must be the same as the slug!
       const bundle = await bundler(data.slug + ".mdx", data.directory);
       return bundle;
     } catch (err) {
       console.log(err);
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
   });
 
 export const fetchMDX = createServerFn({ method: "GET" })
-  .validator((data: { directory: string; category?: string }) => {
-    if (data.category) {
-      data.category = data.category.toLowerCase();
-    }
-    return {
-      directory: data.directory.toLowerCase(),
-      category: data.category,
-    };
-  })
-  .handler(async ({ data }) => {
+  .middleware([ensureImports, lowercaseMultipleMdxMiddleware])
+  .handler(async ({ data, context }) => {
+    const { fetchMDXFrontMatter } = context.module;
     try {
       let frontmatters = await fetchMDXFrontMatter(data.directory);
       const categories = getCategories(frontmatters);
@@ -235,7 +173,6 @@ export const fetchMDX = createServerFn({ method: "GET" })
         data.category ? post.tags.includes(data.category) : true
       );
       if (frontmatters.length === 0) {
-        // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw notFound();
       }
       return {
@@ -244,7 +181,6 @@ export const fetchMDX = createServerFn({ method: "GET" })
       };
     } catch (err) {
       console.log(err);
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw notFound();
     }
   });

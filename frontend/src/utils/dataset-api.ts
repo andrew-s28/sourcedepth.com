@@ -1,8 +1,7 @@
 import { apiFetch, QueryParams } from "./api";
 
 let BASE_URL:
-  | "http://localhost:8000/dataset"
-  | "https://api.sourcedepth.com/dataset";
+  "http://localhost:8000/dataset" | "https://api.sourcedepth.com/dataset";
 
 if (process.env.NODE_ENV !== "production") {
   BASE_URL = "http://localhost:8000/dataset";
