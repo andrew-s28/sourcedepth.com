@@ -95,7 +95,7 @@ export function Pre({ children }: { children: ReactNode }) {
   const preRef = useRef<HTMLPreElement>(null);
 
   // highlight code lines based on hovering another element
-  // code and the hoverable element must share the same parent element with the attribute "code-hover-highlight"
+  // code and the hoverable element must share the same parent element with the attribute "data-code-hover-highlight"
   useEffect(() => {
     const highlighter = containerRef.current?.closest<HTMLElement>(
       "[data-code-hover-highlight]"
@@ -434,6 +434,19 @@ export function Spoiler({
   );
 }
 
+export function HoverCodeLinkSpan({ highlightCodeLine, children }: { highlightCodeLine: string; children: ReactNode }) {
+  return (
+    <
+      span
+      className="inline-block align-top indent-0 hover:text-blue-500 focus-visible:outline-2 focus-visible:outline-blue-500 transition-all duration-150"
+      data-code-line={highlightCodeLine}
+      tabIndex={0}
+    >
+      {children}
+    </span>
+  );
+}
+
 export function MDX({ code }: { code: string }) {
   const Component = useMemo(() => {
     return getMDXComponent(code);
@@ -466,6 +479,7 @@ export function MDX({ code }: { code: string }) {
         TooltipNote,
         TooltipNotes,
         Spoiler,
+        HoverCodeLinkSpan,
       }}
     />
   );
